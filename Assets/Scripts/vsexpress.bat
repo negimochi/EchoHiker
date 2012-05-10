@@ -1,0 +1,1 @@
+"classexec.exe" %1 --class .cs

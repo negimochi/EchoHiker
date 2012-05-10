@@ -9,7 +9,7 @@ public class Note : MonoBehaviour {
     [SerializeField]
     private bool valid;
     [SerializeField]
-    private int visible = true;
+    private bool visible = true;
 
     private float param;
 
@@ -31,26 +31,27 @@ public class Note : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
+        renderer.enabled = visible;
     }
 	
 	// Update is called once per frame
 	void Update () {
         param *= Mathf.Exp(-5.0f * Time.deltaTime);
 		
-		if ()  
-		
-        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
-        Color color = new Color(1.0f, 1.0f - param, state?0.0f:1.0f );
-        renderer.material.color = color;
-		
-        if (valid) {
-            transform.localRotation *=
-                Quaternion.AngleAxis(Time.deltaTime * 90.0f, Vector3.up) *
-                Quaternion.AngleAxis(Time.deltaTime * 10.0f, Vector3.right);
-        }
-        else {
-            transform.localRotation = Quaternion.identity;
-        }
+		if( visible ) {
+	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
+            Color color = new Color(1.0f, 1.0f - param, valid ? 0.0f : 1.0f);
+	        renderer.material.color = color;
+			
+	        if (valid) {
+	            transform.localRotation *=
+	                Quaternion.AngleAxis(Time.deltaTime * 90.0f, Vector3.up) *
+	                Quaternion.AngleAxis(Time.deltaTime * 10.0f, Vector3.right);
+	        }
+	        else {
+	            transform.localRotation = Quaternion.identity;
+	        }
+		}
 	}
 
 }
