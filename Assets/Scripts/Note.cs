@@ -13,16 +13,18 @@ public class Note : MonoBehaviour {
     private bool valid = true;
 
     private float param;
+    private Color baseColor;
 
     void OnClick()
     {
         valid = !valid;
     }
+
     void OnClock( int delay )
     {
         if (valid)
         {
-            counter += Time.deltaTime;
+            counter ++;
             if (counter >= interval)
             {
                // AudioSource audio = GetComponent<AudioSource>();
@@ -39,6 +41,7 @@ public class Note : MonoBehaviour {
     {
         counter = offset;
         renderer.enabled = visible;
+        baseColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b);
         param = 1.0f;
     }
 	
@@ -47,9 +50,9 @@ public class Note : MonoBehaviour {
     {
         OnClock(0);
         if (visible) {
-            param *= Mathf.Exp(-5.0f * Time.deltaTime);
+            param *= Mathf.Exp(-3.0f * Time.deltaTime);
 //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
-            Color color = new Color(1.0f, 1.0f - param, valid ? 0.0f : 1.0f);
+            Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
 	        renderer.material.color = color;
 			
 	        if (valid) {
