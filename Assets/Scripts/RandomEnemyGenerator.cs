@@ -6,11 +6,14 @@ public class RandomEnemyGenerator : MonoBehaviour {
     [SerializeField]
     private GameObject[] itemObject;
     [SerializeField]
-    private int size;
+    private int minAngle;
     [SerializeField]
-    private Vector3 startPos;
+    private int lines;
     [SerializeField]
-    private Vector3 endPos;
+    private float insideRadius;
+    [SerializeField]
+    private float outsideRadius;
+
 
 	// Use this for initialization
 	void Start () {
