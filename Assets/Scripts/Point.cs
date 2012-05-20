@@ -34,7 +34,7 @@ public class Point
         get { return rect.x; }
         set { rect.x = value; }
     }
-    public float y
+    public float z
     {
         get { return this.rect.y; }
         set { rect.y = value; }
