@@ -17,12 +17,36 @@ public class Note : MonoBehaviour {
 
     IEnumerator OnHitItem()
     {
+        Debug.Log("OnHitItem"); 
         valid = false;
-//        gameObject.GetComponent<>
-        audio.Stop();
-        yield return new WaitForSeconds(1); 
-        Destroy(gameObject);    // 自分を削除
-//        transform.parent.gameObject.GetComponent<>();
+        // Stopと使うと音がぶつ切りになる場合があるため、ここでは音量をフェードアウトさせて対応
+        //audio.Stop();
+
+        // エフェクト開始(1つだけとする)
+        ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
+//        Debug.Log("Emitter" + emitter);
+        if (particleSystem)
+        {
+            particleSystem.Play();
+            Debug.Log("Particle Start");
+        }
+
+        // フェードアウト
+        float step = 0.0f;
+        float endTime  = 1.0f;
+        float interval = 0.1f;
+        float vol = audio.volume;
+        while (endTime > step )
+        {
+            audio.volume = vol * (1.0f - step / endTime);
+            step += interval;
+            //Debug.Log("Step:" + step);
+            yield return new WaitForSeconds(interval);
+        }
+        // フェードアウト後、パーティクルの時間だけ待ってからオブジェクト破棄
+        float delay = (particleSystem) ? particleSystem.duration : 0;
+        Debug.Log("Destory:delay=" + delay);
+        Destroy(gameObject, delay );
     }
 
     void OnClock( int delay )
