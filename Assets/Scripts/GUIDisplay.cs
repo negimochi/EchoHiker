@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ï\é¶ïîÅB
+/// </summary>
 public class GUIDisplay : MonoBehaviour {
 
     private string enemyHit         = "Enemey Hits      : ";
@@ -20,8 +23,17 @@ public class GUIDisplay : MonoBehaviour {
     {
         enemyNum++;
     }
-    void OnHitItem( string itemName )
+//    public
+    void OnHitItem( int itemType )
     {
+        if (itemType == 0)
+        {
+            itemCubeNum++;
+        }
+        else {
+            itemCapsuleNum++;
+        }
+        /*
         if (itemName == "Item_Cube")
         {
             itemCubeNum++;
@@ -30,6 +42,7 @@ public class GUIDisplay : MonoBehaviour {
         {
             itemCapsuleNum++;
         }
+         */
     }
 
     void OnGUI()

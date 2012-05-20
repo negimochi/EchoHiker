@@ -15,9 +15,14 @@ public class Note : MonoBehaviour {
     private float param;
     private Color baseColor;
 
-    void OnClick()
+    IEnumerator OnHitItem()
     {
-        valid = !valid;
+        valid = false;
+//        gameObject.GetComponent<>
+        audio.Stop();
+        yield return new WaitForSeconds(1); 
+        Destroy(gameObject);    // é©ï™ÇçÌèú
+//        transform.parent.gameObject.GetComponent<>();
     }
 
     void OnClock( int delay )
@@ -48,22 +53,17 @@ public class Note : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        OnClock(0);
-        if (visible) {
-            param *= Mathf.Exp(-3.0f * Time.deltaTime);
-//	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
-            Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
-	        renderer.material.color = color;
-			
-	        if (valid) {
-//	            transform.localRotation *=
-//	                Quaternion.AngleAxis(Time.deltaTime * 90.0f, Vector3.up) *
-//	                Quaternion.AngleAxis(Time.deltaTime * 20.0f, Vector3.right);
-	        }
-	        else {
-	            transform.localRotation = Quaternion.identity;
-	        }
-		}
+        if (valid)
+        {
+            OnClock(0);
+            if (visible)
+            {
+                param *= Mathf.Exp(-3.0f * Time.deltaTime);
+                //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
+                Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
+                renderer.material.color = color;
+            }
+        }
 	}
 
 }

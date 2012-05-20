@@ -6,7 +6,7 @@ public class RandomObjectGenerator : MonoBehaviour {
     [SerializeField]
     private GameObject[] itemObject;
     [SerializeField]
-    private int size;
+    private int length;
     [SerializeField]
     private Vector3 startPos;
     [SerializeField]
@@ -17,6 +17,11 @@ public class RandomObjectGenerator : MonoBehaviour {
         Random.seed = (int)(System.DateTime.Now.TimeOfDay.TotalMilliseconds);
         Debug.Log( "seed=" + Random.seed );
 
+        Generate( length );
+    }
+
+    void Generate( int size )
+    {
         Vector3 sub = endPos - startPos;
         for (int i = 0; i < size; i++)
         {
