@@ -24,25 +24,27 @@ public class GUIDisplay : MonoBehaviour {
         enemyNum++;
     }
 //    public
-    void OnHitItem( int itemType )
+    void OnHitItem( /*int itemType*/ string itemName )
     {
-        if (itemType == 0)
+//        if (itemType == 0)
+//        {
+//            itemCubeNum++;
+//        }
+//        else {
+//            itemCapsuleNum++;
+//        }
+        if (itemName.Contains("Item_Cube") )
         {
             itemCubeNum++;
         }
-        else {
-            itemCapsuleNum++;
-        }
-        /*
-        if (itemName == "Item_Cube")
-        {
-            itemCubeNum++;
-        }
-        else if (itemName == "Item_Capsule")
+        else if (itemName.Contains("Item_Capsule"))
         {
             itemCapsuleNum++;
         }
-         */
+        else if (itemName.Contains("N-shiki_takoruka_2A"))
+        {
+            enemyNum++;
+        }
     }
 
     void OnGUI()

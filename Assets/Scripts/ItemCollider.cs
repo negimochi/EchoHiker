@@ -6,8 +6,8 @@ using System.Collections;
 /// </summary>
 public class ItemCollider : MonoBehaviour {
 
-    [SerializeField]
-    private int type;
+   // [SerializeField]
+   // private int type;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +24,7 @@ public class ItemCollider : MonoBehaviour {
 //            disp.OnHitItem(type);
             //GameObject player = GameObject.FindGameObjectWithTag("Player");
             GameObject player = collider.gameObject;
-            player.SendMessage("OnHitItem", type);
+            player.SendMessage("OnHitItem", gameObject.name);
             Note note = GetComponent<Note>();
             if (note) note.SendMessage("OnHitItem");
         }

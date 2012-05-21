@@ -15,7 +15,7 @@ public class Note : MonoBehaviour {
     private float param;
     private Color baseColor;
 
-    IEnumerator OnHitItem()
+    void OnHitItem()
     {
         Debug.Log("OnHitItem"); 
         valid = false;
@@ -25,24 +25,27 @@ public class Note : MonoBehaviour {
         // エフェクト開始(1つだけとする)
         ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
 //        Debug.Log("Emitter" + emitter);
-        if (particleSystem)
-        {
+        if (particleSystem) {
             particleSystem.Play();
             Debug.Log("Particle Start");
         }
 
+        StartCoroutine("Fadeout", 1.0f);
+    }
+
+    IEnumerator Fadeout( float endTime )
+    {
         // フェードアウト
         float step = 0.0f;
-        float endTime  = 1.0f;
         float interval = 0.1f;
         float vol = audio.volume;
-        while (endTime > step )
-        {
+        while (endTime > step ) {
             audio.volume = vol * (1.0f - step / endTime);
             step += interval;
-            //Debug.Log("Step:" + step);
+            Debug.Log("Step:" + step);
             yield return new WaitForSeconds(interval);
         }
+
         // フェードアウト後、パーティクルの時間だけ待ってからオブジェクト破棄
         float delay = (particleSystem) ? particleSystem.duration : 0;
         Debug.Log("Destory:delay=" + delay);
