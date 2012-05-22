@@ -22,6 +22,7 @@ public class EnemyCollider : MonoBehaviour {
         Debug.Log("Collider Exit:" + gameObject.name);
         if (other.gameObject.tag.Equals("Player"))
         {
+            ;
         }
     }
 
