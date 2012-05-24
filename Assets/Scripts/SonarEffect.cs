@@ -15,7 +15,7 @@ public class SonarEffect : MonoBehaviour {
         counter = 0.0f;
         effect = gameObject.GetComponent<GUITexture>();
         sonar = transform.parent.gameObject.GetComponent<GUITexture>().pixelInset;
-        effect.pixelInset = new Rect( sonar.center.x, sonar.center.y, 1, 1 );
+        effect.pixelInset = new Rect( sonar.center.x, sonar.center.y, 0, 0 );
     }
 	
 	// Update is called once per frame
