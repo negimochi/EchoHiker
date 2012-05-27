@@ -3,15 +3,15 @@ using System.Collections;
 
 public class Note : MonoBehaviour {
     [SerializeField]
-    private float interval;
+    private float interval = 60.0f;
     [SerializeField]
-    private float offset;
-    private float counter;
+    private float offset = 0.0f;
     [SerializeField]
     private bool visible = true;
     [SerializeField]
-    private bool valid = true;
+    private bool valid   = true;
 
+    private float counter;
     private float param;
     private Color baseColor;
 
@@ -19,7 +19,7 @@ public class Note : MonoBehaviour {
     {
         Debug.Log("OnHitItem"); 
         valid = false;
-        // Stopと使うと音がぶつ切りになる場合があるため、ここでは音量をフェードアウトさせて対応
+        // Stopと使うと音がぶつ切りになる場合があるため、音量をフェードアウトさせて対応
         //audio.Stop();
 
         // エフェクト開始(1つだけとする)
@@ -31,39 +31,45 @@ public class Note : MonoBehaviour {
         }
 
         StartCoroutine("Fadeout", 1.0f);
+        Debug.Log("OnHitItem End");
     }
 
-    IEnumerator Fadeout( float endTime )
+    IEnumerator Fadeout(float duration )
     {
         // フェードアウト
-        float step = 0.0f;
-        float interval = 0.1f;
-        float vol = audio.volume;
-        while (endTime > step ) {
-            audio.volume = vol * (1.0f - step / endTime);
-            step += interval;
-            Debug.Log("Step:" + step);
-            yield return new WaitForSeconds(interval);
+        float currentTime = 0.0f;
+        float waitTime = 0.02f;
+        float firstVol = audio.volume;
+        while (duration > currentTime)
+        {
+            currentTime += Time.fixedDeltaTime;
+            audio.volume = Mathf.Clamp01(firstVol * (duration - currentTime) / duration);
+            Debug.Log("Step:" + audio.volume);
+            yield return new WaitForSeconds(waitTime);
         }
 
-        // フェードアウト後、パーティクルの時間だけ待ってからオブジェクト破棄
-        float delay = (particleSystem) ? particleSystem.duration : 0;
-        Debug.Log("Destory:delay=" + delay);
-        Destroy(gameObject, delay );
+        // エフェクトが完全に終了していたらオブジェクト破棄
+        ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
+        while (particleSystem.isPlaying)
+        {
+            yield return new WaitForSeconds(waitTime);
+        }
+        Destroy( gameObject );
+        Debug.Log("Destory");
     }
 
-    void OnClock( int delay )
+    void OnClock( float step )
     {
         if (valid)
         {
-            counter ++;
+            counter += step;
             if (counter >= interval)
             {
                // AudioSource audio = GetComponent<AudioSource>();
-                audio.Play((ulong)delay);
+                audio.Play();
                 param = 1.0f;
-                counter = 0;
-                Debug.Log(name + ":Play");
+                counter = 0.0f;
+                //Debug.Log(name + ":Play");
             }
         }
     }
@@ -82,10 +88,10 @@ public class Note : MonoBehaviour {
     {
         if (valid)
         {
-            OnClock(0);
+            OnClock(Time.fixedDeltaTime);
             if (visible)
             {
-                param *= Mathf.Exp(-3.0f * Time.deltaTime);
+                param *= Mathf.Exp(-3.0f * Time.fixedDeltaTime);
                 //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
                 Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
                 renderer.material.color = color;

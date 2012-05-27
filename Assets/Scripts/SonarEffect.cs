@@ -20,7 +20,7 @@ public class SonarEffect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        counter += Time.deltaTime;
+        counter += Time.fixedDeltaTime;
 
         if (counter > updateTime)
         {

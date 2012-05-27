@@ -4,43 +4,32 @@ using System.Collections;
 /// <summary>
 /// アイテムの接触判定
 /// </summary>
-public class ItemCollider : MonoBehaviour {
+public class ItemCollider : MonoBehaviour
+{
 
-   // [SerializeField]
-   // private int type;
+    // [SerializeField]
+    // private int type;
 
-	// Use this for initialization
-	void Start () {
-        collider.isTrigger = true;  // トリガーをたてておく
-	}
+    private bool isFinished;
 
-    void OnTriggerEnter( Collider collider )
+    void Start()
     {
-//        Debug.Log("Collider Enter:" + gameObject.name );
-//        GUIDisplay disp = collider.GetComponent<GUIDisplay>();
-//        if (disp != null)
-        if (collider.gameObject.tag.Equals("Player"))
+        isFinished = false;
+        collider.isTrigger = true;  // トリガーをたてておく
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (isFinished) return; // 1回だけ衝突をみたいのでその監視用。
+                                // isTrigge=falseしても複数回とってしまう。
+        GameObject obj = collider.gameObject;
+        if (obj.tag.Equals("Player"))   // プレイヤーか判定
         {
-//            disp.OnHitItem(type);
-            //GameObject player = GameObject.FindGameObjectWithTag("Player");
-            GameObject player = collider.gameObject;
-            player.SendMessage("OnHitItem", gameObject.name);
+            isFinished = true;
+            // HitItem通知
+            obj.SendMessage("OnHitItem", gameObject.name);
             Note note = GetComponent<Note>();
             if (note) note.SendMessage("OnHitItem");
         }
     }
-    /*
-    void OnTriggerExit(Collider other)
-    {
-        Debug.Log("Collider Exit:" + gameObject.name);
-        if (other.gameObject.tag.Equals("Player"))
-        {
-        }
-    }
-     */
-
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
