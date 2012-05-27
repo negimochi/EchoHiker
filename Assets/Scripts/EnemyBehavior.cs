@@ -15,6 +15,8 @@ public class EnemyBehavior : MonoBehaviour
     private float viewRadius = 2.0f;
     [SerializeField]
     private float viewAngle = 30.0f;
+    [SerializeField]
+    private float movingArea = 10.0f;
 
     enum State
     {
@@ -30,17 +32,21 @@ public class EnemyBehavior : MonoBehaviour
 
     private GameObject target;
     private CharacterController controller;
+
     private Vector3 moveVec;
+    private Vector3 aimVec;
 
     // Use this for initialization
     void Start()
     {
         moveVec = new Vector3();
-        moveVec.Normalize();
+        aimVec  = new Vector3();
         target = GameObject.FindGameObjectWithTag("Player");
         controller = gameObject.GetComponent<CharacterController>();
         state = defaultState;
         counter = 0.0f;
+        // コルーチンで定期更新
+        StartCoroutine("BehaviorUpdate");
     }
 
     bool SearchPlayer()
@@ -53,6 +59,7 @@ public class EnemyBehavior : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, direction);
         Debug.Log("Enemy->Player Angle=" + angle);
         if (angle < -viewAngle || angle > viewAngle) return false;  // 視野角に入っていない
+
         // 間に障害物がある
         //        if( Physics.Raycast( transform.position, direction, direction.magnitude, "");
         //        float sub = Vector3.RotateTowards(vec, transform.forward, 360.0f);
@@ -60,57 +67,90 @@ public class EnemyBehavior : MonoBehaviour
         return true;
     }
 
-    IEnumerator Ideling(bool isUpdate)
+    private void Teminate(){
+        StopCoroutine("BehaviorUpdate");
+        Destroy(gameObject);
+    }
+
+    private IEnumerator BehaviorUpdate()
     {
         yield return new WaitForSeconds(interval);
-        if (SearchPlayer()) state = State.Tracking;
+        switch( state ) {
+            case State.Idel: BehaviorUpdate_Idel(); break;
+            case State.RandomWalk: BehaviorUpdate_RamdomWalk(); break;
+            case State.Tracking: BehaviorUpdate_Tracking(); break;
+        }
+        StartCoroutine("BehaviorUpdate");
+    }
+
+    private void BehaviorUpdate_Idel()
+    {
+        if (SearchPlayer())
+        {
+            state = State.Tracking;
+        }
         else
         {
+            Debug.Log("Ideling");
             moveVec.x = 0.0f;
             moveVec.z = 0.0f;
+            aimVec.x = 0.0f;
+            aimVec.z = 0.0f;
         }
     }
 
-    void RandomWalk(bool isUpdate)
+    private void BehaviorUpdate_RamdomWalk()
     {
-        if (SearchPlayer()) state = State.Tracking;
+        if (SearchPlayer())
+        {
+            state = State.Tracking;
+        }
         else
         {
-            if (isUpdate)
-            {
-                moveVec.x = Random.Range(-1.0f, 1.0f);
-                moveVec.z = Random.Range(-1.0f, 1.0f);
-                moveVec *= speed;
-            }
+            Debug.Log("RandomWalk");
+            // 次の目標値設定
+            aimVec.Set(transform.position.x, 0.0f, transform.position.z);
+            aimVec.x += Random.Range(-1.0f, 1.0f) * movingArea;
+            aimVec.z += Random.Range(-1.0f, 1.0f) * movingArea;
         }
     }
-    void Tracking(bool isUpdate)
+    private void BehaviorUpdate_Tracking()
     {
-        if (!SearchPlayer()) state = defaultState;
+        if (!SearchPlayer())
+        {
+            state = defaultState;
+        }
         else
         {
             if (target == null) return;
-            if (isUpdate)
-            {
-                //                transform.LookAt(target.gameObject.transform);
-                //                transform.forward.normalized;
-                //                vec *= speed;
-            }
+            Debug.Log("Tracking");
+            //                transform.LookAt(target.gameObject.transform);
+            //                transform.forward.normalized;
+            //                vec *= speed;
         }
     }
 
-    // Update is called once per frame
+    private void Update_Idel()
+    {
+    }
+    private void Update_RamdomWalk()
+    {
+		transform.rotation = Quaternion.Lerp(from.rotation, to.rotation, Time.time * speed);
+        moveVec.x = ;
+    }
+    private void Update_Tracking()
+    { 
+    }
+
     void Update()
     {
+//        Debug.Log("vec" + moveVec);    // コルーチン発生させてもここは必ず通る
         switch (state)
         {
-            case State.Idel:
-//                StartCoroutine("Ideling",isUpdate); 
-                break;
-//            case State.RandomWalk: RandomWalk(isUpdate); break;
-//            case State.Tracking: Tracking(isUpdate); break;
+            case State.Idel: Update_Idel(); break;
+            case State.RandomWalk: Update_RamdomWalk(); break;
+            case State.Tracking: Update_Tracking(); break;
         }
-        Debug.Log("vec" + moveVec);    // コルーチン発生させてもここは必ず通る
         controller.SimpleMove(moveVec * Time.deltaTime);
     }
 }

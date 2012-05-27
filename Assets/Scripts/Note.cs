@@ -15,7 +15,7 @@ public class Note : MonoBehaviour {
     private float param;
     private Color baseColor;
 
-    void OnHitItem()
+    private void OnHitItem()
     {
         Debug.Log("OnHitItem"); 
         valid = false;
@@ -34,7 +34,7 @@ public class Note : MonoBehaviour {
         Debug.Log("OnHitItem End");
     }
 
-    IEnumerator Fadeout(float duration )
+    private IEnumerator Fadeout(float duration)
     {
         // フェードアウト
         float currentTime = 0.0f;
@@ -58,7 +58,7 @@ public class Note : MonoBehaviour {
         Debug.Log("Destory");
     }
 
-    void OnClock( float step )
+    private void OnClock(float step)
     {
         if (valid)
         {
