@@ -26,4 +26,6 @@ public class EnemyCollider : MonoBehaviour {
         }
     }
 
+//    void On
+
 }

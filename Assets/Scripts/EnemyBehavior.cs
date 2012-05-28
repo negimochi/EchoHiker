@@ -8,9 +8,9 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private float speed = 1.0f;
     [SerializeField]
-    private float rotationSpeed = 1.0f;
+    private float rotateSpeed = 1.0f;
     [SerializeField]
-    private float interval = 60;
+    private float interval = 120.0f;
     [SerializeField]
     private float viewRadius = 2.0f;
     [SerializeField]
@@ -33,6 +33,7 @@ public class EnemyBehavior : MonoBehaviour
     private GameObject target;
     private CharacterController controller;
 
+    private Quaternion aimAngle;
     private Vector3 moveVec;
     private Vector3 aimVec;
 
@@ -112,6 +113,8 @@ public class EnemyBehavior : MonoBehaviour
             aimVec.Set(transform.position.x, 0.0f, transform.position.z);
             aimVec.x += Random.Range(-1.0f, 1.0f) * movingArea;
             aimVec.z += Random.Range(-1.0f, 1.0f) * movingArea;
+//            aimAngle = Vector3.Angle(transform.forward, aimVec);
+            aimAngle = Quaternion.FromToRotation(transform.forward, aimVec);
         }
     }
     private void BehaviorUpdate_Tracking()
@@ -135,8 +138,9 @@ public class EnemyBehavior : MonoBehaviour
     }
     private void Update_RamdomWalk()
     {
-		transform.rotation = Quaternion.Lerp(from.rotation, to.rotation, Time.time * speed);
-        moveVec.x = ;
+        moveVec = Vector3.Lerp( transform.position, aimVec, Time.deltaTime * speed);
+        //Mathf.LerpAngle(aimAngle, Time.deltaTime * rotateSpeed / interval);
+        transform.rotation = Quaternion.Lerp(transform.rotation, aimAngle, Time.deltaTime * rotateSpeed);
     }
     private void Update_Tracking()
     { 
@@ -144,7 +148,6 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-//        Debug.Log("vec" + moveVec);    // コルーチン発生させてもここは必ず通る
         switch (state)
         {
             case State.Idel: Update_Idel(); break;
