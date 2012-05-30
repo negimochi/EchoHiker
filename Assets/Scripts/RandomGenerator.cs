@@ -27,6 +27,7 @@ public class RandomGenerator : MonoBehaviour {
         Debug.Log( "seed=" + Random.seed );
         Point sub = new Point();
         sub.Polar(maxR - minR, maxTheta - minTheta );
+        if (itemObject.Length == 0) return;
         for (int i = 0; i < lines; i++) {
             // アイテムの種類、位置を決める
             int index = Random.Range(0, itemObject.Length - 1);
