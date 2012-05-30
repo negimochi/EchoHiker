@@ -140,7 +140,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         moveVec = Vector3.Lerp( transform.position, aimVec, Time.deltaTime * speed);
         //Mathf.LerpAngle(aimAngle, Time.deltaTime * rotateSpeed / interval);
-        transform.rotation = Quaternion.Lerp(transform.rotation, aimAngle, Time.deltaTime * rotateSpeed);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, aimAngle, Time.deltaTime * rotateSpeed);
     }
     private void Update_Tracking()
     { 

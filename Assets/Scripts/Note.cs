@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Note : MonoBehaviour {
     [SerializeField]
-    private float interval = 60.0f;
+    private float interval = 1.0f;
     [SerializeField]
     private float offset = 0.0f;
     [SerializeField]
@@ -58,18 +58,17 @@ public class Note : MonoBehaviour {
         Debug.Log("Destory");
     }
 
-    private void OnClock(float step)
+    private void Clock(float step)
     {
         if (valid)
         {
             counter += step;
             if (counter >= interval)
             {
-               // AudioSource audio = GetComponent<AudioSource>();
                 audio.Play();
                 param = 1.0f;
                 counter = 0.0f;
-                //Debug.Log(name + ":Play");
+                Debug.Log(name + ":Play");
             }
         }
     }
@@ -88,7 +87,7 @@ public class Note : MonoBehaviour {
     {
         if (valid)
         {
-            OnClock(Time.fixedDeltaTime);
+            Clock(Time.fixedDeltaTime);
             if (visible)
             {
                 param *= Mathf.Exp(-3.0f * Time.fixedDeltaTime);
