@@ -15,6 +15,8 @@ public class SonarEffect : MonoBehaviour {
         counter = 0.0f;
         effect = gameObject.GetComponent<GUITexture>();
         sonar = transform.parent.gameObject.GetComponent<GUITexture>().pixelInset;
+        sonar.x = 20;
+        sonar.y = Screen.height - 260;
         effect.pixelInset = new Rect( sonar.center.x, sonar.center.y, 0, 0 );
     }
 	
