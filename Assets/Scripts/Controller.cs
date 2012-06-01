@@ -4,6 +4,8 @@ using System.Collections;
 public class Controller : MonoBehaviour {
 
     [SerializeField]
+    private float maxSpeed = 3.0f;
+    [SerializeField]
     private float speed = 1.0f;
     [SerializeField]
     private float rotationSpeed = 1.0f;
@@ -11,6 +13,8 @@ public class Controller : MonoBehaviour {
     private ForceMode forcemode = ForceMode.Force;
     [SerializeField]
     private Texture guiCompass;
+
+    private Matrix4x4 matrix;
 
     private float velocity;
 
@@ -21,7 +25,7 @@ public class Controller : MonoBehaviour {
             GUITexture guiSonar = gameObj.GetComponent<GUITexture>();
             guiSonar.pixelInset = new Rect(20, Screen.height - 260, 240, 240);
         }
-    velocity = speed;
+        velocity = 1.0f;
     }
 	
 	void FixedUpdate () 
@@ -34,8 +38,9 @@ public class Controller : MonoBehaviour {
         // ドラッグ中
         if (Input.GetMouseButton(0) ) {
             Debug.Log("MouseButton");
-//            velocity += Input.GetAxis("Mouse Y") * speed;
-            Rotate( Input.GetAxis("Mouse X") );
+
+//            velocity = Mathf.Clamp(velocity + Input.GetAxis("Mouse Y") * speed, 0.0f, maxSpeed);
+            rigidbody.AddTorque(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.fixedDeltaTime, 0, forcemode);
         }
         // ドラッグ終了
         if (Input.GetMouseButtonUp(0))
@@ -62,22 +67,22 @@ public class Controller : MonoBehaviour {
 
     void Rotate(float movement) 
     {
-//        transform.Rotate(0, movement * stepY * Time.fixedDeltaTime, 0);
-        rigidbody.AddTorque(0, movement * rotationSpeed * Time.fixedDeltaTime, 0, forcemode);
-//        rigidbody.MoveRotation(Quaternion.AngleAxis(movement * rotationSpeed * Time.fixedDeltaTime, Vector3.up));
-        
-//        if (guiCompass)
-//        {
-//            Debug.Log("guiCompass");
-//            guiCompass.transform.Rotate(0, 0, movement * rotationSpeed);
- //       }
     }
 
     void OnGUI()
     {
-        Vector2 pivotPoint = new Vector2(Screen.width / 2, Screen.height);
-	    float angleY = transform.localEulerAngles.y;
-	    GUIUtility.RotateAroundPivot(angleY, pivotPoint);
-        GUI.DrawTexture(new Rect(Screen.width/2-340, Screen.height-340, 680, 680), guiCompass);
+        // テクスチャの回転はGUIUtility.RotateAroundPivotではないと回転できない
+
+        matrix = GUI.matrix;    // 一時退避
+        {
+            Vector2 pivotPoint = new Vector2(Screen.width * 0.5f, (float)Screen.height);
+            float angleY = transform.localEulerAngles.y;
+            GUIUtility.RotateAroundPivot(angleY, pivotPoint);
+            GUI.DrawTexture(new Rect(   Screen.width * 0.5f - guiCompass.width * 0.5f, 
+                                        Screen.height - guiCompass.height * 0.5f, 
+                                        (float)guiCompass.width, 
+                                        (float)guiCompass.height), guiCompass);
+        }
+        GUI.matrix = matrix;    // 戻す
     }
 }
