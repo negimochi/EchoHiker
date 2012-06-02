@@ -87,10 +87,10 @@ public class Note : MonoBehaviour {
     {
         if (valid)
         {
-            Clock(Time.fixedDeltaTime);
+            Clock(Time.deltaTime);
             if (visible)
             {
-                param *= Mathf.Exp(-3.0f * Time.fixedDeltaTime);
+                param *= Mathf.Exp(-3.0f * Time.deltaTime);
                 //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
                 Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
                 renderer.material.color = color;

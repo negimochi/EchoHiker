@@ -13,7 +13,7 @@ public class SonarEffect : MonoBehaviour {
 	void Start () 
     {
         counter = 0.0f;
-        effect = gameObject.GetComponent<GUITexture>();
+        effect = GetComponent<GUITexture>();
         sonar = transform.parent.gameObject.GetComponent<GUITexture>().pixelInset;
         sonar.x = 20;
         sonar.y = Screen.height - 260;
@@ -22,7 +22,7 @@ public class SonarEffect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        counter += Time.fixedDeltaTime;
+        counter += Time.deltaTime;
 
         if (counter > updateTime)
         {

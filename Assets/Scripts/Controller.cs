@@ -4,43 +4,63 @@ using System.Collections;
 public class Controller : MonoBehaviour {
 
     [SerializeField]
-    private float maxSpeed = 3.0f;
+    private float moveMaxSpeed = 3.0f;
     [SerializeField]
-    private float speed = 1.0f;
-    [SerializeField]
-    private float rotationSpeed = 1.0f;
-    [SerializeField]
-    private ForceMode forcemode = ForceMode.Force;
-    [SerializeField]
-    private Texture guiCompass;
+    private float moveSpeed = 1.0f;
 
-    private Matrix4x4 matrix;
+    [SerializeField]
+    private float rotMaxSpeed = 5.0f;
+    [SerializeField]
+    private float rotSpeed = 1.0f;
+    [SerializeField]
+    private float attenuationRot = 0.2f;
 
-    private float velocity;
+//    private ForceMode forcemode = ForceMode.Force;
+
+    private Vector3 rotVec;
+    private Quaternion deltaRot;
+
+    private UICompass uiCompass;
+
+//    [SerializeField]
+//    private Texture guiCompass;
+//    private Matrix4x4 tmpMat;
 
 	void Start () 
     {
-        GameObject gameObj = GameObject.Find("/UI/Sonar");
-        if (gameObj) { 
-            GUITexture guiSonar = gameObj.GetComponent<GUITexture>();
-            guiSonar.pixelInset = new Rect(20, Screen.height - 260, 240, 240);
+        GameObject uiObj = GameObject.Find("/UI");
+        if (uiObj) { 
+            uiCompass = uiObj.GetComponent<UICompass>();
         }
-        velocity = 1.0f;
     }
 	
 	void FixedUpdate () 
     {
+        //Debug.Log(rotVec.y);
+        if (rotVec.y > 0.0f)
+        {
+            rotVec.y -= attenuationRot * Time.deltaTime;
+            if (rotVec.y < 0.0f) rotVec.y = 0.0f;
+        }
+        if (rotVec.y < 0.0f)
+        {
+            rotVec.y += attenuationRot;
+            if (rotVec.y > 0.0f) rotVec.y = 0.0f;
+        }
+
         // ドラッグ開始
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("MouseButtonDown");
+            rotVec = new Vector3(0, Input.GetAxis("Mouse X") * rotSpeed, 0);
+            CheckRotSpeed(); 
         }
         // ドラッグ中
-        if (Input.GetMouseButton(0) ) {
-            Debug.Log("MouseButton");
-
-//            velocity = Mathf.Clamp(velocity + Input.GetAxis("Mouse Y") * speed, 0.0f, maxSpeed);
-            rigidbody.AddTorque(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.fixedDeltaTime, 0, forcemode);
+        if (Input.GetMouseButton(0) ) 
+        {
+            Debug.Log("MouseButton" );
+            rotVec.y += (Input.GetAxis("Mouse X") * rotSpeed);
+            CheckRotSpeed();
         }
         // ドラッグ終了
         if (Input.GetMouseButtonUp(0))
@@ -48,32 +68,41 @@ public class Controller : MonoBehaviour {
             Debug.Log("MouseButtonUp");
         }
 
+        // 回転する
+        RotatePlayer();
         // 前に進む
-        // んーForceじゃ厳しいかも・・・
-        transform.Translate(transform.forward * velocity * Time.fixedDeltaTime);
-//        rigidbody.AddForce(transform.forward * velocity * Time.fixedDeltaTime, forcemode);
-        if (Input.touchCount > 0)
-        {
-//            if (guiTexture.HitTest())
-            {
-
-            }
-        }
-
-//        if( Input.GetAxis("Fire1") ) {
-  //          ;
-    //    }
+        MovePlayer();
 	}
 
-    void Rotate(float movement) 
+    void CheckRotSpeed()
     {
+        if (rotVec.y < -rotMaxSpeed) rotVec.y = -rotMaxSpeed;
+        if (rotVec.y > rotMaxSpeed)  rotVec.y = rotMaxSpeed;
     }
 
+    void RotatePlayer() 
+    {
+        //rigidbody.AddTorque(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime, 0, forcemode);
+        deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
+        rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
+        uiCompass.SetAngle(transform.localEulerAngles.y);
+    }
+
+    void MovePlayer()
+    {
+        //velocity = Mathf.Clamp(velocity + Input.GetAxis("Mouse Y") * speed, 0.0f, maxSpeed);
+        // んーForceじゃ厳しいか・・・
+        Vector3 vec = moveSpeed * transform.forward.normalized;
+        Debug.Log(transform.forward.normalized);
+        rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
+        //rigidbody.AddForce(transform.forward * velocity * Time.deltaTime, forcemode);
+    }
+
+        /*
     void OnGUI()
     {
         // テクスチャの回転はGUIUtility.RotateAroundPivotではないと回転できない
-
-        matrix = GUI.matrix;    // 一時退避
+        tmpMat = GUI.matrix;    // 一時退避
         {
             Vector2 pivotPoint = new Vector2(Screen.width * 0.5f, (float)Screen.height);
             float angleY = transform.localEulerAngles.y;
@@ -83,6 +112,7 @@ public class Controller : MonoBehaviour {
                                         (float)guiCompass.width, 
                                         (float)guiCompass.height), guiCompass);
         }
-        GUI.matrix = matrix;    // 戻す
+        GUI.matrix = tmpMat;    // 戻す
     }
+        */
 }
