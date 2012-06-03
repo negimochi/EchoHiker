@@ -50,6 +50,7 @@ public class MoveTest : MonoBehaviour {
     {
         switch (moveType) {
             default: return;
+
             case MoveType.Math_Repeat:
                 transform.position = new Vector3(firstPos.x + Mathf.Repeat(Time.time * magnitude, 20), firstPos.y, firstPos.z);
                 break;
