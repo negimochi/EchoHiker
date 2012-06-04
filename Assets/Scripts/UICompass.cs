@@ -5,12 +5,23 @@ public class UICompass : MonoBehaviour {
 
     [SerializeField]
     private Texture guiCompass;
+    [SerializeField]
+    private float aspect = 0.5f;
 
     private Matrix4x4 tmpMat;
     private float angleY;
 
+    private Rect textureRect;
+    private Vector3 pivotPoint;
+
     void Start () {
         angleY = 0.0f;
+//        float w = guiCompass.width;
+//        float h = guiCompass.height;
+        float w = Screen.width * aspect;
+        float h = w;
+        pivotPoint  = new Vector2(Screen.width * 0.5f, (float)Screen.height);
+        textureRect = new Rect(pivotPoint.x - w * 0.5f, pivotPoint.y - h * 0.5f, w, h);
 	}
 
     public void SetAngle( float angle )
@@ -23,13 +34,8 @@ public class UICompass : MonoBehaviour {
         // ƒeƒNƒXƒ`ƒƒ‚Ì‰ñ“]‚ÍGUIUtility.RotateAroundPivot‚Å‚Í‚È‚¢‚Æ‰ñ“]‚Å‚«‚È‚¢
         tmpMat = GUI.matrix;    // ˆêŽž‘Þ”ð
         {
-            Vector2 pivot = new Vector2(Screen.width * 0.5f, (float)Screen.height);
-//            float angleY = transform.localEulerAngles.y;
-            GUIUtility.RotateAroundPivot(angleY, pivot);
-            GUI.DrawTexture(new Rect(Screen.width * 0.5f - guiCompass.width * 0.5f,
-                                        Screen.height - guiCompass.height * 0.5f,
-                                        (float)guiCompass.width,
-                                        (float)guiCompass.height), guiCompass);
+            GUIUtility.RotateAroundPivot(angleY, pivotPoint);
+            GUI.DrawTexture(textureRect, guiCompass);
         }
         GUI.matrix = tmpMat;    // –ß‚·
     }
