@@ -79,8 +79,8 @@ public class Note : MonoBehaviour {
     {
         counter = offset;
         renderer.enabled = visible;
-        baseColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b);
-        param = 1.0f;
+//        baseColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b);
+//        param = 1.0f;
     }
 	
 	// Update is called once per frame
@@ -89,13 +89,13 @@ public class Note : MonoBehaviour {
         if (valid)
         {
             Clock(Time.deltaTime);
-            if (visible)
-            {
-                param *= Mathf.Exp(-3.0f * Time.deltaTime);
-                //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
-                Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
-                renderer.material.color = color;
-            }
+//            if (visible)
+//            {
+//                param *= Mathf.Exp(-3.0f * Time.deltaTime);
+//                //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
+//                Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
+//                renderer.material.color = color;
+//            }
         }
 	}
 

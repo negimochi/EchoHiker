@@ -29,7 +29,7 @@ public class ItemCollider : MonoBehaviour
             // HitItem’Ê’m
             //obj.SendMessage("OnHitItem");
             GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnHitItem");
+            if (ui) ui.SendMessage("OnHitItem", gameObject.name);
             Note note = GetComponent<Note>();
             if (note) note.SendMessage("OnHitItem");
         }
