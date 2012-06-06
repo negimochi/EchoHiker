@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UICompass : MonoBehaviour {
+public class UIController : MonoBehaviour {
 
     [SerializeField]
     private Texture guiCompass;
@@ -16,8 +16,6 @@ public class UICompass : MonoBehaviour {
 
     void Start () {
         angleY = 0.0f;
-//        float w = guiCompass.width;
-//        float h = guiCompass.height;
         float w = Screen.width * aspect;
         float h = w;
         pivotPoint  = new Vector2(Screen.width * 0.5f, (float)Screen.height);

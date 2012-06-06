@@ -1,27 +1,25 @@
 using UnityEngine;
 using System.Collections;
 
-public class SonarEffect : MonoBehaviour {
+public class ActiveSonarEffect : MonoBehaviour {
 
-    [SerializeField]
     private float updateTime;
     private float counter;
+    private GUITexture texture;
+    private Rect baseRect;
 
-    private GUITexture effect;
-    private Rect sonar;
-	// Use this for initialization
-	void Start () 
+    public void Init(GUITexture effectTexture, Rect rect, float time)
     {
+        baseRect = rect;
+        texture = effectTexture;
+        updateTime = time;
         counter = 0.0f;
-        effect = GetComponent<GUITexture>();
-        sonar = transform.parent.gameObject.GetComponent<GUITexture>().pixelInset;
-        sonar.x = 20;
-        sonar.y = Screen.height - 260;
-        effect.pixelInset = new Rect( sonar.center.x, sonar.center.y, 0, 0 );
+        texture.pixelInset = new Rect(baseRect);
+        texture.color = new Color(0.8f, 0.8f, 1.0f, 1.0f);
     }
 	
-	// Update is called once per frame
 	void FixedUpdate () {
+        /*
         counter += Time.deltaTime;
 
         if (counter > updateTime)
@@ -36,5 +34,6 @@ public class SonarEffect : MonoBehaviour {
             effect.pixelInset = new Rect( sonar.center.x-newWidth/2.0f, sonar.center.y-newHeight/2.0f, newWidth, newHeight );
             effect.color = new Color(effect.color.r, effect.color.g, effect.color.b, 1.0f - ratio);
         }
+         */
 	}
 }

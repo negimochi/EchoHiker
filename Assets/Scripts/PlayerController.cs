@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private float moveMaxSpeed = 3.0f;
@@ -25,14 +25,14 @@ public class Controller : MonoBehaviour {
     private float currentTime;
     private float currentRot;
 
-    private UICompass uiCompass;
+    private UIController uiCompass;
 
 	void Start () 
     {
         //        Screen.lockCursor = true;
         GameObject uiObj = GameObject.Find("/UI");
-        if (uiObj) { 
-            uiCompass = uiObj.GetComponent<UICompass>();
+        if (uiObj) {
+            uiCompass = uiObj.GetComponent<UIController>();
         }
         currentRot = attenuationRot;
         if (braking < 0.0f) braking = -braking;
