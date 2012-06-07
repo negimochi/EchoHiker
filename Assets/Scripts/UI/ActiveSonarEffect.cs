@@ -3,7 +3,9 @@ using System.Collections;
 
 public class ActiveSonarEffect : MonoBehaviour {
 
+    [SerializeField]
     private float updateTime;
+
     private float counter;
     private GUITexture texture;
     private Rect baseRect;
