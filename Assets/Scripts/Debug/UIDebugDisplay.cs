@@ -1,20 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// ï\é¶ïîÅB
-/// </summary>
 public class UIDebugDisplay : MonoBehaviour {
-
-//    private string enemyHit         = "Enemey      : ";
-//    private string itemHitCapsule   = "Item_Capsule : ";
-//    private string itemHitCube      = "Item_Cube Hits   : ";
-//    private string itemHitGold      = "Item_Gold";
 
     private Hashtable itemCounter;
 
-    // Use this for initialization
-	void Start () {
+	void Start () 
+    {
         itemCounter = new Hashtable();
 	}
 

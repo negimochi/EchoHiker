@@ -1,37 +1,38 @@
 using UnityEngine;
 using System.Collections;
 
-public class PassiveSonarEffect : MonoBehaviour {
+public class PassiveSonarEffect : MonoBehaviour
+{
+    [SerializeField]
+    private float updateTime = 1.0f;
+    [SerializeField]
+    private float delay = 1.0f;
 
-    private float updateTime;
-    private float counter;
+    private float currentTime;
     private GUITexture texture;
     private Rect baseRect;
 
-    public void Init(GUITexture effectTexture, Rect rect, float time)
+    public void Init( Rect rect )
     {
+        currentTime = 0.0f;
         baseRect = rect;
-        texture = effectTexture;
-        updateTime = time;
-        counter = 0.0f;
+        texture = GetComponent<GUITexture>();
         texture.pixelInset = new Rect(baseRect);
-        texture.color = new Color(0.8f, 0.8f, 1.0f, 1.0f);
     }
 	
-	void Update () {
-        counter += Time.deltaTime;
+	void FixedUpdate () 
+    {
+        float alpha = Mathf.SmoothStep(0.0f, 1.0f, currentTime / updateTime);
+        float w = baseRect.width * (1.0f-alpha);
+        float h = baseRect.height * (1.0f-alpha);
 
-        if (counter > updateTime)
+        texture.pixelInset = new Rect(baseRect.center.x - w*0.5f, baseRect.center.y - h*0.5f, w, h);
+        texture.color = new Color(texture.color.r, texture.color.g, texture.color.b, alpha);
+
+        currentTime += Time.deltaTime;
+        if (currentTime > updateTime+delay)
         {
-            counter = 0;
-            texture.pixelInset = new Rect(baseRect);
+            currentTime = 0;
         }
-        else {
-            float ratio = counter/updateTime;
-            float w = baseRect.width * ratio;
-            float h = baseRect.height * ratio;
-            texture.pixelInset = new Rect(sonar.center.x - newWidth / 2.0f, sonar.center.y - newHeight / 2.0f, newWidth, newHeight);
-            texture.color = new Color(texture.color.r, texture.color.g, texture.color.b, 1.0f - ratio);
-        }
-	}
+    }
 }

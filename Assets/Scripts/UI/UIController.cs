@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Controller : MonoBehaviour {
+public class UIController : MonoBehaviour {
 
     [SerializeField]
     private Texture guiCompass;
