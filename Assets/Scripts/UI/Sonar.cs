@@ -24,6 +24,30 @@ public class Sonar : MonoBehaviour {
         SetMode(SonarMode.PassiveSonar);
     }
 
+//    void OnMouseDown()
+//    {
+//    }
+//    void OnMouseUp()
+//    {
+//    }
+
+    void OnMouseOver()
+    {
+    }
+    void OnMouseExit()
+    { 
+    }
+    void OnMouseEnter()
+    { 
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) SetMode(SonarMode.ActiveSonar);
+        if (Input.GetKeyUp(KeyCode.Space)) SetMode(SonarMode.PassiveSonar);
+    }
+
+
     void SetMode( SonarMode mode_ )
     {
         if (mode == mode_) return;
@@ -41,7 +65,6 @@ public class Sonar : MonoBehaviour {
         {
             case SonarMode.ActiveSonar:
                 {
-                    guiSonar.enabled = true;
                     guiSonar.enabled = true;
                     w = Screen.height * aspect;
                     h = w;

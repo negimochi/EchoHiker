@@ -21,10 +21,10 @@ public class RandomGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         Random.seed = (int)(System.DateTime.Now.TimeOfDay.TotalMilliseconds);
-        Generate();
+//        Generate();
     }
     void Generate() {
-        Debug.Log( "seed=" + Random.seed );
+        //Debug.Log( "seed=" + Random.seed );
         Point sub = new Point();
         sub.Polar(maxR - minR, maxTheta - minTheta );
         if (itemObject.Length == 0) return;

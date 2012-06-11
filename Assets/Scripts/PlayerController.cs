@@ -4,9 +4,11 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
-    private float moveMaxSpeed = 3.0f;
+    private float moveMaxSpeed = 8.0f;
     [SerializeField]
     private float moveSpeed = 1.0f;
+    [SerializeField]
+    private float changeSpeed = 0.5f;
 
     [SerializeField]
     private float rotSpeed = 1.0f;
@@ -52,26 +54,30 @@ public class PlayerController : MonoBehaviour {
         {
             rotVec.y = Mathf.SmoothStep(rotVecStartY, 0.0f, currentRot * currentTime);
             currentTime += Time.deltaTime;
-            Debug.Log("rot=" + currentRot + ", time="+ currentTime + ", Rot=" + rotVec.y);
+            //Debug.Log("rot=" + currentRot + ", time="+ currentTime + ", Rot=" + rotVec.y);
         }
 
         // ドラッグ中
         if (Input.GetMouseButton(0))
         {
-            Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
+            //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
             SetRot(Input.GetAxis("Mouse X") * rotSpeed);
+
+            moveSpeed += Input.GetAxis("Mouse Y") * changeSpeed;
+            if (moveSpeed < 0.0f) moveSpeed = 0.0f;
+            if (moveSpeed > moveMaxSpeed) moveSpeed = moveMaxSpeed;
         }
 
         // ドラッグ開始
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("MouseButtonDown");
+            //Debug.Log("MouseButtonDown");
             currentRot = slowdownRot;
         }
         // ドラッグ終了
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("MouseButtonUp");
+            //Debug.Log("MouseButtonUp");
             currentTime = (slowdownRot * currentTime) / attenuationRot;
             currentRot = attenuationRot;
         }

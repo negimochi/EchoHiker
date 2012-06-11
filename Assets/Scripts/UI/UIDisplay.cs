@@ -3,13 +3,17 @@ using System.Collections;
 
 public class UIDisplay : MonoBehaviour {
 
-	// Use this for initialization
+//    [SerializeField]
+//    private GUIStyle style;
+
+    private static string scoreText = "Score ";
+    private int score;
+
 	void Start () {
-	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect( Screen.width*0.5f-30.0f, 10.0f, 60.0f, 20.0f ), scoreText + score/*, style*/);
 	}
 }

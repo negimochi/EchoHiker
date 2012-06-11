@@ -44,7 +44,7 @@ public class Note : MonoBehaviour {
         {
 //            audio.volume = Mathf.Clamp01(firstVol * (duration - currentTime) / duration);
             audio.volume = Mathf.Lerp( firstVol, 0.0f, currentTime/duration );
-            Debug.Log("Step:" + audio.volume);
+            //Debug.Log("Step:" + audio.volume);
             yield return new WaitForSeconds(waitTime);
             currentTime += waitTime;
         }
