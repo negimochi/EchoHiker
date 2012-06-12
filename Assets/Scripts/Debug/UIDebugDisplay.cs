@@ -10,15 +10,16 @@ public class UIDebugDisplay : MonoBehaviour {
         itemCounter = new Hashtable();
 	}
 
-    void OnHitItem(string objName)
+    void OnHitItem(GameObject histObj)
     {
-        if (!itemCounter.Contains(objName))
+        string objname = histObj.name;
+        if (!itemCounter.Contains(objname))
         {
-            itemCounter.Add(objName, 1);
+            itemCounter.Add(objname, 1);
         }
         else
         {
-            itemCounter[objName] = (int)itemCounter[objName] + 1;
+            itemCounter[objname] = (int)itemCounter[objname] + 1;
         }
     }
 

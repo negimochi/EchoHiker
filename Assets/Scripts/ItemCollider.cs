@@ -1,14 +1,13 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// アイテムの接触判定
-/// </summary>
 public class ItemCollider : MonoBehaviour
 {
-
-    // [SerializeField]
-    // private int type;
+    // スコア
+    [SerializeField]
+    public int score = 100;
+    [SerializeField]
+    private int lifetime = 1000;
 
     private bool isFinished;
 
@@ -22,6 +21,7 @@ public class ItemCollider : MonoBehaviour
     {
         if (isFinished) return; // 1回だけ衝突をみたいのでその監視用。
                                 // isTrigge=falseしても複数回とってしまう。
+
         GameObject obj = collider.gameObject;
         if (obj.tag.Equals("Player"))   // プレイヤーか判定
         {
@@ -29,7 +29,8 @@ public class ItemCollider : MonoBehaviour
             // HitItem通知
             //obj.SendMessage("OnHitItem");
             GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnHitItem", gameObject.name);
+            if (ui) ui.SendMessage("OnHitItem", gameObject);
+
             Note note = GetComponent<Note>();
             if (note) note.SendMessage("OnHitItem");
         }
