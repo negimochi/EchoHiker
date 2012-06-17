@@ -3,6 +3,9 @@ using System.Collections;
 
 public class EnemyCollider : MonoBehaviour {
 
+    [SerializeField]
+    public int damegeValue = 100;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,9 +17,11 @@ public class EnemyCollider : MonoBehaviour {
         if (other.gameObject.tag.Equals("Player"))
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.SendMessage("OnHitEnemy");
+            GameObject ui = GameObject.Find("/UI");
+            if (ui) ui.SendMessage("OnHitDamege", damegeValue);
         }
     }
+    /*
     void OnTriggerExit(Collider other)
     {
         Debug.Log("Collider Exit:" + gameObject.name);
@@ -25,6 +30,7 @@ public class EnemyCollider : MonoBehaviour {
             ;
         }
     }
+     */
 
 //    void On
 

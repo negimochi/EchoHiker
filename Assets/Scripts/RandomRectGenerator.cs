@@ -1,26 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class RandomObjectGenerator : MonoBehaviour {
+public class RandomRectGenerator : MonoBehaviour {
 
     [SerializeField]
     private GameObject[] itemObject;
-    [SerializeField]
-    private int length;
     [SerializeField]
     private Vector3 startPos;
     [SerializeField]
     private Vector3 endPos;
 
-	// Use this for initialization
-	void Start () {
-        Random.seed = (int)(System.DateTime.Now.TimeOfDay.TotalMilliseconds);
-        Debug.Log( "seed=" + Random.seed );
+    public ArrayList items;
 
-        Generate( length );
+	void Start () 
+    {
+        items = new ArrayList();
     }
 
-    void Generate( int size )
+    public void Generate(int size)
     {
         Vector3 sub = endPos - startPos;
         for (int i = 0; i < size; i++)
@@ -32,6 +29,8 @@ public class RandomObjectGenerator : MonoBehaviour {
             GameObject newItem = Object.Instantiate(itemObject[index], pos, Quaternion.identity) as GameObject;
             newItem.transform.parent = transform;
             Debug.Log("generated item[" + i + "]=" + newItem.name);
+            // ŠÇ——p‚É•Û‘¶
+            items.Add(newItem);
         }
 	}
 	

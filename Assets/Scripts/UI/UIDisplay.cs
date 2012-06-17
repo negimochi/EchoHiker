@@ -26,6 +26,15 @@ public class UIDisplay : MonoBehaviour {
     void OnHitItem(GameObject histObj)
     {
         ItemCollider itemCollider = histObj.GetComponent<ItemCollider>();
-        if( itemCollider != null )  score += itemCollider.score;
+        if( itemCollider != null )  score += itemCollider.scoreValue;
+    }
+
+    void OnHitDamege( int value )
+    {
+        frame -= value;
+        if (frame < 0) {
+            frame = 0;
+            // I—¹’Ê’m
+        }
     }
 }

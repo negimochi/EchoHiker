@@ -28,6 +28,8 @@ public class MoveTest : MonoBehaviour {
     public float magnitude = 1.0f;
     private Vector3 directon;
     private Vector3 firstPos;
+    [SerializeField]
+    private Vector3 endPos = new Vector3(20.0f, 0.0f, 0.0f);
 
     public float smoothTime = 0.3f;
     public float velocity = 0.0f;
@@ -41,39 +43,19 @@ public class MoveTest : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        
-
-        Move();
-    }
-
-    void Move()
-    {
-        switch (moveType) {
+        switch (moveType)
+        {
             default: return;
 
-            case MoveType.Math_Repeat:
-                transform.position = new Vector3(firstPos.x + Mathf.Repeat(Time.time * magnitude, 20), firstPos.y, firstPos.z);
-                break;
-            case MoveType.Math_PingPong:
-                transform.position = new Vector3(firstPos.x + Mathf.PingPong(Time.time * magnitude, 20), firstPos.y, firstPos.z);
-                break;
-            case MoveType.Math_SmoothStep:
-                transform.position = new Vector3(Mathf.SmoothStep(firstPos.x, 0, Time.time * magnitude), firstPos.y, firstPos.z);
-                break;
-            case MoveType.Math_Lerp:
-                transform.position = new Vector3(Mathf.Lerp(firstPos.x, 0, Time.time * magnitude), firstPos.y, firstPos.z);
-                break;
-            case MoveType.Math_MoveTowards:
-                transform.position = new Vector3(Mathf.MoveTowards(firstPos.x, 0, Time.time * magnitude), firstPos.y, firstPos.z);
-                break;
-            case MoveType.Math_SmoothDamp:
-                transform.position = new Vector3(Mathf.SmoothDamp(transform.position.y, 0, ref velocity, smoothTime), firstPos.y, firstPos.z);
-                break;
-            case MoveType.MovePosition:
-                rigidbody.MovePosition(rigidbody.position + directon*magnitude*Time.deltaTime);
-                break;
+            case MoveType.Math_Repeat:   Move_repeat();  break;
+            case MoveType.Math_PingPong: Move_pingpong(); break;
+            case MoveType.Math_SmoothStep: Move_smoothstep(); break;
+            case MoveType.Math_Lerp: Move_Lerp();   break;
+            case MoveType.Math_MoveTowards: Move_towrad(); break;
+            case MoveType.Math_SmoothDamp: Move_SmoothDamp();   break;
+            case MoveType.MovePosition:   Move_MovePosition();  break;
             case MoveType.AddForce:
-                rigidbody.AddForce(directon*magnitude*Time.deltaTime, forceMode);
+                rigidbody.AddForce(directon * magnitude * Time.deltaTime, forceMode);
                 break;
             case MoveType.AddRelativeForce:
                 rigidbody.AddRelativeForce(directon * magnitude * Time.deltaTime, forceMode);
@@ -91,5 +73,35 @@ public class MoveTest : MonoBehaviour {
                 }
                 break;
         }
+    }
+
+    void Move_repeat()
+    {
+        transform.position = new Vector3(firstPos.x + Mathf.Repeat(Time.time * magnitude, 20), firstPos.y, firstPos.z);
+    }
+    void Move_pingpong()
+    {
+        transform.position = new Vector3(firstPos.x + Mathf.PingPong(Time.time * magnitude, 20), firstPos.y, firstPos.z);
+    }
+    void Move_smoothstep()
+    {
+        transform.position = new Vector3(Mathf.SmoothStep(firstPos.x, endPos.x, Time.time * magnitude), firstPos.y, firstPos.z);
+    }
+    void Move_Lerp()
+    {
+        transform.position = new Vector3(Mathf.Lerp(firstPos.x, endPos.x, Time.time * magnitude), firstPos.y, firstPos.z);
+    }
+    void Move_towrad()
+    {
+        transform.position = new Vector3(Mathf.MoveTowards(firstPos.x, 0, Time.time * magnitude), firstPos.y, firstPos.z);
+    }
+    void Move_SmoothDamp()
+    { 
+        transform.position = new Vector3(Mathf.SmoothDamp(transform.position.y, 0, ref velocity, smoothTime), firstPos.y, firstPos.z);
+    }
+    void Move_MovePosition()
+    {
+//        rigidbody.MovePosition(rigidbody.position + directon * magnitude * Time.deltaTime);
+          rigidbody.MovePosition(transform.position + directon * magnitude * Time.deltaTime);
     }
 }

@@ -1,7 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class RandomGenerator : MonoBehaviour {
+/// <summary>
+/// プレイヤー中心にランダム生成
+/// </summary>
+public class RandomCircleGenerator : MonoBehaviour
+{
 
     [SerializeField]
     private GameObject[] itemObject;
@@ -17,11 +21,13 @@ public class RandomGenerator : MonoBehaviour {
     private float maxR = 1000.0f;
 
     public ArrayList items;
+    private GameObject target;
 
 	// Use this for initialization
 	void Start () 
     {
         items = new ArrayList();
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void Generate( int size ) 
@@ -32,14 +38,16 @@ public class RandomGenerator : MonoBehaviour {
             // アイテムの種類、位置を決める
             int index = Random.Range(0, itemObject.Length - 1);
 
+            // 一算出
             Point point = new Point();
-            point.Polar(Random.value * (maxR - minR) + minR, Random.value * ( maxTheta - minTheta ) + minTheta);
-            Vector3 pos = new Vector3(point.x, height, point.z);
+            point.Polar(Random.value * (maxR - minR) + minR, Random.value * (maxTheta - minTheta) + minTheta);
+
             // アイテム生成
-            GameObject newItem = Object.Instantiate(itemObject[index], pos, Quaternion.identity) as GameObject;
+            GameObject newItem = Object.Instantiate(itemObject[index]) as GameObject;
+            newItem.transform.position = new Vector3(point.x, height, point.y); 
             newItem.transform.parent = transform;
             Debug.Log("generated item[" + i + "]=" + newItem.name);
-            // 保存しておく
+            // 管理用に保存
             items.Add(newItem);
         }
 	}

@@ -31,7 +31,6 @@ public class EnemyBehavior : MonoBehaviour
     private float counter;
 
     private GameObject target;
-    private CharacterController controller;
 
     private Quaternion aimAngle;
     private Vector3 moveVec;
@@ -43,7 +42,7 @@ public class EnemyBehavior : MonoBehaviour
         moveVec = new Vector3();
         aimVec  = new Vector3();
         target = GameObject.FindGameObjectWithTag("Player");
-        controller = gameObject.GetComponent<CharacterController>();
+//        controller = gameObject.GetComponent<CharacterController>();
         state = defaultState;
         counter = 0.0f;
         // コルーチンで定期更新
@@ -154,6 +153,8 @@ public class EnemyBehavior : MonoBehaviour
             case State.RandomWalk: Update_RamdomWalk(); break;
             case State.Tracking: Update_Tracking(); break;
         }
-        controller.SimpleMove(moveVec * Time.deltaTime);
+        rigidbody.MovePosition(moveVec * Time.deltaTime);
+//        controller.SimpleMove(moveVec * Time.deltaTime);
+
     }
 }

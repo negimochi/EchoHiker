@@ -5,7 +5,7 @@ public class ItemCollider : MonoBehaviour
 {
     // スコア
     [SerializeField]
-    public int score = 100;
+    public int scoreValue = 100;
     [SerializeField]
     private int lifetime = 1000;
 
@@ -22,8 +22,7 @@ public class ItemCollider : MonoBehaviour
         if (isFinished) return; // 1回だけ衝突をみたいのでその監視用。
                                 // isTrigge=falseしても複数回とってしまう。
 
-        GameObject obj = collider.gameObject;
-        if (obj.tag.Equals("Player"))   // プレイヤーか判定
+        if (collider.CompareTag("Player"))   // プレイヤーか判定
         {
             isFinished = true;
             // HitItem通知
@@ -32,7 +31,7 @@ public class ItemCollider : MonoBehaviour
             if (ui) ui.SendMessage("OnHitItem", gameObject);
 
             Note note = GetComponent<Note>();
-            if (note) note.SendMessage("OnHitItem");
+            if (note) note.SendMessage("OnHit");
         }
     }
 }
