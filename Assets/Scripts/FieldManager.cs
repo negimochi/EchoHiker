@@ -31,7 +31,6 @@ public class FieldManager : MonoBehaviour
         // ƒV[ƒh‰Šú‰»
         Random.seed = (int)(System.DateTime.Now.TimeOfDay.TotalMilliseconds);
 
-
         GameObject itemObj = GameObject.Find("/Object/ItemGenerator");
 //        goldGenerator = itemObj.GetComponent<RandomCircleGenerator>();
         goldGenerator = itemObj.GetComponent<RandomRectGenerator>();

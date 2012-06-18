@@ -19,6 +19,7 @@ public class RandomRectGenerator : MonoBehaviour {
 
     public void Generate(int size)
     {
+        if (itemObject.Length == 0) return;
         Vector3 sub = endPos - startPos;
         for (int i = 0; i < size; i++)
         {

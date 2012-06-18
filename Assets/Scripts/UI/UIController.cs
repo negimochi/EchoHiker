@@ -22,11 +22,6 @@ public class UIController : MonoBehaviour {
         textureRect = new Rect(pivotPoint.x - w * 0.5f, pivotPoint.y - h * 0.5f, w, h);
 	}
 
-    public void SetAngle( float angle )
-    {
-        angleY = angle;
-    }
-
     void OnGUI()
     {
         // ƒeƒNƒXƒ`ƒƒ‚Ì‰ñ“]‚ÍGUIUtility.RotateAroundPivot‚Å‚Í‚È‚¢‚Æ‰ñ“]‚Å‚«‚È‚¢
@@ -36,5 +31,10 @@ public class UIController : MonoBehaviour {
             GUI.DrawTexture(textureRect, guiCompass);
         }
         GUI.matrix = tmpMat;    // –ß‚·
+    }
+
+    public void SetAngle(float angle)
+    {
+        angleY = angle;
     }
 }
