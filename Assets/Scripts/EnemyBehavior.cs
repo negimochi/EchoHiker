@@ -3,21 +3,18 @@ using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    //    [SerializeField]
-    //    private string targetTag;
     [SerializeField]
-    private float speed = 1.0f;
+    private float speed = 10.0f;
     [SerializeField]
-    private float rotateSpeed = 1.0f;
-    [SerializeField]
-    private float interval = 120.0f;
-    [SerializeField]
-    private float viewRadius = 2.0f;
-    [SerializeField]
-    private float viewAngle = 30.0f;
-    [SerializeField]
-    private float movingArea = 10.0f;
+//    private float ;
 
+    private int cautionRate = 0;
+    public int CautionRate
+    {
+        get { return cautionRate; }
+    }
+
+    /*
     enum State
     {
         Idel,         // 待機
@@ -25,8 +22,8 @@ public class EnemyBehavior : MonoBehaviour
         Tracking      // 追跡モード
     };
     [SerializeField]
-    private State defaultState;
     private State state;
+    */
 
     private float counter;
 
@@ -36,33 +33,38 @@ public class EnemyBehavior : MonoBehaviour
     private Vector3 moveVec;
     private Vector3 aimVec;
 
-    // Use this for initialization
     void Start()
     {
         moveVec = new Vector3();
         aimVec  = new Vector3();
         target = GameObject.FindGameObjectWithTag("Player");
 //        controller = gameObject.GetComponent<CharacterController>();
-        state = defaultState;
         counter = 0.0f;
-        // コルーチンで定期更新
-        StartCoroutine("BehaviorUpdate");
     }
 
+    void Update()
+    {
+        /*
+        switch (state)
+        {
+            case State.Idel: Update_Idel(); break;
+            case State.RandomWalk: Update_RamdomWalk(); break;
+            case State.Tracking: Update_Tracking(); break;
+        }
+        */
+        Vector3 vec = speed * transform.forward.normalized;
+        rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
+        //        controller.SimpleMove(moveVec * Time.deltaTime);
+
+    }
+
+/*
     bool SearchPlayer()
     {
         if (target == null) return false;
         Vector3 direction = target.transform.position - transform.position;
         Debug.Log("Enemy->Player Direction=" + direction);
         if (direction.magnitude > viewRadius) return false;   // 視野に入っていない
-
-        float angle = Vector3.Angle(transform.forward, direction);
-        Debug.Log("Enemy->Player Angle=" + angle);
-        if (angle < -viewAngle || angle > viewAngle) return false;  // 視野角に入っていない
-
-        // 間に障害物がある
-        //        if( Physics.Raycast( transform.position, direction, direction.magnitude, "");
-        //        float sub = Vector3.RotateTowards(vec, transform.forward, 360.0f);
 
         return true;
     }
@@ -120,7 +122,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (!SearchPlayer())
         {
-            state = defaultState;
+            state = State.RandomWalk;
         }
         else
         {
@@ -144,17 +146,5 @@ public class EnemyBehavior : MonoBehaviour
     private void Update_Tracking()
     { 
     }
-
-    void Update()
-    {
-        switch (state)
-        {
-            case State.Idel: Update_Idel(); break;
-            case State.RandomWalk: Update_RamdomWalk(); break;
-            case State.Tracking: Update_Tracking(); break;
-        }
-        rigidbody.MovePosition(moveVec * Time.deltaTime);
-//        controller.SimpleMove(moveVec * Time.deltaTime);
-
-    }
+*/
 }

@@ -81,7 +81,9 @@ public class MoveTest : MonoBehaviour {
     }
     void Move_pingpong()
     {
-        transform.position = new Vector3(firstPos.x + Mathf.PingPong(Time.time * magnitude, 20), firstPos.y, firstPos.z);
+        float t = Time.time * magnitude;
+        Debug.Log(t);
+        transform.position = new Vector3(firstPos.x + Mathf.PingPong(t, 20), firstPos.y, firstPos.z);
     }
     void Move_smoothstep()
     {

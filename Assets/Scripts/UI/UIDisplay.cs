@@ -8,9 +8,11 @@ public class UIDisplay : MonoBehaviour {
 
     private static string scoreText = "Score: ";
     private static string frameText = "Frame: ";
+    private static string cautionText = "Caution: ";
 
     public int score = 0;
     public int frame = 1000;
+    public int caution = 0;
 
 	void Start () 
     {
@@ -21,6 +23,7 @@ public class UIDisplay : MonoBehaviour {
     {
         GUI.Label(new Rect(Screen.width * 0.5f, 10.0f, 120.0f, 20.0f), scoreText + score/*, style*/);
         GUI.Label(new Rect(Screen.width * 0.8f, 10.0f, 120.0f, 20.0f), frameText + frame/*, style*/);
+        GUI.Label(new Rect(Screen.width * 0.8f, Screen.height * 0.8f, 120.0f, 20.0f), cautionText + caution.ToString() + "%");
     }
 
     void OnHitItem(GameObject histObj)

@@ -71,43 +71,19 @@ public class Sonar : MonoBehaviour {
         if (mode == mode_) return;
 
         // スクリーンサイズに合わせてサイズ・位置調整
-        float w = 0.0f;
-        float h = 0.0f;
-        float offset = 10.0f;
         if (currentObj != null)
         {
             Destroy(currentObj);
         }
+
         switch (mode_)
         {
             case SonarMode.ActiveSonar:
-                {
-                    guiSonar.enabled = true;
-                    w = Screen.height * aspect;
-                    h = w;
-                    guiSonar.pixelInset = new Rect(offset, Screen.height - offset - w, w, h);
-                    sonarCamera.SetRect(guiSonar.pixelInset);
-                    currentObj = Object.Instantiate(activeObj, Vector3.zero, Quaternion.identity) as GameObject;
-                    currentObj.transform.parent = transform;
-
-                    ActiveSonarEffect effecter = currentObj.GetComponent<ActiveSonarEffect>();
-                    effecter.Init(guiSonar.pixelInset);
-                }
+                CreateSonar(activeObj);
                 break;
 
             case SonarMode.PassiveSonar:
-                {
-                    guiSonar.enabled = true;
-                    w = Screen.height * aspect;
-                    h = w;
-                    guiSonar.pixelInset = new Rect(offset, Screen.height - offset - w, w, h);
-                    sonarCamera.SetRect(guiSonar.pixelInset);
-                    currentObj = Object.Instantiate(passiveObj, Vector3.zero, Quaternion.identity) as GameObject;
-                    currentObj.transform.parent = transform;
-
-                    PassiveSonarEffect effecter = currentObj.GetComponent<PassiveSonarEffect>();
-                    effecter.Init(guiSonar.pixelInset);
-                }
+                CreateSonar(passiveObj);
                 break;
 
             default:
@@ -118,4 +94,21 @@ public class Sonar : MonoBehaviour {
         mode = mode_;
     }
 
+    private void CreateSonar( GameObject obj ) 
+    {
+        float w = 0.0f;
+        float h = 0.0f;
+        float offset = 10.0f;
+
+        guiSonar.enabled = true;
+        w = Screen.height * aspect;
+        h = w;
+        guiSonar.pixelInset = new Rect(offset, Screen.height - offset - w, w, h);
+        sonarCamera.SetRect(guiSonar.pixelInset);
+        currentObj = Object.Instantiate(obj, Vector3.zero, Quaternion.identity) as GameObject;
+        currentObj.transform.parent = transform;
+
+        SonarEffect effecter = currentObj.GetComponent<SonarEffect>();
+        effecter.Init(guiSonar.pixelInset);
+   }
 }
