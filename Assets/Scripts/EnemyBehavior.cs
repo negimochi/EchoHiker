@@ -3,148 +3,165 @@ using System.Collections;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    [SerializeField]
-    private float speed = 10.0f;
-    [SerializeField]
-//    private float ;
-
-    private int cautionRate = 0;
-    public int CautionRate
+    /// <summary>
+    /// スピード調整
+    /// </summary>
+    [System.Serializable]
+    public class SpeedValue
     {
-        get { return cautionRate; }
-    }
+        public float current = 1.0f;
+        public float max;
+        [SerializeField]
+        private float normalMax = 5.0f;
+        [SerializeField]
+        private float emergencyMax = 10.0f;
 
-    /*
-    enum State
-    {
-        Idel,         // 待機
-        RandomWalk,   // ランダムウォーク
-        Tracking      // 追跡モード
+        public void Normal() {      max = normalMax;  }
+        public void Emergency(){    max = emergencyMax; }
+
+        /// <summary>
+        /// 速度変更
+        /// </summary>
+        public void Change()
+        {
+            current += Random.Range(-max, max);
+            if (current < 0.0f) current = 0.0f;
+            else if (current > max) current = max;
+        }
     };
     [SerializeField]
-    private State state;
-    */
+    private SpeedValue speed;
 
-    private float counter;
+    /// <summary>
+    /// 回転調整
+    /// </summary>
+    [System.Serializable]
+    public class RotationValue
+    {
+        public Vector3 current = Vector3.zero;
+        private float max;
+        private float attenuationStart;
+        private float attenuationTime;
 
-    private GameObject target;
+        [SerializeField]
+        private float normalMax = 20.0f;
+        [SerializeField]
+        private float emergencyMax = 30.0f;
+        [SerializeField]
+        private float blending = 0.8f;
+        [SerializeField]
+        private float attenuationSpeed = 0.2f;
 
-    private Quaternion aimAngle;
-    private Vector3 moveVec;
-    private Vector3 aimVec;
+        public void Normal() { max = normalMax; }
+        public void Emergency() { max = emergencyMax; }
+
+        /// <summary>
+        /// 回転量変更
+        /// </summary>
+        public void Change()
+        {
+            float value = Random.Range(-max, max);
+            // 回転量のブレンド
+            current.y = Mathf.Lerp(current.y, current.y + value, blending);
+            // 減衰リセット
+            attenuationStart = current.y;
+            attenuationTime = 0.0f;
+        }
+
+        /// <summary>
+        /// 減衰
+        /// </summary>
+        /// <param name="time">時間変位</param>
+        /// <returns>減衰中/減衰してない</returns>
+        public bool Attenuate(float time)
+        {
+            if (current.y == 0.0f)
+            {
+                attenuationTime = 0.0f;
+                return false;
+            }
+            attenuationTime += time;
+            current.y = Mathf.SmoothStep(attenuationStart, 0.0f, attenuationSpeed * attenuationTime);
+            return true;
+        }
+    };
+    [SerializeField]
+    private RotationValue rot;
+
+    [SerializeField]
+    private Rect runningArea;   // 移動範囲
+    [SerializeField]
+    private float waitTime = 10.0f;
+
+    private float currentTime;
 
     void Start()
     {
-        moveVec = new Vector3();
-        aimVec  = new Vector3();
-        target = GameObject.FindGameObjectWithTag("Player");
-//        controller = gameObject.GetComponent<CharacterController>();
-        counter = 0.0f;
+        currentTime = 0.0f;
+
+        speed.Normal();
+        rot.Normal();
     }
 
     void Update()
     {
-        /*
-        switch (state)
+        // 回転の減衰
+        if (! rot.Attenuate(Time.deltaTime))
         {
-            case State.Idel: Update_Idel(); break;
-            case State.RandomWalk: Update_RamdomWalk(); break;
-            case State.Tracking: Update_Tracking(); break;
+            // 減衰終了後、カウントして再度移動
+            currentTime += Time.deltaTime;
+            if (currentTime > waitTime) Auto();
         }
-        */
-        Vector3 vec = speed * transform.forward.normalized;
-        rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
-        //        controller.SimpleMove(moveVec * Time.deltaTime);
-
+        // 回転する
+        Rotate();
+        // 前に進む
+        Move();
     }
 
-/*
-    bool SearchPlayer()
+    public void Emergency()
     {
-        if (target == null) return false;
-        Vector3 direction = target.transform.position - transform.position;
-        Debug.Log("Enemy->Player Direction=" + direction);
-        if (direction.magnitude > viewRadius) return false;   // 視野に入っていない
+        rot.Emergency();
+        speed.Emergency();
 
-        return true;
+
     }
-
-    private void Teminate(){
-        StopCoroutine("BehaviorUpdate");
-        Destroy(gameObject);
-    }
-
-    private IEnumerator BehaviorUpdate()
+    public void Normal()
     {
-        yield return new WaitForSeconds(interval);
-        switch( state ) {
-            case State.Idel: BehaviorUpdate_Idel(); break;
-            case State.RandomWalk: BehaviorUpdate_RamdomWalk(); break;
-            case State.Tracking: BehaviorUpdate_Tracking(); break;
-        }
-        StartCoroutine("BehaviorUpdate");
+        rot.Normal();
+        speed.Normal();
     }
 
-    private void BehaviorUpdate_Idel()
+    /// <summary>
+    /// 移動の自動更新
+    /// </summary>
+    private void Auto()
     {
-        if (SearchPlayer())
+        currentTime = 0.0f;
+        rot.Change();
+        speed.Change();
+    }
+
+    /// <summary>
+    /// 回転更新
+    /// </summary>
+    private void Rotate()
+    {
+        Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
+        rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
+    }
+
+    /// <summary>
+    /// 移動更新
+    /// </summary>
+    private void Move()
+    {
+        Vector3 deltaVec = speed.current * transform.forward.normalized;
+        rigidbody.MovePosition(rigidbody.position + deltaVec * Time.deltaTime);
+        if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)) )
         {
-            state = State.Tracking;
-        }
-        else
-        {
-            Debug.Log("Ideling");
-            moveVec.x = 0.0f;
-            moveVec.z = 0.0f;
-            aimVec.x = 0.0f;
-            aimVec.z = 0.0f;
+            // 移動エリア外だったら方向を修正
+            transform.transform.LookAt(Vector3.zero);
         }
     }
 
-    private void BehaviorUpdate_RamdomWalk()
-    {
-        if (SearchPlayer())
-        {
-            state = State.Tracking;
-        }
-        else
-        {
-            Debug.Log("RandomWalk");
-            // 次の目標値設定
-            aimVec.Set(transform.position.x, 0.0f, transform.position.z);
-            aimVec.x += Random.Range(-1.0f, 1.0f) * movingArea;
-            aimVec.z += Random.Range(-1.0f, 1.0f) * movingArea;
-//            aimAngle = Vector3.Angle(transform.forward, aimVec);
-            aimAngle = Quaternion.FromToRotation(transform.forward, aimVec);
-        }
-    }
-    private void BehaviorUpdate_Tracking()
-    {
-        if (!SearchPlayer())
-        {
-            state = State.RandomWalk;
-        }
-        else
-        {
-            if (target == null) return;
-            Debug.Log("Tracking");
-            //                transform.LookAt(target.gameObject.transform);
-            //                transform.forward.normalized;
-            //                vec *= speed;
-        }
-    }
-
-    private void Update_Idel()
-    {
-    }
-    private void Update_RamdomWalk()
-    {
-        moveVec = Vector3.Lerp( transform.position, aimVec, Time.deltaTime * speed);
-        //Mathf.LerpAngle(aimAngle, Time.deltaTime * rotateSpeed / interval);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, aimAngle, Time.deltaTime * rotateSpeed);
-    }
-    private void Update_Tracking()
-    { 
-    }
-*/
 }

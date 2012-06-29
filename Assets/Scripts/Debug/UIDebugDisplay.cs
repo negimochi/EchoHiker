@@ -42,7 +42,7 @@ public class UIDebugDisplay : MonoBehaviour {
 
     void OnGUI()
     {
-        GUI.Label(new Rect(Screen.width - 100.0f, Screen.height-20.0f, 100.0f, 20.0f), "fps:" + frameRate.ToString());
+//        GUI.Label(new Rect(Screen.width - 100.0f, Screen.height-20.0f, 100.0f, 20.0f), "fps:" + frameRate.ToString());
         if (itemCounter.Count == 0) return;
         int count = 2;
         foreach( DictionaryEntry item in itemCounter ) {

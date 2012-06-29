@@ -4,27 +4,62 @@ using System.Collections;
 public class EnemyCollider : MonoBehaviour {
 
     [SerializeField]
-    public int damegeValue = 100;
+    public float cautionUpdateTime = 0.2f;
 
-    private bool cautionArea;
+    private bool isCautionArea;
+    private bool isEmargency;
+
+    private int cautionValue = 0;
+    public int Caution
+    {
+        get { return cautionValue;}
+    }
 
 	void Start () 
     {
-        cautionArea = false;
+        isCautionArea = false;
+        isEmargency = false;
 	}
+
+    private IEnumerator CountupCaution(float waitTime) 
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        cautionValue++;
+        if (cautionValue >= 100)
+        {
+            EmergencyBehavior(true);
+        }
+        else
+        {
+            StartCoroutine("CountupCaution", cautionUpdateTime);
+        }
+    }
+
+    private void EmergencyBehavior(bool flag)
+    {
+        isEmargency = flag;
+        EnemyBehavior behavior = gameObject.GetComponent<EnemyBehavior>();
+        if (behavior) {
+            if (isEmargency)
+            {
+                behavior.Emergency();
+            }
+            else
+            {
+                behavior.Normal();
+            }
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collider Enter:" + gameObject.name);
         if (other.gameObject.tag.Equals("Player"))
         {
-            cautionArea = true;
-            Debug.Log("CautionAreaIn:"+cautionArea);
-        /*
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnHitDamege", damegeValue);
-         */
+            isCautionArea = true;
+            Debug.Log("CautionAreaIn:");
+            StartCoroutine("CountupCaution", cautionUpdateTime);
         }
     }
 
@@ -33,8 +68,13 @@ public class EnemyCollider : MonoBehaviour {
         Debug.Log("Collider Exit:" + gameObject.name);
         if (other.gameObject.tag.Equals("Player"))
         {
-            cautionArea = false;
-            Debug.Log("CautionAreaOut:" + cautionArea);
+            isCautionArea = false;
+            Debug.Log("CautionAreaOut:");
+            StopCoroutine("CountupCaution");
+
+            if (isEmargency) {
+                EmergencyBehavior(false);
+            }
         }
     }
 

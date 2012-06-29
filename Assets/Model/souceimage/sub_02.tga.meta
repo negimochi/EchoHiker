@@ -3,12 +3,12 @@ guid: bc15e57533f0fb842a20363bc0ff3c5e
 TextureImporter:
   serializedVersion: 2
   mipmaps:
-    mipMapMode: 0
+    mipMapMode: 1
     enableMipMap: 1
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
-    borderMipMap: 0
+    borderMipMap: 1
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -29,5 +29,5 @@ TextureImporter:
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  textureType: -1
+  textureType: 5
   buildTargetSettings: []

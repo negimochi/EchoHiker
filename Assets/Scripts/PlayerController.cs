@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         MovePlayer();
 	}
 
-    void SetRot( float value )
+    private void SetRot(float value)
     {
 //        Debug.Log("SetRot:" + Time.time + ", " + value);
         value *= rotSpeed;
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour {
         currentTime = 0.0f;
     }
 
-    void RotatePlayer() 
+    private void RotatePlayer() 
     {
         //rigidbody.AddTorque(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime, 0, forcemode);
         deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour {
         uiCompass.SetAngle(transform.localEulerAngles.y);
     }
 
-    void MovePlayer()
+    private void MovePlayer()
     {
         //velocity = Mathf.Clamp(velocity + Input.GetAxis("Mouse Y") * speed, 0.0f, maxSpeed);
         // んーForceじゃ厳しいか・・・

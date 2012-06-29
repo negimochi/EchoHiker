@@ -12,7 +12,7 @@ public class RandomGenerator : MonoBehaviour {
     [SerializeField]
     private bool fill;
     [SerializeField]
-    private float startAngle;
+    private float startAngle = 30.0f;
     [SerializeField]
     private int limitSize;
     [SerializeField]
@@ -56,16 +56,14 @@ public class RandomGenerator : MonoBehaviour {
         }
 
         // 向きもある程度ランダムに決める
-        float baseAngle = Vector3.Angle(pos, Vector3.zero);
-        Debug.Log("baseAngle = " + baseAngle);
         float halfAngle = startAngle * 0.5f;
-        ///float rotY = Random.Range(baseAngle-halfAngle, baseAngle+halfAngle);
-        float rotY = baseAngle;
-        Quaternion rot = Quaternion.Euler(new Vector3(0.0f, rotY, 0.0f));
-
+        Vector3 rotVec =  new Vector3( 0.0f, Random.Range(-halfAngle, halfAngle), 0.0f );
+        Quaternion deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
         // 生成
-        GameObject newObj = Object.Instantiate(target, pos, rot) as GameObject;
+        GameObject newObj = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;
+        newObj.transform.LookAt(Vector3.zero);
         newObj.transform.parent = transform;
+//        newObj.rigidbody.MoveRotation( deltaRot);
         Debug.Log("generated item[" + size + "]=" + newObj.name);
         // カウンタ
         size += 1;
