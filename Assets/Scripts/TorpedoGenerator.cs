@@ -10,46 +10,73 @@ public class TorpedoGenerator : MonoBehaviour {
     [SerializeField]
     private float coolTime = 3.0f;
     [SerializeField]
+    private bool isNote = false;
+    [SerializeField]
     private TorpedoCollider.OwnerType type = TorpedoCollider.OwnerType.Enemy;
 
-    private bool isCooling;
-    private GameObject parentObj;
+    private float current;
 
+    private bool valid = true;
+    private GameObject parentObj = null;
+   
     public void Generate()
     {
         // 冷却中は生成しない
-        if (isCooling == true) return;
-
-        Debug.Log(transform.localPosition + "," + transform.position);
-        //Vector3 vec = new Vector3( transform.position.x, transform.position.y,transform.position.z );
+        if (valid == false)
+        {
+            Debug.LogWarning("Cooling:" + Time.time);
+            return;
+        }
+        // 位置・角度を求める
         Vector3 vec = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         vec += pos.x * transform.right;
         vec += pos.y * transform.up;
         vec += pos.z * transform.forward;
         Quaternion rot = Quaternion.Euler(transform.eulerAngles);
+        // 生成
         GameObject newObj = Object.Instantiate(target, vec, rot) as GameObject;
+        // 親を設定
         newObj.transform.parent = parentObj.transform;
-        TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
-        torpedoCollider.SetOwner(type);
+
+        {   // Owner設定
+            TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
+            if(torpedoCollider) torpedoCollider.SetOwner(type);
+            else Debug.LogError("Not exists TorpedoCollider");
+        }
+        {   // 音の設定
+            Note note = newObj.GetComponentInChildren<Note>();
+            if (note) note.Valid(isNote);
+            else Debug.LogError("Not exists Note");
+        }
         // クールタイム
-        //isCooling = true;
-        //StartCoroutine("CoolDown");
+        valid = false;
+        current = 0.0f;
+        //StartCoroutine("Cooldown");
     }
 
-    private IEnumerable CoolDown()
+    void Update()
     {
-        Debug.Log("CoolDown");
-        yield return new WaitForSeconds(coolTime);
-
-        Debug.Log("CoolDown End");
-        isCooling = false;
+        if(!valid) {
+            current += Time.deltaTime;
+            if (current >= coolTime) {
+                valid = true;
+            }
+        }
     }
+    /*
+    private IEnumerable Cooldown()
+    {
+        yield return new WaitForSeconds(coolTime);
+        valid = true;
+        Debug.Log("Cooldown EndCoroutine");
+    }
+     */
 
 	// Use this for initialization
 	void Start () 
     {
-        isCooling = false;
         parentObj = GameObject.Find("/Object/TorpedoManager");
+        if (parentObj==null) Debug.LogError("Not exists GameObject(/Object/TorpedoManager)");
 	}
 	
 }

@@ -90,13 +90,13 @@ public class PlayerController : MonoBehaviour {
 
     private Quaternion deltaRot;
     private UIController uiCompass;
-    private bool isValid;
+    private bool valid;
 
     private TorpedoGenerator torpedo;
 
 	void Start () 
     {
-        isValid = true;
+        valid = true;
         GameObject uiObj = GameObject.Find("/UI");
         if (uiObj) {
             uiCompass = uiObj.GetComponent<UIController>();
@@ -110,20 +110,22 @@ public class PlayerController : MonoBehaviour {
     {
         speed.Stop();
         rot.Stop();
-        isValid = false;
+        valid = false;
     }
 	
 	void FixedUpdate () 
     {
         // ‹›—‹”­Ë
-        if( Input.GetKeyDown(KeyCode.B) ){
+        if( Input.GetKeyDown(KeyCode.B) )
+        {
+            //Debug.Log("B ender : " + Time.time);
             torpedo.Generate();
         }
 
         // ‰ñ“]‚ÌŒ¸Š
         rot.Attenuate(Time.deltaTime);
 
-        if (isValid)
+        if (valid)
         {
             // ƒhƒ‰ƒbƒO’†
             if (Input.GetMouseButton(0))

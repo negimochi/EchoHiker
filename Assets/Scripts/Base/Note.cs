@@ -13,7 +13,11 @@ public class Note : MonoBehaviour {
 //    private float param;
     private Color baseColor;
 
-    private void OnHit()
+    private ParticleSystem particleSystem = null;
+
+    public void Valid(bool valid_) { valid = valid_; }
+
+    void OnHit()
     {
         Debug.Log("OnHit"); 
         valid = false;
@@ -21,8 +25,6 @@ public class Note : MonoBehaviour {
         //audio.Stop();
 
         // エフェクト開始(1つだけとする)
-        ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
-//        Debug.Log("Emitter" + emitter);
         if (particleSystem) {
             particleSystem.Play();
             Debug.Log("Particle Start");
@@ -31,17 +33,16 @@ public class Note : MonoBehaviour {
         StartCoroutine("Fadeout", 1.0f);
     }
 
-
-    // Use this for initialization
 	void Start () 
     {
+        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
         counter = offset;
     }
-	
-	// Update is called once per frame
+
 	void FixedUpdate () 
     {
-        if (valid) {
+        if (valid) 
+        {
             Clock(Time.deltaTime);
         }
 	}
@@ -78,10 +79,12 @@ public class Note : MonoBehaviour {
         }
 
         // エフェクトが完全に終了していたらオブジェクト破棄
-        ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
-        while (particleSystem.isPlaying)
+        if (particleSystem)
         {
-            yield return new WaitForSeconds(waitTime);
+            while (particleSystem.isPlaying)
+            {
+                yield return new WaitForSeconds(waitTime);
+            }
         }
         // 削除メッセージ
         Debug.Log("Destory :" + transform.parent.gameObject);

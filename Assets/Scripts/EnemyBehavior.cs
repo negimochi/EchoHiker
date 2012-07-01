@@ -127,7 +127,7 @@ public class EnemyBehavior : MonoBehaviour
 //    [SerializeField]
 
     private float currentTime;
-    private bool isValid;
+    private bool valid;
 
     /// <summary>
     /// 外部から
@@ -136,20 +136,27 @@ public class EnemyBehavior : MonoBehaviour
     {
         speed.Stop();
         rot.Stop();
-        isValid = false;
+        valid = false;
+    }
+
+    void OnHit()
+    {
+        // 衝突を無効化
+        SphereCollider collider = GetComponent<SphereCollider>();
+        if(collider) collider.enabled = false;
     }
 
     void OnDestroyObject()
     {
         Debug.Log("EnemyBehavior.OnDestroy");
-        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject.name, SendMessageOptions.DontRequireReceiver);
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
         Destroy(gameObject);
     }
 
     void Start()
     {
         currentTime = 0.0f;
-        isValid = true;
+        valid = true;
         speed.Usual();
         rot.Usual();
     }
@@ -159,7 +166,7 @@ public class EnemyBehavior : MonoBehaviour
         // 回転の減衰
         if (! rot.Attenuate(Time.deltaTime))
         {
-            if (isValid)
+            if (valid)
             {
                 // 減衰終了後、カウントして再度移動
                 currentTime += Time.deltaTime;

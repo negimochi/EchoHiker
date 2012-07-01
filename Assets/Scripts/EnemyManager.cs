@@ -13,10 +13,10 @@ public class EnemyManager : MonoBehaviour {
         list = new Hashtable();
     }
 
-    private void OnDestroyObject(string name)
+    private void OnDestroyObject(GameObject obj)
     {
         Debug.Log("EnemyManager.OnDestroyObject");
-        list.Remove(name);
+        list.Remove(obj);
     }
     private void OnGenerated(DictionaryEntry target)
     {
@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour {
             if( de.Key == target.Key ) continue;
             if( (int)de.Value > result ) result = (int)de.Value;
         }
-        // 通知
+        // 表示用に通知
         ui.SendMessage("OnUpdateCaution", result);
     }
 }

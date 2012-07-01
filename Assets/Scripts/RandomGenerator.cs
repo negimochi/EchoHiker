@@ -31,13 +31,13 @@ public class RandomGenerator : MonoBehaviour {
         counter = 0.0f;
     }
 
-    private void OnDestroyObject( string name )
+    private void OnDestroyObject( GameObject obj )
     {
-        Debug.Log("Destoryed:" + name);
+        Debug.Log("Destoryed:" + obj.name);
         size--;
         if (size < 0)
         {
-            Debug.LogError("Size < 0");
+            Debug.LogWarning("Size < 0");
             size = 0;
         }
     }

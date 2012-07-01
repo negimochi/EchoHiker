@@ -10,29 +10,29 @@ public class TorpedoCollider : MonoBehaviour {
     private OwnerType owner;
 
     [SerializeField]
-    private float invalidTime = 1.0f;
+    private float invalidTime = 2.0f;
 
     [SerializeField]
     private int damegeValue = 100;
     [SerializeField]
     private int enamyDestroyScore = 100;
 
-    private bool isValid = false;
+    private bool valid = false;
    
     public void SetOwner(OwnerType type)
     {
         owner = type;
     }
 
-	// Use this for initialization
 	void Start () 
     {
+        // 発射の瞬間は、自機にぶつかるのでWaitを挟む
         StartCoroutine("Wait");
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        if (isValid == true)
+        if (valid == true)
         {
             CheckPlayer(other.gameObject);
             CheckEnemy(other.gameObject);
@@ -40,22 +40,17 @@ public class TorpedoCollider : MonoBehaviour {
     }
     void OnTriggerStay(Collider other)
     {
-        if (isValid == true)
+        if (valid == true)
         {
             CheckPlayer(other.gameObject);
             CheckEnemy(other.gameObject);
         }
     }
 
-	void Update () 
-    {
-	
-	}
-
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(invalidTime);
-        isValid = true;
+        valid = true;
         Debug.Log("Wait EndCoroutine");
     }
 
@@ -64,13 +59,16 @@ public class TorpedoCollider : MonoBehaviour {
         Debug.Log("Collider Enter:" + gameObject.name);
         if (target.tag.Equals("Player"))
         {
+            // 自分にヒット
+
+            // ダメージを伝える
             GameObject ui = GameObject.Find("/UI");
             if (ui) ui.SendMessage("OnDamege", damegeValue);
 
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
 
-            isValid = false;
+            valid = false;
         }
     }
     private void CheckEnemy(GameObject target)
@@ -88,7 +86,7 @@ public class TorpedoCollider : MonoBehaviour {
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
 
-            isValid = false;
+            valid = false;
         }
     }
 }
