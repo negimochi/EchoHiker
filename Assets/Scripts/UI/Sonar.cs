@@ -12,7 +12,7 @@ public class Sonar : MonoBehaviour {
 
     private GameObject currentObj = null;
     private GUITexture guiSonar;
-    private SonarCamera sonarCamera;
+    private SonarCamera sonarCamera=null;
 
     public enum SonarMode {
         None,
@@ -28,6 +28,7 @@ public class Sonar : MonoBehaviour {
         if (cameraObj) {
             sonarCamera = cameraObj.AddComponent<SonarCamera>();
         }
+        if (sonarCamera == null) Debug.LogError("Not Exists SonarCamera");
         // パッシブソナーがデフォルト
         SetMode(SonarMode.PassiveSonar);
     }

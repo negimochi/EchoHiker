@@ -38,8 +38,9 @@ public class ItemCollider : MonoBehaviour
         }
     }
 
-    void OnDestory()
+    void OnDestroyObject()
     {
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject.name, SendMessageOptions.DontRequireReceiver);
         StopAllCoroutines();
         Destroy(gameObject);
     }
@@ -55,7 +56,7 @@ public class ItemCollider : MonoBehaviour
             // HitItemí ím
             //obj.SendMessage("OnHitItem");
             GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnGetItem", scoreValue);
+            if (ui) ui.SendMessage("OnGetItem", scoreValue, SendMessageOptions.DontRequireReceiver);
 
             // ÉqÉbÉgå„ÇÃé©ï™ÇÃèàóù
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);

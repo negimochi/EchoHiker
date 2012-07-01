@@ -11,8 +11,8 @@ public class RandomGenerator : MonoBehaviour {
     private float posY;
     [SerializeField]
     private bool fill;
-    [SerializeField]
-    private float startAngle = 30.0f;
+//    [SerializeField]
+//    private float startAngle = 30.0f;
     [SerializeField]
     private int limitSize;
     [SerializeField]
@@ -31,10 +31,19 @@ public class RandomGenerator : MonoBehaviour {
         counter = 0.0f;
     }
 
+    private void OnDestroyObject( string name )
+    {
+        Debug.Log("Destoryed:" + name);
+        size--;
+        if (size < 0)
+        {
+            Debug.LogError("Size < 0");
+            size = 0;
+        }
+    }
+
     public void Generate()
     {
-        //if (target == null) return;
-
         // 外周上にランダムに位置を決める
         Vector3 pos = new Vector3( startLine.xMin, posY, startLine.yMin);
         if (fill)
@@ -56,31 +65,27 @@ public class RandomGenerator : MonoBehaviour {
         }
 
         // 向きもある程度ランダムに決める
-        float halfAngle = startAngle * 0.5f;
-        Vector3 rotVec =  new Vector3( 0.0f, Random.Range(-halfAngle, halfAngle), 0.0f );
-        Quaternion deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
+//        float halfAngle = startAngle * 0.5f;
+//        Vector3 rotVec =  new Vector3( 0.0f, Random.Range(-halfAngle, halfAngle), 0.0f );
+//        Quaternion deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
         // 生成
         GameObject newObj = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;
         newObj.transform.LookAt(Vector3.zero);
         newObj.transform.parent = transform;
-//        newObj.rigidbody.MoveRotation( deltaRot);
-        Debug.Log("generated item[" + size + "]=" + newObj.name);
+        Debug.Log("generated[" + size + "]=" + newObj.name);
+
         // カウンタ
         size += 1;
+
+        // 通知
+        SendMessage("OnGenerated", new DictionaryEntry(newObj, 0), 
+                                    SendMessageOptions.DontRequireReceiver);
     }
 
     public bool IsSizeOver()
     {
         return (limitSize <= size)?true:false;
     }
-
-    private IEnumerable Delay(float time)
-    {
-        Debug.Log("RandomGenerator.Auto");
-        yield return new WaitForSeconds(time);
-        Generate();
-    }
-
 
     void Update()
     {
@@ -92,8 +97,6 @@ public class RandomGenerator : MonoBehaviour {
                 Generate();
                 counter = 0.0f;
             }
-            //Debug.Log("RandomGenerator.Update");
-            //StartCoroutine("Delay", delaytime);
         }
     }
 }

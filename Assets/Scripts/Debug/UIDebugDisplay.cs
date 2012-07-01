@@ -18,6 +18,7 @@ public class UIDebugDisplay : MonoBehaviour {
  
 	private void Update()
 	{
+
 		frame++;
 		float time = Time.realtimeSinceStartup - oldTime;
 		if (time >= interval) {
@@ -26,7 +27,6 @@ public class UIDebugDisplay : MonoBehaviour {
 			frame = 0;
 		}
 	}
-    /*
     void OnGetItem(GameObject histObj)
     {
         string objname = histObj.name;
@@ -39,11 +39,9 @@ public class UIDebugDisplay : MonoBehaviour {
             itemCounter[objname] = (int)itemCounter[objname] + 1;
         }
     }
-     */
-
     void OnGUI()
     {
-//        GUI.Label(new Rect(Screen.width - 100.0f, Screen.height-20.0f, 100.0f, 20.0f), "fps:" + frameRate.ToString());
+        GUI.Label(new Rect(Screen.width - 100.0f, Screen.height-20.0f, 100.0f, 20.0f), "fps:" + frameRate.ToString());
         if (itemCounter.Count == 0) return;
         int count = 2;
         foreach( DictionaryEntry item in itemCounter ) {
@@ -51,5 +49,4 @@ public class UIDebugDisplay : MonoBehaviour {
             count++;
         }
     }
-    
 }

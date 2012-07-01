@@ -55,8 +55,6 @@ public class TorpedoCollider : MonoBehaviour {
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(invalidTime);
-
-
         isValid = true;
         Debug.Log("Wait EndCoroutine");
     }
@@ -66,7 +64,6 @@ public class TorpedoCollider : MonoBehaviour {
         Debug.Log("Collider Enter:" + gameObject.name);
         if (target.tag.Equals("Player"))
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
             GameObject ui = GameObject.Find("/UI");
             if (ui) ui.SendMessage("OnDamege", damegeValue);
 

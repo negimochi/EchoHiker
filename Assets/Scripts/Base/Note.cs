@@ -10,7 +10,7 @@ public class Note : MonoBehaviour {
     private bool valid   = true;
 
     private float counter;
-    private float param;
+//    private float param;
     private Color baseColor;
 
     private void OnHit()
@@ -53,9 +53,9 @@ public class Note : MonoBehaviour {
         if (counter >= interval)
         {
             audio.Play();
-            param = 1.0f;
+//            param = 1.0f;
             counter = 0.0f;
-            Debug.Log(name + ":Play");
+            //Debug.Log(name + ":Play");
         }
     }
 
@@ -85,6 +85,6 @@ public class Note : MonoBehaviour {
         }
         // 削除メッセージ
         Debug.Log("Destory :" + transform.parent.gameObject);
-        transform.parent.gameObject.SendMessage("OnDestroy", SendMessageOptions.DontRequireReceiver);
+        transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
     }
 }

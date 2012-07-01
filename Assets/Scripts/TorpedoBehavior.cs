@@ -36,7 +36,7 @@ public class TorpedoBehavior : MonoBehaviour {
     private Rect runningArea;   // ˆÚ“®”ÍˆÍ
 
 
-    void OnDestroy()
+    void OnDestroyObject()
     {
         Debug.Log("TorpedoBehaviour.OnDestroy");
         Destroy(gameObject);
@@ -52,7 +52,8 @@ public class TorpedoBehavior : MonoBehaviour {
     {
         if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
         {
-            OnDestroy();
+            // ‰Â“®”ÍˆÍ‚ğ’´‚¦‚½‚çíœ
+            OnDestroyObject();
         }
         else
         {

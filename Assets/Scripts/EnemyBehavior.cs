@@ -139,9 +139,11 @@ public class EnemyBehavior : MonoBehaviour
         isValid = false;
     }
 
-    void OnDestroy()
+    void OnDestroyObject()
     {
-        Destroy(this);
+        Debug.Log("EnemyBehavior.OnDestroy");
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject.name, SendMessageOptions.DontRequireReceiver);
+        Destroy(gameObject);
     }
 
     void Start()
@@ -175,8 +177,16 @@ public class EnemyBehavior : MonoBehaviour
         rot.Emergency();
         speed.Emergency();
 
+        // 完全にプレイヤーを補足する
 
     }
+
+    public void Caution()
+    {
+        rot.Emergency();
+        speed.Emergency();
+    }
+
     public void Usual()
     {
         rot.Usual();

@@ -36,10 +36,6 @@ public class PlayerController : MonoBehaviour {
         private float currentRot;
 
         [SerializeField]
-        private float normalMax = 20.0f;
-        [SerializeField]
-        private float emergencyMax = 30.0f;
-        [SerializeField]
         private float blend = 0.8f;
         [SerializeField]
         private float margin = 0.01f;

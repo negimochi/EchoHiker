@@ -21,13 +21,13 @@ public class RandomCircleGenerator : MonoBehaviour
     private float maxRadius = 1000.0f;
 
     public ArrayList items;
-    private GameObject target;
+//    private GameObject target;
 
 	// Use this for initialization
 	void Start () 
     {
         items = new ArrayList();
-        target = GameObject.FindGameObjectWithTag("Player");
+//        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void Generate( int size ) 
