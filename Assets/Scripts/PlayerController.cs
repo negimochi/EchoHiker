@@ -12,155 +12,162 @@ public class PlayerController : MonoBehaviour {
         [SerializeField]
         private float step = 0.5f;
 
-        public void Add( float value )
+        public void Change( float value )
         {
             current += value * step;
             if (current < 0.0f) current = 0.0f;
             else if (current > max) current = max;
         }
+
+        public void Stop() { current = 0.0f; }
     };
     [SerializeField]
     private SpeedValue speed;
 
-
-    [SerializeField]
-    private float rotSpeed = 1.0f;
-    [SerializeField]
-    private float attenuationRot = 0.2f;
-    [SerializeField]
-    private  float slowdownRot = 0.4f;
-    [SerializeField]
-    private float blending = 0.8f;
-    [SerializeField]
-    private float braking = 0.01f;
-
+    /// <summary>
+    /// 回転調整
+    /// </summary>
     [System.Serializable]
-    public class SwingValue
+    public class RotationValue
     {
-        public float torque = 0.1f;
-        public float force = 0.1f;
+        public Vector3 current = Vector3.zero;
+        private float attenuationStart;
+        private float attenuationTime = 0.0f;
+        private float currentRot;
+
+        [SerializeField]
+        private float normalMax = 20.0f;
+        [SerializeField]
+        private float emergencyMax = 30.0f;
+        [SerializeField]
+        private float blend = 0.8f;
+        [SerializeField]
+        private float margin = 0.01f;
+        [SerializeField]
+        private float attenuationRot = 0.2f;
+        [SerializeField]
+        private float slowdownRot    = 0.4f;
+
+        public void Init()
+        {
+            currentRot = attenuationTime;
+        }
+
+        /// <summary>
+        /// 回転量変更
+        /// </summary>
+        public void Change(float value)
+        {
+            if (-margin < value && value < margin) return;
+
+            // 回転量のブレンド
+            current.y = Mathf.Lerp(current.y, current.y + value, blend);
+            // 減衰リセット
+            attenuationStart = current.y;
+            attenuationTime = 0.0f;
+        }
+        /// <summary>
+        /// 減衰
+        /// </summary>
+        /// <param name="time">時間変位</param>
+        /// <returns>減衰中/減衰してない</returns>
+        public bool Attenuate(float time)
+        {
+            if (current.y == 0.0f) return false;
+
+            attenuationTime += time;
+            current.y = Mathf.SmoothStep(attenuationStart, 0.0f, currentRot * attenuationTime);
+            return true;
+        }
+
+        public void BrakeAttenuation() {    currentRot = slowdownRot;   }
+        public void UsualAttenuation()
+        {
+            attenuationTime = (slowdownRot * attenuationTime) / attenuationRot;
+            currentRot = attenuationRot;
+        }
+
+        public void Stop() { current = Vector3.zero; }
     };
     [SerializeField]
-    private SwingValue swing;
-
-    private Vector3 rotVec;
-    private float rotVecStartY;
-    private float currentTime;
-    private float currentRot;
+    private RotationValue rot;
 
     private Quaternion deltaRot;
-
     private UIController uiCompass;
+    private bool isValid;
 
-//    private CharacterController controller;
+    private TorpedoGenerator torpedo;
 
 	void Start () 
     {
-//        Screen.lockCursor = true;
-//        controller = gameObject.GetComponent<CharacterController>();
+        isValid = true;
         GameObject uiObj = GameObject.Find("/UI");
         if (uiObj) {
             uiCompass = uiObj.GetComponent<UIController>();
         }
-        currentRot = attenuationRot;
-        if (braking < 0.0f) braking = -braking;
+        torpedo = GetComponent<TorpedoGenerator>();
+
+        rot.Init();
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnGameOver()
     {
-        Debug.Log("Player.OnCollisionEnter:" + collision.collider.name + ":" + Time.time);
-        if (collision.collider.CompareTag("Barriar"))
-        {
-            // 壁に接触
-            /*
-            Vector3 colvec = -collision.contacts[0].normal;
-            float angle = Vector3.Angle(colvec, transform.forward);
-            Debug.Log("Angle=" + angle);
-            rigidbody.AddTorque(new Vector3(0.0f, (angle >= 0.0f) ? swing.torque : -swing.torque, 0.0f), ForceMode.VelocityChange);
-            rigidbody.AddForce(transform.forward * swing.force, ForceMode.VelocityChange);
-             */
-        }
-        else { 
-        }
+        speed.Stop();
+        rot.Stop();
+        isValid = false;
     }
 	
 	void FixedUpdate () 
     {
-
-        /*
-        if( Input.GetKeyUp(KeyCode.LeftControl) ){
-            Screen.lockCursor = !Screen.lockCursor;
+        // 魚雷発射
+        if( Input.GetKeyDown(KeyCode.B) ){
+            torpedo.Generate();
         }
-         */
 
         // 回転の減衰
-        if ( rotVec.y != 0.0f )
-        {
-            rotVec.y = Mathf.SmoothStep(rotVecStartY, 0.0f, currentRot * currentTime);
-            currentTime += Time.deltaTime;
-            //Debug.Log("rot=" + currentRot + ", time="+ currentTime + ", Rot=" + rotVec.y);
-        }
+        rot.Attenuate(Time.deltaTime);
 
-        // ドラッグ中
-        if (Input.GetMouseButton(0))
+        if (isValid)
         {
-            //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
-            // 回転
-            SetRot(Input.GetAxis("Mouse X"));
+            // ドラッグ中
+            if (Input.GetMouseButton(0))
+            {
+                //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
+                // 回転
+                //SetRot(Input.GetAxis("Mouse X"));
+                rot.Change(Input.GetAxis("Mouse X"));
+                // 加速
+                speed.Change(Input.GetAxis("Mouse Y"));
+            }
 
-            // 加速
-            speed.Add( Input.GetAxis("Mouse Y") );
+            // ドラッグ開始
+            if (Input.GetMouseButtonDown(0))
+            {
+                rot.BrakeAttenuation();
+            }
+            // ドラッグ終了
+            if (Input.GetMouseButtonUp(0))
+            {
+                rot.UsualAttenuation();
+            }
         }
-
-        // ドラッグ開始
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log("MouseButtonDown");
-            currentRot = slowdownRot;
-        }
-        // ドラッグ終了
-        if (Input.GetMouseButtonUp(0))
-        {
-            //Debug.Log("MouseButtonUp");
-            currentTime = (slowdownRot * currentTime) / attenuationRot;
-            currentRot = attenuationRot;
-        }
-
         // 回転する
-        RotatePlayer();
+        Rotate();
         // 前に進む
-        MovePlayer();
+        MoveForward();
 	}
-
-    private void SetRot(float value)
+    
+    private void Rotate() 
     {
-//        Debug.Log("SetRot:" + Time.time + ", " + value);
-        value *= rotSpeed;
-        if (-braking < value && value < braking) return;
-
-        // 回転量のブレンド
-        rotVec.y = Mathf.Lerp(rotVec.y, rotVec.y + value, blending);
-        // 減衰リセット
-        rotVecStartY = rotVec.y;
-        currentTime = 0.0f;
-    }
-
-    private void RotatePlayer() 
-    {
-        //rigidbody.AddTorque(0, Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime, 0, forcemode);
-        deltaRot = Quaternion.Euler(rotVec * Time.deltaTime);
+        Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
         uiCompass.SetAngle(transform.localEulerAngles.y);
     }
 
-    private void MovePlayer()
+    private void MoveForward()
     {
-        //velocity = Mathf.Clamp(velocity + Input.GetAxis("Mouse Y") * speed, 0.0f, maxSpeed);
-        // んーForceじゃ厳しいか・・・
         Vector3 vec = speed.current * transform.forward.normalized;
-        //Debug.Log(transform.forward.normalized);
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
-        //rigidbody.AddForce( vec * Time.deltaTime, ForceMode.Force);
     }
 
 }

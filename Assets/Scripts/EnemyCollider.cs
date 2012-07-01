@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyCollider : MonoBehaviour {
 
     [SerializeField]
-    public float cautionUpdateTime = 0.2f;
+    public float waitTime = 0.2f;
 
     private bool isCautionArea;
     private bool isEmargency;
@@ -21,7 +21,7 @@ public class EnemyCollider : MonoBehaviour {
         isEmargency = false;
 	}
 
-    private IEnumerator CountupCaution(float waitTime) 
+    private IEnumerator CountupCaution() 
     {
         yield return new WaitForSeconds(waitTime);
 
@@ -32,7 +32,7 @@ public class EnemyCollider : MonoBehaviour {
         }
         else
         {
-            StartCoroutine("CountupCaution", cautionUpdateTime);
+            StartCoroutine("CountupCaution");
         }
     }
 
@@ -47,7 +47,7 @@ public class EnemyCollider : MonoBehaviour {
             }
             else
             {
-                behavior.Normal();
+                behavior.Usual();
             }
         }
     }
@@ -59,7 +59,7 @@ public class EnemyCollider : MonoBehaviour {
         {
             isCautionArea = true;
             Debug.Log("CautionAreaIn:");
-            StartCoroutine("CountupCaution", cautionUpdateTime);
+            StartCoroutine("CountupCaution");
         }
     }
 
@@ -78,7 +78,4 @@ public class EnemyCollider : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter(Collision collision)
-    { 
-    }
 }

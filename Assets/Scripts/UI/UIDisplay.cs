@@ -26,18 +26,31 @@ public class UIDisplay : MonoBehaviour {
         GUI.Label(new Rect(Screen.width * 0.8f, Screen.height * 0.8f, 120.0f, 20.0f), cautionText + caution.ToString() + "%");
     }
 
-    void OnHitItem(GameObject histObj)
+    void OnGetItem( int value )
     {
-        ItemCollider itemCollider = histObj.GetComponent<ItemCollider>();
-        if( itemCollider != null )  score += itemCollider.scoreValue;
+        score += value;
     }
 
-    void OnHitDamege( int value )
+    void OnDestroyEnemy( int value )
+    {
+        score += value;
+    }
+
+    void OnDamege( int value )
     {
         frame -= value;
         if (frame < 0) {
             frame = 0;
-            // 終了通知
+            // 終了通知を送る
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player) player.BroadcastMessage("OnGameOver");
+            GameObject obj = GameObject.Find("/Object");
+            if (obj) obj.BroadcastMessage("OnGameOver");
         }
+    }
+
+    void OnUpdateCaution( int value )
+    {
+        caution = value;
     }
 }

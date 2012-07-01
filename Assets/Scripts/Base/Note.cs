@@ -7,8 +7,6 @@ public class Note : MonoBehaviour {
     [SerializeField]
     private float offset = 0.0f;
     [SerializeField]
-    private bool visible = true;
-    [SerializeField]
     private bool valid   = true;
 
     private float counter;
@@ -31,9 +29,41 @@ public class Note : MonoBehaviour {
         }
 
         StartCoroutine("Fadeout", 1.0f);
-        Debug.Log("OnHitItem End");
     }
 
+
+    // Use this for initialization
+	void Start () 
+    {
+        counter = offset;
+    }
+	
+	// Update is called once per frame
+	void FixedUpdate () 
+    {
+        if (valid) {
+            Clock(Time.deltaTime);
+        }
+	}
+
+
+    private void Clock(float step)
+    {
+        counter += step;
+        if (counter >= interval)
+        {
+            audio.Play();
+            param = 1.0f;
+            counter = 0.0f;
+            Debug.Log(name + ":Play");
+        }
+    }
+
+    /// <summary>
+    /// フェードアウトコルーチン
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     private IEnumerator Fadeout(float duration)
     {
         // フェードアウト
@@ -42,7 +72,7 @@ public class Note : MonoBehaviour {
         float firstVol = audio.volume;
         while (duration > currentTime)
         {
-            audio.volume = Mathf.Lerp( firstVol, 0.0f, currentTime/duration );
+            audio.volume = Mathf.Lerp(firstVol, 0.0f, currentTime / duration);
             yield return new WaitForSeconds(waitTime);
             currentTime += waitTime;
         }
@@ -53,48 +83,8 @@ public class Note : MonoBehaviour {
         {
             yield return new WaitForSeconds(waitTime);
         }
-        Destroy( gameObject );
-        Debug.Log("Destory");
+        // 削除メッセージ
+        Debug.Log("Destory :" + transform.parent.gameObject);
+        transform.parent.gameObject.SendMessage("OnDestroy", SendMessageOptions.DontRequireReceiver);
     }
-
-    private void Clock(float step)
-    {
-        if (valid)
-        {
-            counter += step;
-            if (counter >= interval)
-            {
-                audio.Play();
-                param = 1.0f;
-                counter = 0.0f;
-                Debug.Log(name + ":Play");
-            }
-        }
-    }
-
-    // Use this for initialization
-	void Start () 
-    {
-        counter = offset;
-        renderer.enabled = visible;
-//        baseColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b);
-//        param = 1.0f;
-    }
-	
-	// Update is called once per frame
-	void FixedUpdate () 
-    {
-        if (valid)
-        {
-            Clock(Time.deltaTime);
-//            if (visible)
-//            {
-//                param *= Mathf.Exp(-3.0f * Time.deltaTime);
-//                //	        transform.localScale = Vector3.one * (1.0f + param * 0.5f);
-//                Color color = new Color(Mathf.Abs(baseColor.r - param), baseColor.g, baseColor.b);
-//                renderer.material.color = color;
-//            }
-        }
-	}
-
 }

@@ -3,27 +3,95 @@ using System.Collections;
 
 public class TorpedoCollider : MonoBehaviour {
 
+    public enum OwnerType {
+        Player,
+        Enemy
+    };
+    private OwnerType owner;
+
     [SerializeField]
-    public int damegeValue = 100;
+    private float invalidTime = 1.0f;
+
+    [SerializeField]
+    private int damegeValue = 100;
+    [SerializeField]
+    private int enamyDestroyScore = 100;
+
+    private bool isValid = false;
+   
+    public void SetOwner(OwnerType type)
+    {
+        owner = type;
+    }
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+    {
+        StartCoroutine("Wait");
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collider Enter:" + gameObject.name);
-        if (other.gameObject.tag.Equals("Player"))
+        if (isValid == true)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnHitDamege", damegeValue);
+            CheckPlayer(other.gameObject);
+            CheckEnemy(other.gameObject);
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (isValid == true)
+        {
+            CheckPlayer(other.gameObject);
+            CheckEnemy(other.gameObject);
         }
     }
 
-    // Update is called once per frame
-	void Update () {
+	void Update () 
+    {
 	
 	}
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(invalidTime);
+
+
+        isValid = true;
+        Debug.Log("Wait EndCoroutine");
+    }
+
+    private void CheckPlayer(GameObject target)
+    {
+        Debug.Log("Collider Enter:" + gameObject.name);
+        if (target.tag.Equals("Player"))
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject ui = GameObject.Find("/UI");
+            if (ui) ui.SendMessage("OnDamege", damegeValue);
+
+            // ÉqÉbÉgå„ÇÃé©ï™ÇÃèàóù
+            BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+
+            isValid = false;
+        }
+    }
+    private void CheckEnemy(GameObject target)
+    {
+        Debug.Log("Collider Enter:" + gameObject.name);
+        if (target.tag.Equals("Enemy"))
+        {
+            if (owner == OwnerType.Player)
+            {
+                GameObject ui = GameObject.Find("/UI");
+                if (ui) ui.SendMessage("OnDestroyEnemy", enamyDestroyScore);
+            }
+            // ìGÇ…ÉqÉbÉg
+            target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+            // ÉqÉbÉgå„ÇÃé©ï™ÇÃèàóù
+            BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+
+            isValid = false;
+        }
+    }
 }

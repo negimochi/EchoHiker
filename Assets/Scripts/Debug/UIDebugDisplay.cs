@@ -26,8 +26,8 @@ public class UIDebugDisplay : MonoBehaviour {
 			frame = 0;
 		}
 	}
-
-    void OnHitItem(GameObject histObj)
+    /*
+    void OnGetItem(GameObject histObj)
     {
         string objname = histObj.name;
         if (!itemCounter.Contains(objname))
@@ -39,6 +39,7 @@ public class UIDebugDisplay : MonoBehaviour {
             itemCounter[objname] = (int)itemCounter[objname] + 1;
         }
     }
+     */
 
     void OnGUI()
     {
