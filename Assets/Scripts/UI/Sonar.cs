@@ -11,8 +11,9 @@ public class Sonar : MonoBehaviour {
     private float aspect = 0.4f;
 
     private GameObject currentObj = null;
-    private GUITexture guiSonar;
-    private SonarCamera sonarCamera=null;
+    private ActiveSonar activeSonar = null;
+    private GUITexture guiSonar = null;
+    private SonarCamera sonarCamera = null;
 
     public enum SonarMode {
         None,
@@ -28,29 +29,15 @@ public class Sonar : MonoBehaviour {
         if (cameraObj) {
             sonarCamera = cameraObj.AddComponent<SonarCamera>();
         }
-        if (sonarCamera == null) Debug.LogError("Not Exists SonarCamera");
+        GameObject playerSonar = GameObject.Find("Player/ActiveSonar");
+        if (playerSonar)
+        {
+            activeSonar = playerSonar.GetComponent<ActiveSonar>();
+        }
+
         // パッシブソナーがデフォルト
         SetMode(SonarMode.PassiveSonar);
     }
-
-//    void OnMouseDown()
-//    {
-//    }
-//    void OnMouseUp()
-//    {
-//    }
-
-    /*
-    void OnMouseOver()
-    {
-    }
-    void OnMouseExit()
-    { 
-    }
-    void OnMouseEnter()
-    { 
-    }
-     */
 
     void Update()
     {
@@ -81,10 +68,12 @@ public class Sonar : MonoBehaviour {
         {
             case SonarMode.ActiveSonar:
                 CreateSonar(activeObj);
+                activeSonar.Search();
                 break;
 
             case SonarMode.PassiveSonar:
                 CreateSonar(passiveObj);
+                activeSonar.Reset();
                 break;
 
             default:

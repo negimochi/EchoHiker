@@ -124,10 +124,16 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private float waitTime = 10.0f;
 
-//    [SerializeField]
+    [SerializeField]
+    private float attackWait = 5.0f;
 
     private float currentTime;
     private bool valid;
+
+    private bool attack;
+    private float currentAttackTime;
+    private TorpedoGenerator torpedo;
+    private GameObject player;
 
     /// <summary>
     /// 外部から
@@ -144,6 +150,8 @@ public class EnemyBehavior : MonoBehaviour
         // 衝突を無効化
         SphereCollider collider = GetComponent<SphereCollider>();
         if(collider) collider.enabled = false;
+
+        StopAllCoroutines();
     }
 
     void OnDestroyObject()
@@ -155,6 +163,9 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
+        attack = false;
+        player = GameObject.Find("/Player");
+        torpedo = GetComponent<TorpedoGenerator>();
         currentTime = 0.0f;
         valid = true;
         speed.Usual();
@@ -170,7 +181,7 @@ public class EnemyBehavior : MonoBehaviour
             {
                 // 減衰終了後、カウントして再度移動
                 currentTime += Time.deltaTime;
-                if (currentTime > waitTime) Auto();
+                if (currentTime > waitTime) AutoController();
             }
         }
         // 回転する
@@ -183,27 +194,42 @@ public class EnemyBehavior : MonoBehaviour
     {
         rot.Emergency();
         speed.Emergency();
-
-        // 完全にプレイヤーを補足する
-
+        attack = true;
+        StartCoroutine("AutoAttack");
     }
 
     public void Caution()
     {
         rot.Emergency();
         speed.Emergency();
+        attack = false;
+        StopCoroutine("AutoAttack");
     }
 
     public void Usual()
     {
         rot.Usual();
         speed.Usual();
+        attack = false;
+        StopCoroutine("AutoAttack");
     }
+
+    private IEnumerator AutoAttack()
+    {
+        yield return new WaitForSeconds(attackWait);
+
+        transform.LookAt(player.transform);
+
+        torpedo.Generate();
+
+        StartCoroutine("AutoAttack");
+    }
+
 
     /// <summary>
     /// 移動の自動更新
     /// </summary>
-    private void Auto()
+    private void AutoController()
     {
         currentTime = 0.0f;
         rot.Change();

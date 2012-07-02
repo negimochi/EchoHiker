@@ -9,6 +9,8 @@ public class ColorFader : MonoBehaviour {
     private float delay = 1.0f;
     [SerializeField]
     private float minAlpha = 0.1f;
+    [SerializeField]
+    private bool valid = false;
 
     private float max;
     private float currentTime;
@@ -20,13 +22,15 @@ public class ColorFader : MonoBehaviour {
         renderer.enabled = false;
     }
 
-    void OnVisible(bool flag)
+    void OnSonarHit()
     {
-        renderer.enabled = flag;
+        renderer.enabled = true;
     }
 
 	void Start () 
     {
+        renderer.enabled = valid;
+       
         max = 1.0f - minAlpha;
         isWait = false;
         currentTime = 0.0f;

@@ -7,12 +7,14 @@ public class UIDisplay : MonoBehaviour {
     private GUIStyle style;
 
     private static string scoreText = "Score: ";
-    private static string frameText = "Frame: ";
+    private static string frameText = "Life: ";
     private static string cautionText = "Caution: ";
 
     public int score = 0;
     public int frame = 1000;
     public int caution = 0;
+
+    private bool gameover = false;
 
 	void Start () 
     {
@@ -24,6 +26,11 @@ public class UIDisplay : MonoBehaviour {
         GUI.Label(new Rect(Screen.width * 0.5f, 10.0f, 120.0f, 20.0f), scoreText + score/*, style*/);
         GUI.Label(new Rect(Screen.width * 0.8f, 10.0f, 120.0f, 20.0f), frameText + frame/*, style*/);
         GUI.Label(new Rect(Screen.width * 0.8f, Screen.height * 0.8f, 120.0f, 20.0f), cautionText + caution.ToString() + "%");
+
+        if (gameover)
+        {
+            GUI.Label(new Rect(Screen.width * 0.5f, Screen.height * 0.5f, 120.0f, 20.0f), "Game Over");
+        }
     }
 
     void OnGetItem( int value )
@@ -46,6 +53,7 @@ public class UIDisplay : MonoBehaviour {
             if (player) player.BroadcastMessage("OnGameOver");
             GameObject obj = GameObject.Find("/Object");
             if (obj) obj.BroadcastMessage("OnGameOver");
+            gameover = true;
         }
     }
 

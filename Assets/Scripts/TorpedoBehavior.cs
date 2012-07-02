@@ -42,6 +42,12 @@ public class TorpedoBehavior : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    void OnHit()
+    {
+        // Õ“Ë‚ğ–³Œø‰»
+        SphereCollider collider = GetComponent<SphereCollider>();
+        if (collider) collider.enabled = false;
+    }
 
 	// Use this for initialization
 	void Start () {

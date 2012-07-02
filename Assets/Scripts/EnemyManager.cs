@@ -17,6 +17,13 @@ public class EnemyManager : MonoBehaviour {
     {
         Debug.Log("EnemyManager.OnDestroyObject");
         list.Remove(obj);
+        int result = 0;
+        foreach (DictionaryEntry de in list)
+        {
+            if ((int)de.Value > result) result = (int)de.Value;
+        }
+        // •\¦—p‚É’Ê’m
+        ui.SendMessage("OnUpdateCaution", result);
     }
     private void OnGenerated(DictionaryEntry target)
     {
@@ -29,6 +36,7 @@ public class EnemyManager : MonoBehaviour {
 //        Debug.Log("EnemyManager.UpdateCautionValue");
         list[target.Key] = target.Value;
         int result = (int)target.Value;
+
         foreach( DictionaryEntry de in list ) {
             if( de.Key == target.Key ) continue;
             if( (int)de.Value > result ) result = (int)de.Value;

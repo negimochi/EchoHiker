@@ -27,6 +27,7 @@ public class UIDebugDisplay : MonoBehaviour {
 			frame = 0;
 		}
 	}
+    /*
     void OnGetItem(GameObject histObj)
     {
         string objname = histObj.name;
@@ -39,6 +40,7 @@ public class UIDebugDisplay : MonoBehaviour {
             itemCounter[objname] = (int)itemCounter[objname] + 1;
         }
     }
+     */
     void OnGUI()
     {
         GUI.Label(new Rect(Screen.width - 100.0f, Screen.height-20.0f, 100.0f, 20.0f), "fps:" + frameRate.ToString());

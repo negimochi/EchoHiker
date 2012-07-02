@@ -36,6 +36,7 @@ public class TorpedoCollider : MonoBehaviour {
         {
             CheckPlayer(other.gameObject);
             CheckEnemy(other.gameObject);
+            CheckTorpedo(other.gameObject);
         }
     }
     void OnTriggerStay(Collider other)
@@ -44,6 +45,7 @@ public class TorpedoCollider : MonoBehaviour {
         {
             CheckPlayer(other.gameObject);
             CheckEnemy(other.gameObject);
+            CheckTorpedo(other.gameObject);
         }
     }
 
@@ -54,9 +56,20 @@ public class TorpedoCollider : MonoBehaviour {
         Debug.Log("Wait EndCoroutine");
     }
 
+    private void CheckTorpedo(GameObject target)
+    {
+        if (target.tag.Equals("Torpedo"))
+        { 
+            // 魚雷通しの爆発
+            target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+
+            // ヒット後の自分の処理
+            BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
     private void CheckPlayer(GameObject target)
     {
-        Debug.Log("Collider Enter:" + gameObject.name);
         if (target.tag.Equals("Player"))
         {
             // 自分にヒット
@@ -73,7 +86,6 @@ public class TorpedoCollider : MonoBehaviour {
     }
     private void CheckEnemy(GameObject target)
     {
-        Debug.Log("Collider Enter:" + gameObject.name);
         if (target.tag.Equals("Enemy"))
         {
             if (owner == OwnerType.Player)

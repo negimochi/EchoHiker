@@ -37,6 +37,7 @@ public class EnemyEyeCollider : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        /*
         if (!other.gameObject.tag.Equals("Player")) return;
         if (!isCountUp)
         {
@@ -44,6 +45,7 @@ public class EnemyEyeCollider : MonoBehaviour {
             Debug.Log("OnTriggerEnter:" + transform.parent.gameObject.name);
             SwitchCount(other.gameObject, true);
         }
+         */
     }
     void OnTriggerStay(Collider other)
     {
