@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour {
         private float currentRot;
 
         [SerializeField]
+        private float max = 30.0f;
+        [SerializeField]
         private float blend = 0.8f;
         [SerializeField]
         private float margin = 0.01f;
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour {
 
             // 回転量のブレンド
             current.y = Mathf.Lerp(current.y, current.y + value, blend);
+            if (current.y > max) current.y = max;
             // 減衰リセット
             attenuationStart = current.y;
             attenuationTime = 0.0f;

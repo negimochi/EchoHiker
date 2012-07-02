@@ -24,9 +24,8 @@ public class ActiveSonar : MonoBehaviour {
         capsuleCollider = GetComponent<CapsuleCollider>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-
+	void Update () 
+    {
         if (search) {
             float time = currentTime / duration;
             if (time <= 1.0f)
@@ -50,13 +49,22 @@ public class ActiveSonar : MonoBehaviour {
         currentTime = 0.0f;
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("### Hit Sonar:" + other.gameObject.tag + ", " + Time.time);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        Debug.Log("### Hit Sonar:" + other.gameObject.tag + ", " + Time.time);
+    }
 
     void OnTriggerStay(Collider other)
     {
-        Debug.Log("Hit Sonar:" + other.gameObject.tag + ", " + Time.time);
-        if (other.gameObject.tag.Equals("Enemy") ||
-            other.gameObject.tag.Equals("Item") ||
-            other.gameObject.tag.Equals("Torpedo"))
+        Debug.Log("### Hit Sonar:" + other.gameObject.tag + ", " + Time.time);
+        if (other.gameObject.CompareTag("Enemy") ||
+            other.gameObject.CompareTag("Item") ||
+            other.gameObject.CompareTag("Torpedo"))
         {
             other.gameObject.BroadcastMessage("OnSonarHit", SendMessageOptions.DontRequireReceiver);
         }

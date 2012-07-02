@@ -21,16 +21,14 @@ public class EnemyEyeCollider : MonoBehaviour {
 
 	void Start () 
     {
-        {
-            GameObject obj = GameObject.Find("/Object/EnemyManager");
-            if (obj) manager = obj.GetComponent<EnemyManager>();
-            if (manager==null) Debug.LogError("Not Exists EnemyManager");
-        }
-        {
-            GameObject obj = gameObject.transform.parent.gameObject;
-            if (obj) behavior = obj.GetComponent<EnemyBehavior>();
-            if (behavior == null) Debug.LogError("Not Exists EnemyBehavior");
-        }
+        GameObject managerObj = GameObject.Find("/Object/EnemyManager");
+        if (managerObj) manager = managerObj.GetComponent<EnemyManager>();
+        if (manager==null) Debug.LogError("Not Exists EnemyManager");
+
+        GameObject parentObj = gameObject.transform.parent.gameObject;
+        if (parentObj) behavior = parentObj.GetComponent<EnemyBehavior>();
+        if (behavior == null) Debug.LogError("Not Exists EnemyBehavior");
+
         step = stepMin;
         radius = GetComponent<SphereCollider>().radius;
 	}

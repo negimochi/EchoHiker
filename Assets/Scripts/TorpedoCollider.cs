@@ -10,95 +10,88 @@ public class TorpedoCollider : MonoBehaviour {
     private OwnerType owner;
 
     [SerializeField]
-    private float invalidTime = 2.0f;
-
+    private float waitTime = 2.0f;
     [SerializeField]
     private int damegeValue = 100;
     [SerializeField]
     private int enamyDestroyScore = 100;
 
-    private bool valid = false;
-   
-    public void SetOwner(OwnerType type)
-    {
-        owner = type;
-    }
+    private GameObject ui = null;
 
 	void Start () 
     {
+        ui = GameObject.Find("/UI");
         // 発射の瞬間は、自機にぶつかるのでWaitを挟む
+        collider.enabled = false;
         StartCoroutine("Wait");
 	}
 
     void OnTriggerEnter(Collider other)
     {
-        if (valid == true)
-        {
-            CheckPlayer(other.gameObject);
-            CheckEnemy(other.gameObject);
-            CheckTorpedo(other.gameObject);
-        }
+        CheckPlayer(other.gameObject);
+        CheckEnemy(other.gameObject);
+        CheckTorpedo(other.gameObject);
     }
     void OnTriggerStay(Collider other)
     {
-        if (valid == true)
-        {
-            CheckPlayer(other.gameObject);
-            CheckEnemy(other.gameObject);
-            CheckTorpedo(other.gameObject);
-        }
+        CheckPlayer(other.gameObject);
+        CheckEnemy(other.gameObject);
+        CheckTorpedo(other.gameObject);
+    }
+
+
+    public void SetOwner(OwnerType type)
+    {
+        owner = type;
     }
 
     private IEnumerator Wait()
     {
-        yield return new WaitForSeconds(invalidTime);
-        valid = true;
+        yield return new WaitForSeconds(waitTime);
+        collider.enabled = true;
         Debug.Log("Wait EndCoroutine");
     }
 
     private void CheckTorpedo(GameObject target)
     {
-        if (target.tag.Equals("Torpedo"))
+        if (target.CompareTag("Torpedo"))
         { 
-            // 魚雷通しの爆発
+            // 相手の魚雷にヒット
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+            // Collider無効化
+            collider.enabled = false;
         }
     }
 
     private void CheckPlayer(GameObject target)
     {
-        if (target.tag.Equals("Player"))
+        if (target.CompareTag("Player"))
         {
-            // 自分にヒット
-
-            // ダメージを伝える
-            GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnDamege", damegeValue);
-
+            // ダメージ通知
+            ui.SendMessage("OnDamege", damegeValue);
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-
-            valid = false;
+            // Collider無効化
+            collider.enabled = false;
         }
     }
     private void CheckEnemy(GameObject target)
     {
-        if (target.tag.Equals("Enemy"))
+        if (target.CompareTag("Enemy"))
         {
             if (owner == OwnerType.Player)
             {
-                GameObject ui = GameObject.Find("/UI");
-                if (ui) ui.SendMessage("OnDestroyEnemy", enamyDestroyScore);
+                // 自分の魚雷が敵にヒット。ポイント通知
+                ui.SendMessage("OnDestroyEnemy", enamyDestroyScore);
             }
-            // 敵にヒット
+            // 敵にヒット通知
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-
-            valid = false;
+            // Collider無効化
+            collider.enabled = false;
         }
     }
 }

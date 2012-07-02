@@ -5,8 +5,7 @@ public class TorpedoMoveEffect : MonoBehaviour {
 
     void OnHit()
     {
-        ParticleSystem particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
+//        ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
         particleSystem.Stop();
-        particleSystem.enableEmission = false;
     }
 }

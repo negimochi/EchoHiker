@@ -82,7 +82,7 @@ public class MoveTest : MonoBehaviour {
     void Move_pingpong()
     {
         float t = Time.time * magnitude;
-        Debug.Log(t);
+//        Debug.Log(t);
         transform.position = new Vector3(firstPos.x + Mathf.PingPong(t, 20), firstPos.y, firstPos.z);
     }
     void Move_smoothstep()
@@ -105,5 +105,33 @@ public class MoveTest : MonoBehaviour {
     {
 //        rigidbody.MovePosition(rigidbody.position + directon * magnitude * Time.deltaTime);
           rigidbody.MovePosition(transform.position + directon * magnitude * Time.deltaTime);
+    }
+	
+	void OnTriggerEnter(Collider other)
+	{
+//        rigidbody.AddExplosionForce(100.0f, transform.position, 10.0f);
+        Debug.Log("OnTriggerEnter:" + other.gameObject.name);
+	}
+    void OnTriggerStay(Collider other)
+    {
+        Debug.Log("OnTriggerStay:" + other.gameObject.name);
+    }
+    void OnTriggerExit(Collider other)
+    {
+        Debug.Log("OnTriggerExit:" + other.gameObject.name);
+    }
+    void OnCollisionEnter(Collision collision) 
+    {
+        ContactPoint contact = collision.contacts[0];
+        rigidbody.AddExplosionForce(100.0f, contact.point, 10.0f);
+        Debug.Log("OnCollisionEnter:" + collision.collider.gameObject.name);
+    }
+    void OnCollisionStay(Collision collision)
+    {
+        Debug.Log("OnCollisionStay:" + collision.collider.gameObject.name);
+    }
+    void OnCollisionExit(Collision collision)
+    {
+        Debug.Log("OnCollisionExit:" + collision.collider.gameObject.name);
     }
 }

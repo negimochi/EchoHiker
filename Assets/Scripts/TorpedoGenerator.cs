@@ -12,6 +12,8 @@ public class TorpedoGenerator : MonoBehaviour {
     [SerializeField]
     private bool isNote = false;
     [SerializeField]
+    private bool isColorFader = false;
+    [SerializeField]
     private TorpedoCollider.OwnerType type = TorpedoCollider.OwnerType.Enemy;
 
     private float current;
@@ -40,14 +42,20 @@ public class TorpedoGenerator : MonoBehaviour {
 
         {   // Owner設定
             TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
-            if(torpedoCollider) torpedoCollider.SetOwner(type);
+            if (torpedoCollider) torpedoCollider.SetOwner(type);
             else Debug.LogError("Not exists TorpedoCollider");
         }
         {   // 音の設定
             Note note = newObj.GetComponentInChildren<Note>();
-            if (note) note.Valid(isNote);
+            if (note) note.SetEnable(isNote);
             else Debug.LogError("Not exists Note");
         }
+        {   // ソナーの設定
+            ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
+            if (colorFader) colorFader.SetEnable(isColorFader);
+            else Debug.LogError("Not exists ColorFader");
+        }
+
         // クールタイム
         valid = false;
         current = 0.0f;

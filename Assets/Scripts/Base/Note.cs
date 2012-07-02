@@ -9,13 +9,13 @@ public class Note : MonoBehaviour {
     [SerializeField]
     private bool valid   = true;
 
-    private float counter;
-//    private float param;
-    private Color baseColor;
-
+    private float counter = 0.0f;
     private ParticleSystem particleSystem = null;
 
-    public void Valid(bool valid_) { valid = valid_; }
+    public void SetEnable( bool flag )
+    {
+        valid = flag;
+    }
 
     void OnHit()
     {

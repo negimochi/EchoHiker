@@ -3,14 +3,6 @@ using System.Collections;
 
 public class TorpedoBehavior : MonoBehaviour {
 
-    enum Type
-    {
-        Normal,         // 通常
-        Tracking      // 追尾モード
-    };
-    [SerializeField]
-    private Type type;
-
     [System.Serializable]
     public class SpeedValue
     {
@@ -34,6 +26,10 @@ public class TorpedoBehavior : MonoBehaviour {
 
     [SerializeField]
     private Rect runningArea;   // 移動範囲
+    [SerializeField]
+    private float explosionForce = 1000.0f;
+    [SerializeField]
+    private float explosionRadius = 10.0f;
 
 
     void OnDestroyObject()
@@ -44,13 +40,13 @@ public class TorpedoBehavior : MonoBehaviour {
 
     void OnHit()
     {
-        // 衝突を無効化
-        SphereCollider collider = GetComponent<SphereCollider>();
-        if (collider) collider.enabled = false;
+        // 爆発の衝撃をプレイヤーに加える
+        GameObject player = GameObject.Find("/Player");
+        player.rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
     }
 
-	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
 	
 	}
 	

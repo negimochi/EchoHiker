@@ -19,12 +19,12 @@ public class ColorFader : MonoBehaviour {
 
     void OnHit()
     {
-        renderer.enabled = false;
+        SetEnable(false);
     }
 
-    void OnSonarHit()
+    public void SetEnable( bool flag )
     {
-        renderer.enabled = true;
+        renderer.enabled = flag;
     }
 
 	void Start () 
