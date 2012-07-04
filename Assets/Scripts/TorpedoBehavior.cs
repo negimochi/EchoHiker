@@ -26,11 +26,12 @@ public class TorpedoBehavior : MonoBehaviour {
 
     [SerializeField]
     private Rect runningArea;   // à⁄ìÆîÕàÕ
+    /*
     [SerializeField]
     private float explosionForce = 1000.0f;
     [SerializeField]
     private float explosionRadius = 10.0f;
-
+    */
 
     void OnDestroyObject()
     {
@@ -38,12 +39,16 @@ public class TorpedoBehavior : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    /*
     void OnHit()
     {
+        Debug.Log("TorpedoBehavior.OnHit");
         // îöî≠ÇÃè’åÇÇÉvÉåÉCÉÑÅ[Ç…â¡Ç¶ÇÈ
         GameObject player = GameObject.Find("/Player");
-        player.rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+        player.rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 3.0f, ForceMode.Impulse);
+//        player.rigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius, 3.0f, ForceMode.Impulse);
     }
+     */
 
 	void Start () 
     {
