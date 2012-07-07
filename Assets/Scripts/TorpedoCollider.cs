@@ -12,7 +12,7 @@ public class TorpedoCollider : MonoBehaviour {
     [SerializeField]
     private float waitTime = 2.0f;
     [SerializeField]
-    private int damegeValue = 100;
+    private int damegeValue = 1;
     [SerializeField]
     private int enamyDestroyScore = 100;
 
@@ -48,6 +48,7 @@ public class TorpedoCollider : MonoBehaviour {
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(waitTime);
+
         collider.enabled = true;
         Debug.Log("Wait EndCoroutine");
     }
@@ -69,8 +70,12 @@ public class TorpedoCollider : MonoBehaviour {
     {
         if (target.CompareTag("Player"))
         {
+            SphereCollider sphereCollider = GetComponent<SphereCollider>();
+            Vector3 vec = new Vector3(transform.position.x, transform.position.y, transform.position.z + sphereCollider.radius);
+            target.rigidbody.AddExplosionForce(100.0f, vec, 10.0f, 3.0f, ForceMode.Impulse);
+
             // ダメージ通知
-            ui.SendMessage("OnDamege", damegeValue);
+            ui.SendMessage("OnDamage", damegeValue, SendMessageOptions.DontRequireReceiver);
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // Collider無効化
