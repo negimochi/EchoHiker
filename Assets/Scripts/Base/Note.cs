@@ -10,7 +10,7 @@ public class Note : MonoBehaviour {
     private bool valid   = true;
 
     private float counter = 0.0f;
-    private ParticleSystem particleSystem = null;
+    private ParticleSystem particle = null;
 
     public void SetEnable( bool flag )
     {
@@ -25,8 +25,9 @@ public class Note : MonoBehaviour {
         //audio.Stop();
 
         // エフェクト開始(1つだけとする)
-        if (particleSystem) {
-            particleSystem.Play();
+        if (particle)
+        {
+            particle.Play();
             Debug.Log("Particle Start");
         }
 
@@ -35,7 +36,7 @@ public class Note : MonoBehaviour {
 
 	void Start () 
     {
-        particleSystem = gameObject.GetComponentInChildren<ParticleSystem>();
+        particle = gameObject.GetComponentInChildren<ParticleSystem>();
         counter = offset;
     }
 
@@ -79,9 +80,9 @@ public class Note : MonoBehaviour {
         }
 
         // エフェクトが完全に終了していたらオブジェクト破棄
-        if (particleSystem)
+        if (particle)
         {
-            while (particleSystem.isPlaying)
+            while (particle.isPlaying)
             {
                 yield return new WaitForSeconds(waitTime);
             }

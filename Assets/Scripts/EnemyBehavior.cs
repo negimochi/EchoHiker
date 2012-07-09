@@ -130,7 +130,7 @@ public class EnemyBehavior : MonoBehaviour
     private float currentTime;
     private bool valid;
 
-    private bool attack;
+//    private bool attack;
     private float currentAttackTime;
     private TorpedoGenerator torpedo;
     private GameObject player;
@@ -163,7 +163,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
-        attack = false;
+//        attack = false;
         player = GameObject.Find("/Player");
         torpedo = GetComponent<TorpedoGenerator>();
         currentTime = 0.0f;
@@ -194,7 +194,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         rot.Emergency();
         speed.Emergency();
-        attack = true;
+//        attack = true;
         StartCoroutine("AutoAttack");
     }
 
@@ -202,7 +202,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         rot.Emergency();
         speed.Emergency();
-        attack = false;
+//        attack = false;
         StopCoroutine("AutoAttack");
     }
 
@@ -210,7 +210,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         rot.Usual();
         speed.Usual();
-        attack = false;
+//        attack = false;
         StopCoroutine("AutoAttack");
     }
 

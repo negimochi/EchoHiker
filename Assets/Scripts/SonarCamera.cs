@@ -9,12 +9,12 @@ public class SonarCamera : MonoBehaviour {
 
 	public void SetRect( Rect rect )
     {
-        Camera sonarCamera = gameObject.GetComponent<Camera>();
+        //Camera sonarCamera = gameObject.GetComponent<Camera>();
 
         float r = rect.width * 0.5f;
         float newWidth = r * Mathf.Pow(2.0f,0.5f);   // ì‡ê⁄Ç∑ÇÈê≥ï˚å`ÇÃàÍï”
         float sub = (rect.width - newWidth)*0.5f;
-        sonarCamera.pixelRect = new Rect(rect.x + sub, rect.y + sub, newWidth, newWidth);
+        camera.pixelRect = new Rect(rect.x + sub, rect.y + sub, newWidth, newWidth);
         
         //sonarCamera.pixelRect = new Rect( rect );
     }

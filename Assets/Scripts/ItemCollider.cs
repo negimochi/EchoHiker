@@ -47,7 +47,7 @@ public class ItemCollider : MonoBehaviour
         {
             // スコア加算
             GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.SendMessage("OnGetItem", scoreValue, SendMessageOptions.DontRequireReceiver);
+            if (ui) ui.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // Colliderを切る

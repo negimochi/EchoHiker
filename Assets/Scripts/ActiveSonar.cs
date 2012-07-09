@@ -12,8 +12,8 @@ public class ActiveSonar : MonoBehaviour {
     [SerializeField]
     private float stepEnd =300.0f;
 
-    [SerializeField]
-    private float updateTime = 0.2f;
+//    [SerializeField]
+ //   private float updateTime = 0.2f;
 
     private float currentTime = 0.0f;
     private bool search = false;
