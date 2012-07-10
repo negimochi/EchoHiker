@@ -11,7 +11,7 @@ public class Score : MonoBehaviour {
 
     void Start() 
     {
-        guiText.pixelOffset = new Vector2( Screen.width * 0.5f, Screen.height - 30.0f );
+        guiText.pixelOffset = new Vector2( Screen.width * 0.5f, Screen.height - 32.0f );
 	}
 
     void OnGetScore( int value )

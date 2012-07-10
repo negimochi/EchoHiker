@@ -8,6 +8,8 @@ public class Sonar : MonoBehaviour {
     [SerializeField]
     private GameObject passiveObj;
     [SerializeField]
+    private int offsetPixel = 10;
+    [SerializeField]
     private float aspect = 0.4f;
 
     private GameObject currentObj = null;
@@ -77,10 +79,9 @@ public class Sonar : MonoBehaviour {
     private void SetPosition()
     {
         float size = Screen.height * aspect;
-        float offset = 10.0f;
 
         guiTexture.enabled = true;
-        guiTexture.pixelInset = new Rect(offset, Screen.height - offset - size, size, size);
+        guiTexture.pixelInset = new Rect(offsetPixel, Screen.height - offsetPixel - size, size, size);
 
         // カメラにサイズを伝える
         sonarCamera.SetRect(guiTexture.pixelInset);

@@ -23,7 +23,7 @@ public class EnemyManager : MonoBehaviour {
             if ((int)de.Value > result) result = (int)de.Value;
         }
         // 表示用に通知
-        ui.SendMessage("OnUpdateCaution", result);
+        ui.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
     }
     private void OnGenerated(DictionaryEntry target)
     {
@@ -42,6 +42,6 @@ public class EnemyManager : MonoBehaviour {
             if( (int)de.Value > result ) result = (int)de.Value;
         }
         // 表示用に通知
-        ui.SendMessage("OnUpdateCaution", result);
+        ui.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
     }
 }
