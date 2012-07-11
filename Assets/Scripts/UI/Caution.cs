@@ -23,7 +23,12 @@ public class Caution : MonoBehaviour {
             guiText.pixelOffset = new Vector2(texture.pixelInset.x + 32, texture.pixelInset.y + 42);
             guiText.material.color = Color.yellow;
         }
-	}
+        GUIText text = GetComponentInChildren<GUIText>();
+        if (text) {
+            text.pixelOffset = new Vector2(guiText.pixelOffset.x, guiText.pixelOffset.y);
+            text.material.color = Color.yellow;
+        }
+    }
 
     void OnUpdateCaution(int value)
     {

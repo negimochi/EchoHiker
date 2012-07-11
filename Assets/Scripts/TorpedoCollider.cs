@@ -38,7 +38,14 @@ public class TorpedoCollider : MonoBehaviour {
         CheckEnemy(other.gameObject);
         CheckTorpedo(other.gameObject);
     }
-
+    void OnCollisionEnter(Collision collision)
+    {
+        CheckPlayer(collision.gameObject);
+    }
+    void OnCollisionStay(Collision collision)
+    {
+        CheckPlayer(collision.gameObject);
+    }
 
     public void SetOwner(OwnerType type)
     {
