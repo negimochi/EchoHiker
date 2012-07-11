@@ -7,6 +7,8 @@ public class Caution : MonoBehaviour {
     private int offsetPixel = 8;
     [SerializeField]
     private int disitSize = 3;
+    [SerializeField]
+    private Color textColor = Color.yellow;
 
     private int cautionValue = 0;
 
@@ -15,24 +17,24 @@ public class Caution : MonoBehaviour {
         GUITexture texture = GetComponentInChildren<GUITexture>();
         if (texture)
         {
-            int w = texture.texture.width;
-            int h = texture.texture.height;
-            Debug.Log(w + "," + h);
-            texture.pixelInset = new Rect(Screen.width - w - offsetPixel, offsetPixel, w, h);
-
-            guiText.pixelOffset = new Vector2(texture.pixelInset.x + 32, texture.pixelInset.y + 42);
-            guiText.material.color = Color.yellow;
+            float xPosPixel = Screen.width - texture.texture.width - offsetPixel;
+            float yPosPixel = offsetPixel;
+            gameObject.transform.position = new Vector3( xPosPixel/(float)Screen.width, yPosPixel/(float)Screen.height, 0.0f);
         }
-        GUIText text = GetComponentInChildren<GUIText>();
-        if (text) {
-            text.pixelOffset = new Vector2(guiText.pixelOffset.x, guiText.pixelOffset.y);
-            text.material.color = Color.yellow;
+
+        guiText.material.color = textColor;
+        GUIText[] textArr = GetComponentsInChildren<GUIText>();
+        for (int i = 0; i < textArr.Length; i++ )
+        {
+            textArr[i].material.color = textColor;
         }
     }
 
     void OnUpdateCaution(int value)
     {
         cautionValue = value;
+        if (cautionValue > 100) cautionValue = 100;
+        // •\Ž¦
         guiText.text = cautionValue.ToString("D" + disitSize);
     }
 
