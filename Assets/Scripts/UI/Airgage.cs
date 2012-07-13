@@ -3,6 +3,12 @@ using System.Collections;
 
 public class Airgage : MonoBehaviour {
 
+    [SerializeField]
+    private float offsetGageSize = 120.0f;  // ゼロで画面端
+    [SerializeField]
+    private Vector2 offsetPixelGage = Vector2.zero;  // ゼロで画面端
+    [SerializeField]
+    private Vector2 offsetPixelText = Vector2.zero;  // ゼロで画面端
     
     [SerializeField]
     private float[] airUpdateTime = new float[] {
@@ -16,45 +22,78 @@ public class Airgage : MonoBehaviour {
 
     private float air = 0;              // 現在のair値
 
-    private int damageLevel = 0;    // ダメージレベル
+    private int damageLv = 0;           // ダメージレベル
     private float counter = 0;
 
-    void Start() 
+    private GameObject meterObj;
+    private GameObject damageLvObj;
+
+    void Start()
     {
         air = airMax;
-	}
+        meterObj = GameObject.Find("AirgageMeter");
+        damageLvObj = GameObject.Find("DamageLvText");
+
+        // 位置調整
+        float w = (float)Screen.width;
+        float h = (float)Screen.height;
+
+        float aspect = w / h;
+        offsetPixelGage.x += offsetGageSize;
+        offsetPixelGage.y += offsetGageSize;
+        float posX = aspect * (1.0f - offsetPixelGage.x / w);
+        float posY = 1.0f - offsetPixelGage.y / h;
+        meterObj.transform.position = new Vector3(posX, posY, 0.0f);
+
+        posX = 1.0f - offsetPixelText.x / w;
+        posY = 1.0f - offsetPixelText.y / h;
+        damageLvObj.transform.position = new Vector3(posX, posY, 0.0f);
+
+    }
 
     void Update()
     {
         // カウンタによる更新
         counter += Time.deltaTime;
-        if (counter > airUpdateTime[damageLevel])
+        if (counter > airUpdateTime[damageLv])
         {
-            OnDeflate(step);
+            Deflate();
             counter = 0;
         }
     }
 
+    /// <summary>
+    /// [BroadcastMessage]
+    /// ダメージを受けた
+    /// </summary>
+    /// <param name="value">ダメージ量。通常1</param>
     void OnDamage(int value)
     {
         // ダメージレベル加算
-        damageLevel += value;
-        if (damageLevel >= airUpdateTime.Length) damageLevel = airUpdateTime.Length - 1;
+        damageLv += value;
+        if (damageLv >= airUpdateTime.Length) damageLv = airUpdateTime.Length - 1;
+        // 表示用のオブジェクトに伝える
+        damageLvObj.SendMessage("OnDisplay", damageLv);
     }
 
-    void OnDeflate(float value)
+    /// <summary>
+    /// air更新
+    /// </summary>
+    private void Deflate()
     {
+        bool gameover = false;
         // 値更新
-        air -= value;
-        // シェーダのアルファcutoffの値を変更して表示更新
-        float threshold = Mathf.InverseLerp(0, airMax, air);
-        Debug.Log( threshold );
-        renderer.material.SetFloat("_Cutoff", threshold); 
-
-        if (air <= 0)
-        {
+        air -= step;
+        if( air <= 0.0f ) {
             air = 0.0f;
+            gameover = true;
+        }
+        // メーターに値を伝える
+        float threshold = Mathf.InverseLerp(0, airMax, air);
+        meterObj.SendMessage("OnDisplay", threshold);
 
+        if (gameover)
+        {
             // 酸素切れ。ゲームオーバー
             // 終了通知を送る
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -65,6 +104,6 @@ public class Airgage : MonoBehaviour {
         }
     }
 
-    public float Value() { return air; }
-    public int DamageLevel() { return damageLevel; }
+    public float Air() { return air; }
+    public int DamageLevel() { return damageLv; }
 }

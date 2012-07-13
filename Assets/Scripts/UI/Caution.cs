@@ -4,11 +4,15 @@ using System.Collections;
 public class Caution : MonoBehaviour {
 
     [SerializeField]
-    private int offsetPixel = 8;
+    private Vector2 offsetPixel = Vector2.zero;  // É[ÉçÇ≈âÊñ í[
     [SerializeField]
     private int disitSize = 3;
     [SerializeField]
-    private Color textColor = Color.yellow;
+    private Color safetyColor = Color.white;
+    [SerializeField]
+    private Color cautionColor = Color.yellow;
+    [SerializeField]
+    private Color emergencyColor = Color.red;
 
     private int cautionValue = 0;
 
@@ -17,23 +21,28 @@ public class Caution : MonoBehaviour {
         GUITexture texture = GetComponentInChildren<GUITexture>();
         if (texture)
         {
-            float xPosPixel = Screen.width - texture.texture.width - offsetPixel;
-            float yPosPixel = offsetPixel;
-            gameObject.transform.position = new Vector3( xPosPixel/(float)Screen.width, yPosPixel/(float)Screen.height, 0.0f);
+            // à íuí≤êÆ
+            float w = (float)Screen.width;
+            float h = (float)Screen.height;
+            float xPos = 1.0f - (texture.texture.width + offsetPixel.x)/w;
+            float yPos = offsetPixel.y/h;
+            transform.position = new Vector3(xPos, yPos, 0.0f);
         }
 
-        guiText.material.color = textColor;
+        guiText.material.color = cautionColor;
         GUIText[] textArr = GetComponentsInChildren<GUIText>();
         for (int i = 0; i < textArr.Length; i++ )
         {
-            textArr[i].material.color = textColor;
+            textArr[i].material.color = cautionColor;
         }
     }
 
     void OnUpdateCaution(int value)
     {
         cautionValue = value;
-        if (cautionValue > 100) cautionValue = 100;
+        //if( cautionValue == 0 ) guiText.material.color = safetyColor;
+        //else if (cautionValue < 90) guiText.material.color = cautionColor;
+        //else  guiText.material.color = emergencyColor;
         // ï\é¶
         guiText.text = cautionValue.ToString("D" + disitSize);
     }
