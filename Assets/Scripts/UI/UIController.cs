@@ -22,6 +22,10 @@ public class UIController : MonoBehaviour {
         textureRect = new Rect(pivotPoint.x - w * 0.5f, pivotPoint.y - h * 0.5f, w, h);
 	}
 
+    void OnIntermissionEnd()
+    { 
+    }
+
     void OnGUI()
     {
         // テクスチャの回転はGUIUtility.RotateAroundPivotではないと回転できない
