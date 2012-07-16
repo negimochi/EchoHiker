@@ -22,11 +22,11 @@ public class RandomGenerator : MonoBehaviour {
     private bool limitChecker;
     private bool ready;
     private float counter;
-    private GameObject[] children = null;
+    private GameObject[] childrenArray = null;
 
     void Start()
     {
-        ready = true;
+        ready = false;
         limitChecker = false;
         counter = 0.0f;
     }
@@ -62,6 +62,17 @@ public class RandomGenerator : MonoBehaviour {
         ready = true;
     }
 
+    void OnGameStart()
+    {
+        ready = true;
+    }
+
+    void OnGameOver()
+    {
+        ready = false;
+        //StopCoroutine("Delay");
+    }
+
     /// <summary>
     /// [ Message ] オブジェクト破壊
     /// </summary>
@@ -70,7 +81,7 @@ public class RandomGenerator : MonoBehaviour {
     {
         Debug.Log("Destoryed:" + obj.name);
         // 配列更新
-        children = GameObject.FindGameObjectsWithTag(target.tag);
+        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
     }
 
     public void Generate()
@@ -107,7 +118,7 @@ public class RandomGenerator : MonoBehaviour {
             newObj.transform.LookAt(Vector3.zero);
         }
         // 配列更新
-        children = GameObject.FindGameObjectsWithTag(target.tag);
+        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
 
         // 通知
         //SendMessage("OnGenerated", SendMessageOptions.DontRequireReceiver);
@@ -115,7 +126,7 @@ public class RandomGenerator : MonoBehaviour {
 
     public int ChildrenNum()
     {
-        if (children != null) return children.Length;
+        if (childrenArray != null) return childrenArray.Length;
         return 0;
     }
 

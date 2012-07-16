@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class UIController : MonoBehaviour {
+public class Controller : MonoBehaviour {
 
     [SerializeField]
     private Texture guiCompass;
     [SerializeField]
     private float aspect = 0.5f;
+
+    private bool enable = false;
 
     private Matrix4x4 tmpMat;
     private float angleY;
@@ -22,12 +24,9 @@ public class UIController : MonoBehaviour {
         textureRect = new Rect(pivotPoint.x - w * 0.5f, pivotPoint.y - h * 0.5f, w, h);
 	}
 
-    void OnIntermissionEnd()
-    { 
-    }
-
     void OnGUI()
     {
+        if (!enable) return;
         // ƒeƒNƒXƒ`ƒƒ‚Ì‰ñ“]‚ÍGUIUtility.RotateAroundPivot‚Å‚Í‚È‚¢‚Æ‰ñ“]‚Å‚«‚È‚¢
         tmpMat = GUI.matrix;    // ˆêŽž‘Þ”ð
         {
@@ -35,6 +34,11 @@ public class UIController : MonoBehaviour {
             GUI.DrawTexture(textureRect, guiCompass);
         }
         GUI.matrix = tmpMat;    // –ß‚·
+    }
+
+    public void Enable( bool flag )
+    {  
+        enable = flag;
     }
 
     public void SetAngle(float angle)

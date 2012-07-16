@@ -138,34 +138,6 @@ public class EnemyBehavior : MonoBehaviour
     private TorpedoGenerator torpedo;
     private GameObject player;
 
-    /// <summary>
-    /// 外部から
-    /// </summary>
-    void OnGameOver()
-    {
-        speed.Stop();
-        rot.Stop();
-        valid = false;
-    }
-
-    void OnHit()
-    {
-        // 衝突を無効化
-        SphereCollider collider = GetComponent<SphereCollider>();
-        if(collider) collider.enabled = false;
-
-        // 衝突したので、
-
-        // 念のため
-        StopAllCoroutines();
-    }
-
-    void OnDestroyObject()
-    {
-        Debug.Log("EnemyBehavior.OnDestroy");
-        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
-        Destroy(gameObject);
-    }
 
     void Start()
     {
@@ -194,6 +166,35 @@ public class EnemyBehavior : MonoBehaviour
         Rotate();
         // 前に進む
         MoveForward();
+    }
+
+    /// <summary>
+    /// 外部から
+    /// </summary>
+    void OnGameOver()
+    {
+        speed.Stop();
+        rot.Stop();
+        valid = false;
+    }
+
+    void OnHit()
+    {
+        // 衝突を無効化
+        SphereCollider collider = GetComponent<SphereCollider>();
+        if (collider) collider.enabled = false;
+
+        // 衝突したので、
+
+        // 念のため
+        StopAllCoroutines();
+    }
+
+    void OnDestroyObject()
+    {
+        Debug.Log("EnemyBehavior.OnDestroy");
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
+        Destroy(gameObject);
     }
 
     public void Emergency()

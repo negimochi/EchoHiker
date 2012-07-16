@@ -28,11 +28,14 @@ public class Airgage : MonoBehaviour {
     private GameObject meterObj;
     private GameObject damageLvObj;
 
+    private GameObject uiObj = null;
+
     void Start()
     {
         air = airMax;
         meterObj = GameObject.Find("AirgageMeter");
         damageLvObj = GameObject.Find("DamageLvText");
+        uiObj = GameObject.Find("/UI");
 
         // 位置調整
         float w = (float)Screen.width;
@@ -95,12 +98,7 @@ public class Airgage : MonoBehaviour {
         if (gameover)
         {
             // 酸素切れ。ゲームオーバー
-            // 終了通知を送る
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player) player.BroadcastMessage("OnGameOver");
-            GameObject obj = GameObject.Find("/Object");
-            if (obj) obj.BroadcastMessage("OnGameOver");
-            //gameover = true;
+            uiObj.SendMessage("OnNotifyGameEnd");
         }
     }
 

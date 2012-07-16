@@ -40,7 +40,6 @@ public class TorpedoBehavior : MonoBehaviour {
     void OnDestroyObject()
     {
         Debug.Log("TorpedoBehaviour.OnDestroy");
-        collider.enabled = false;   // ”O‚Ì‚½‚ß
         Destroy(gameObject);
     }
 

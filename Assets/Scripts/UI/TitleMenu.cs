@@ -26,6 +26,9 @@ public class TitleMenu : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log(Input.mousePosition);
+            nextScene = endlessSceneName;
+            intermission.SendMessage("OnIntermissionStart");
+            /*
             GUIElement element = layer.HitTest(Input.mousePosition);
             if (element)
             {
@@ -39,11 +42,13 @@ public class TitleMenu : MonoBehaviour {
                 }
                 intermission.SendMessage("OnIntermissionStart");
             }
+             */
         }
 	}
 
     void OnIntermissionEnd()
     {
+        Debug.Log("LoadLevel");
         // 次のシーンをロード
         Application.LoadLevel(nextScene);
     }

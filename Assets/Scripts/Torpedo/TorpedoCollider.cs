@@ -17,7 +17,6 @@ public class TorpedoCollider : MonoBehaviour {
     [SerializeField]
     private int damegeValue = 1;
 
-    [SerializeField]
     [System.Serializable]
     public class Explosion
     {
@@ -34,13 +33,14 @@ public class TorpedoCollider : MonoBehaviour {
             target.AddExplosionForce(force, pos, radius, upwardsModifier, mode);
         }
     };
+    [SerializeField]
     Explosion explosion; 
 
-    private GameObject ui = null;
+    private GameObject uiObj = null;
 
 	void Start () 
     {
-        ui = GameObject.Find("/UI");
+        uiObj = GameObject.Find("/UI");
 
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         if (sphereCollider) explosion.radius = sphereCollider.radius;
@@ -84,7 +84,8 @@ public class TorpedoCollider : MonoBehaviour {
     private bool CheckTorpedo(GameObject target)
     {
         if (target.CompareTag("Torpedo"))
-        { 
+        {
+            Debug.Log("CheckTorpedo");
             // 相手の魚雷にヒット
             //target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             return true;
@@ -96,11 +97,12 @@ public class TorpedoCollider : MonoBehaviour {
     {
         if (target.CompareTag("Player"))
         {
+            Debug.Log("CheckPlayer");
             // 衝撃を与える
             explosion.Add( target.rigidbody, transform.position );
  
             // ダメージ通知
-            if(ui) ui.BroadcastMessage("OnDamage", damegeValue, SendMessageOptions.DontRequireReceiver);
+            if (uiObj) uiObj.BroadcastMessage("OnDamage", damegeValue, SendMessageOptions.DontRequireReceiver);
             return true;
         }
         return false;
@@ -110,6 +112,7 @@ public class TorpedoCollider : MonoBehaviour {
     {
         if (target.CompareTag("Enemy"))
         {
+            Debug.Log("CheckEnemy");
             if (owner == OwnerType.Player)
             {
                 // 自分の魚雷が敵にヒットしたときだけ、敵の持っているスコアを加算する通知

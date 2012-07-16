@@ -92,50 +92,64 @@ public class PlayerController : MonoBehaviour {
     private RotationValue rot;
 
     private Quaternion deltaRot;
-    private UIController uiCompass;
+    private Controller controller;
     private bool valid;
 
     private TorpedoGenerator torpedo;
 
 	void Start () 
     {
-        valid = true;
-        GameObject uiObj = GameObject.Find("/UI");
+        valid = false;
+        GameObject uiObj = GameObject.Find("/UI/Controller");
         if (uiObj) {
-            uiCompass = uiObj.GetComponent<UIController>();
+            controller = uiObj.GetComponent<Controller>();
         }
         torpedo = GetComponent<TorpedoGenerator>();
 
         rot.Init();
     }
 
+    void OnGameStart()
+    {
+        valid = true;
+        // コントローラ表示
+        controller.Enable( true );
+    }
+
     void OnGameOver()
     {
         speed.Stop();
         rot.Stop();
+
+        // コントローラ表示
+        controller.Enable(false);
+
+        // 地面に落とす
+        rigidbody.constraints = RigidbodyConstraints.None;
+        rigidbody.useGravity = true;
+
         valid = false;
     }
 	
 	void FixedUpdate () 
     {
-        // 魚雷発射
-        if( Input.GetKeyDown(KeyCode.B) )
-        {
-            //Debug.Log("B ender : " + Time.time);
-            torpedo.Generate();
-        }
-
         // 回転の減衰
         rot.Attenuate(Time.deltaTime);
 
         if (valid)
         {
+            // 魚雷発射
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                //Debug.Log("B ender : " + Time.time);
+                torpedo.Generate();
+            }
+
             // ドラッグ中
             if (Input.GetMouseButton(0))
             {
                 //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
                 // 回転
-                //SetRot(Input.GetAxis("Mouse X"));
                 rot.Change(Input.GetAxis("Mouse X"));
                 // 加速
                 speed.Change(Input.GetAxis("Mouse Y"));
@@ -162,7 +176,7 @@ public class PlayerController : MonoBehaviour {
     {
         Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
-        uiCompass.SetAngle(transform.localEulerAngles.y);
+        controller.SetAngle(transform.localEulerAngles.y);
     }
 
     private void MoveForward()

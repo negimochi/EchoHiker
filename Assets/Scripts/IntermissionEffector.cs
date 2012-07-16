@@ -21,6 +21,9 @@ public class IntermissionEffector : MonoBehaviour {
     private float currentTime = 0.0f;
     private bool slide = false;
 
+    private float height = 0.0f;
+    private float width = 0.0f;
+
     private float startPos = 0.0f;
     private float endPos = 0.0f;
     private GameObject uiObj = null;
@@ -28,20 +31,22 @@ public class IntermissionEffector : MonoBehaviour {
 	void Start () 
     {
         uiObj = GameObject.Find("/UI");
-        float openPos = (float)guiTexture.texture.height;
+
+        width  = (float)Screen.width;
+        height = (float)guiTexture.texture.height;
         float closePos = -(float)fadeAreaPixel;
         switch (type) {
             case Type.SlideIn:
-                startPos = openPos;
+                startPos = height;
                 endPos = closePos;
                 break;
             case Type.SlideOut: 
                 startPos = closePos;
-                endPos = openPos;
+                endPos = height;
                 break;
             default:break;
         }
-        guiTexture.pixelInset = new Rect(0, startPos, (float)Screen.width, startPos);
+        guiTexture.pixelInset = new Rect(0, startPos, width, height);
 
         if (playOnAwake) StartIntermission();
 	}
@@ -53,7 +58,7 @@ public class IntermissionEffector : MonoBehaviour {
             currentTime += Time.deltaTime;
             float timeRate = currentTime/slideTime;
             float newPosY = Mathf.Lerp(startPos, endPos, timeRate);
-            guiTexture.pixelInset = new Rect(0, newPosY, (float)Screen.width, startPos);
+            guiTexture.pixelInset = new Rect(0, newPosY, width, height);
             if (timeRate >= 1.0f)
             {
                 slide = false;

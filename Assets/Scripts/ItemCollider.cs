@@ -13,9 +13,11 @@ public class ItemCollider : MonoBehaviour
     public int step = 10;
 
     private int scoreValue = 100;
+    GameObject uiObj = null;
 
     void Start()
     {
+        uiObj = GameObject.Find("/UI");
         // 乱数で獲得ポイントを散らす
         scoreValue = scoreMax;
         StartCoroutine("ChangeScoreValue");
@@ -46,12 +48,12 @@ public class ItemCollider : MonoBehaviour
         if (other.CompareTag("Player"))   // プレイヤーか判定
         {
             // スコア加算
-            GameObject ui = GameObject.Find("/UI");
-            if (ui) ui.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
+            if (uiObj) uiObj.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // Colliderを切る
             collider.enabled = false;
         }
     }
+
 }

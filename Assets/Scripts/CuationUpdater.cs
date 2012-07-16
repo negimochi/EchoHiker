@@ -4,11 +4,11 @@ using System.Collections;
 public class CuationUpdater : MonoBehaviour {
 
     private Hashtable list;
-    private GameObject ui = null;
+    private GameObject uiObj = null;
 
     void Start()
     {
-        ui = GameObject.Find("/UI");
+        uiObj = GameObject.Find("/UI");
         list = new Hashtable();
     }
 
@@ -22,7 +22,7 @@ public class CuationUpdater : MonoBehaviour {
             if ((int)de.Value > result) result = (int)de.Value;
         }
         // 表示用に通知
-        if(ui) ui.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
+        if(uiObj) uiObj.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
     }
     private void OnGenerated( GameObject target )
     {
@@ -42,6 +42,6 @@ public class CuationUpdater : MonoBehaviour {
             if( (int)de.Value > result ) result = (int)de.Value;
         }
         // 表示用に通知
-        ui.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
+        uiObj.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
     }
 }

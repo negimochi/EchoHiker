@@ -10,9 +10,9 @@ public class TorpedoGenerator : MonoBehaviour {
     [SerializeField]
     private float coolTime = 3.0f;  // クールタイム
     [SerializeField]
-    private bool isNote = false;    // 音を出すか
+    private bool sound = false;    // 音を出すか
     [SerializeField]
-    private bool isColorFader = false;  // ソナー表示するか
+    private bool sonar = false;  // ソナー表示するか
     [SerializeField]
     private TorpedoCollider.OwnerType type = TorpedoCollider.OwnerType.Enemy;
                                         // 所有者
@@ -68,12 +68,12 @@ public class TorpedoGenerator : MonoBehaviour {
 
         // 音の設定
         Note note = newObj.GetComponentInChildren<Note>();
-        if (note) note.SetEnable(isNote);
+        if (note) note.SetEnable(sound);
         else Debug.LogError("Not exists Note");
 
         // ソナーの設定
         ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
-        if (colorFader) colorFader.SetEnable(isColorFader);
+        if (colorFader) colorFader.SetEnable(sonar);
         else Debug.LogError("Not exists ColorFader");
 
         // クールタイム開始

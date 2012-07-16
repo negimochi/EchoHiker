@@ -10,18 +10,18 @@ public class EnemyScore : MonoBehaviour {
 
     private int scoreValue = 100;
 
-    private GameObject ui = null;
+    private GameObject uiObj = null;
 
     void Start() 
     {
-        ui = GameObject.Find("/UI");
+        uiObj = GameObject.Find("/UI");
     }
 
     private void OnGetScore()
     {
         Debug.Log("OnGetScore");
         // スコア値を送る
-        ui.BroadcastMessage("OnGetScore", scoreValue);
+        uiObj.BroadcastMessage("OnGetScore", scoreValue);
 
         // 自分にヒット判定
         BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
