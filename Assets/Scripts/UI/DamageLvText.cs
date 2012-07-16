@@ -10,7 +10,7 @@ public class DamageLvText : MonoBehaviour {
     /// [SendMessage]ï\é¶çXêV
     /// </summary>
     /// <param name="value"></param>
-    void OnDisplay(int value)
+    void OnDisplayDamageLv(int value)
     {
         guiText.text = value.ToString("D" + disitSize);
     }

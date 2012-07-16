@@ -133,7 +133,7 @@ public class EnemyBehavior : MonoBehaviour
     private float currentTime;
     private bool valid;
 
-//    private bool attack;
+    private bool autoAttack = false;
     private float currentAttackTime;
     private TorpedoGenerator torpedo;
     private GameObject player;
@@ -141,7 +141,6 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
-//        attack = false;
         player = GameObject.Find("/Player");
         torpedo = GetComponent<TorpedoGenerator>();
         currentTime = 0.0f;
@@ -180,45 +179,54 @@ public class EnemyBehavior : MonoBehaviour
 
     void OnHit()
     {
-        // è’ìÀÇñ≥å¯âª
+        Debug.Log("EnemyBehaviour.OnHit:" + name);
+        // ñ≥å¯âª
         SphereCollider collider = GetComponent<SphereCollider>();
         if (collider) collider.enabled = false;
-
-        // è’ìÀÇµÇΩÇÃÇ≈ÅA
-
         // îOÇÃÇΩÇﬂ
         StopAllCoroutines();
     }
 
     void OnDestroyObject()
     {
-        Debug.Log("EnemyBehavior.OnDestroy");
-        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
+        Debug.Log("EnemyBehaviour.OnDestroyObject:" + name);
+        // êeÇ…ì`Ç¶ÇƒÇ®Ç≠
+        transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
         Destroy(gameObject);
     }
 
-    public void Emergency()
+    void OnEmergency()
     {
         rot.Emergency();
         speed.Emergency();
-//        attack = true;
-        StartCoroutine("AutoAttack");
+
+        if (!autoAttack)
+        {
+            autoAttack = true;
+            StartCoroutine("AutoAttack");
+        }
     }
 
-    public void Caution()
+    void OnCaution()
     {
         rot.Emergency();
         speed.Emergency();
-//        attack = false;
-        StopCoroutine("AutoAttack");
+        if (autoAttack)
+        {
+            autoAttack = false;
+            StopCoroutine("AutoAttack");
+        }
     }
 
-    public void Usual()
+    void OnUsual()
     {
         rot.Usual();
         speed.Usual();
-//        attack = false;
-        StopCoroutine("AutoAttack");
+        if(autoAttack) 
+        {
+            autoAttack = false;
+            StopCoroutine("AutoAttack");
+        }
     }
 
     private IEnumerator AutoAttack()

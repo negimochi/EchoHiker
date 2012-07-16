@@ -21,17 +21,19 @@ public class TorpedoCollider : MonoBehaviour {
     public class Explosion
     {
         [SerializeField]
-        public float force = 100.0f;
+        private float force = 100.0f;
         [SerializeField]
-        public float radius = 3.0f;
+        private float upwardsModifier = 0.0f;
         [SerializeField]
-        public float upwardsModifier = 0.0f;
-        [SerializeField]
-        public ForceMode mode = ForceMode.Impulse;
+        private ForceMode mode = ForceMode.Impulse;
 
-        public void Add( Rigidbody target, Vector3 pos ) {
+        private float radius = 3.0f;
+            
+        public void Add(Rigidbody target, Vector3 pos) 
+        {
             target.AddExplosionForce(force, pos, radius, upwardsModifier, mode);
         }
+        public void SetRadius(float value) { radius = value; }
     };
     [SerializeField]
     Explosion explosion; 
@@ -43,7 +45,7 @@ public class TorpedoCollider : MonoBehaviour {
         uiObj = GameObject.Find("/UI");
 
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
-        if (sphereCollider) explosion.radius = sphereCollider.radius;
+        if (sphereCollider) explosion.SetRadius( sphereCollider.radius );
 
         // 発射した自分にヒットするので、発射数秒だけ衝突判定しない。
         collider.enabled = false;

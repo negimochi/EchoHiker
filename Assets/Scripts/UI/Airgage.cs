@@ -76,7 +76,8 @@ public class Airgage : MonoBehaviour {
         damageLv += value;
         if (damageLv >= airUpdateTime.Length) damageLv = airUpdateTime.Length - 1;
         // 表示用のオブジェクトに伝える
-        damageLvObj.SendMessage("OnDisplay", damageLv);
+        //damageLvObj.SendMessage("OnDisplayDamageLv", damageLv);
+        BroadcastMessage("OnDisplayDamageLv", damageLv, SendMessageOptions.DontRequireReceiver);
     }
 
     /// <summary>
@@ -93,7 +94,7 @@ public class Airgage : MonoBehaviour {
         }
         // メーターに値を伝える
         float threshold = Mathf.InverseLerp(0, airMax, air);
-        meterObj.SendMessage("OnDisplay", threshold);
+        meterObj.SendMessage("OnDisplayAirgage", threshold);
 
         if (gameover)
         {

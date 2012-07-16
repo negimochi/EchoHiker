@@ -7,10 +7,10 @@ public class AirgageMeter : MonoBehaviour {
     /// [SendMessage]値更新
     /// </summary>
     /// <param name="value">更新値[0,1]</param>
-    void OnDisplay(float value)
+    void OnDisplayAirgage(float value)
     {
+        //Debug.Log("OnDeflate: Air=" + value);
         // シェーダのアルファcutoffの値を変更して表示更新
-        Debug.Log("OnDeflate: Air=" + value);
         renderer.material.SetFloat("_Cutoff", value);
     }
 }

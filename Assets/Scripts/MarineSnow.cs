@@ -3,18 +3,17 @@ using System.Collections;
 
 public class MarineSnow : MonoBehaviour {
 
+    [SerializeField]
+    private float maxSpeed = 30.0f;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void OnGameOver() {
+    
+    void OnGameOver() 
+    {
         particleSystem.Pause();
+    }
+
+    public void SetSpeed( float rate ) 
+    {
+        particleSystem.startSpeed = Mathf.Lerp(1.0f, maxSpeed, rate);
     }
 }

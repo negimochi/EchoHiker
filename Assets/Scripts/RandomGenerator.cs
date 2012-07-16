@@ -70,18 +70,16 @@ public class RandomGenerator : MonoBehaviour {
     void OnGameOver()
     {
         ready = false;
-        //StopCoroutine("Delay");
+        StopCoroutine("Delay");
     }
 
     /// <summary>
     /// [ Message ] オブジェクト破壊
     /// </summary>
-    /// <param name="obj"></param>
-    void OnDestroyObject(GameObject obj)
+    void OnDestroyObject()
     {
-        Debug.Log("Destoryed:" + obj.name);
         // 配列更新
-        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
+        UpdateArray();
     }
 
     public void Generate()
@@ -117,11 +115,17 @@ public class RandomGenerator : MonoBehaviour {
         if( target.CompareTag("Enemy") ) {
             newObj.transform.LookAt(Vector3.zero);
         }
+
+        // 配列更新
+        UpdateArray();
+    }
+
+    private void UpdateArray()
+    {
         // 配列更新
         childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
-
         // 通知
-        //SendMessage("OnGenerated", SendMessageOptions.DontRequireReceiver);
+        SendMessage("OnUpdateArray", childrenArray, SendMessageOptions.DontRequireReceiver);
     }
 
     public int ChildrenNum()

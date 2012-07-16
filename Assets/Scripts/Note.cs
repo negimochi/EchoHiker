@@ -85,8 +85,7 @@ public class Note : MonoBehaviour {
                 yield return new WaitForSeconds(waitTime);
             }
         }
-        // 削除メッセージ
-        Debug.Log("Destory :" + transform.parent.gameObject);
+        // 削除メッセージを要求
         transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
     }
 }

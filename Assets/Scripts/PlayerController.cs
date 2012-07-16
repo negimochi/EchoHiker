@@ -3,15 +3,21 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+
     [System.Serializable]
     public class SpeedValue
     {
-        public float current = 1.0f;
         [SerializeField]
         private float max = 10.0f;
         [SerializeField]
         private float step = 0.5f;
 
+        public float current = 1.0f;
+
+        /// <summary>
+        /// スピード変更
+        /// </summary>
+        /// <param name="value"></param>
         public void Change( float value )
         {
             current += value * step;
@@ -20,13 +26,12 @@ public class PlayerController : MonoBehaviour {
         }
 
         public void Stop() { current = 0.0f; }
+
+        public float Rate() { return Mathf.InverseLerp(0.0f, max, current); }
     };
     [SerializeField]
     private SpeedValue speed;
 
-    /// <summary>
-    /// 回転調整
-    /// </summary>
     [System.Serializable]
     public class RotationValue
     {
@@ -56,6 +61,7 @@ public class PlayerController : MonoBehaviour {
         /// </summary>
         public void Change(float value)
         {
+            // 操作性を向上させるために若干マージンを設ける
             if (-margin < value && value < margin) return;
 
             // 回転量のブレンド
@@ -73,7 +79,6 @@ public class PlayerController : MonoBehaviour {
         public bool Attenuate(float time)
         {
             if (current.y == 0.0f) return false;
-
             attenuationTime += time;
             current.y = Mathf.SmoothStep(attenuationStart, 0.0f, currentRot * attenuationTime);
             return true;
@@ -92,18 +97,28 @@ public class PlayerController : MonoBehaviour {
     private RotationValue rot;
 
     private Quaternion deltaRot;
-    private Controller controller;
     private bool valid;
 
+    private Controller controller;
+    private MarineSnow marinesnowEffect;
     private TorpedoGenerator torpedo;
 
 	void Start () 
     {
         valid = false;
+        // UIのコントローラー。頻繁に更新するので参照を持っておく
         GameObject uiObj = GameObject.Find("/UI/Controller");
-        if (uiObj) {
+        if (uiObj) 
+        {
             controller = uiObj.GetComponent<Controller>();
         }
+        // MarinSnowのエフェクトはスピード依存。頻繁に更新するので参照を持っておく
+        GameObject effect = GameObject.Find("Effect_MarineSnow");
+        if (effect)
+        {
+            marinesnowEffect = effect.GetComponent<MarineSnow>();
+        }
+        // 魚雷発射スクリプト
         torpedo = GetComponent<TorpedoGenerator>();
 
         rot.Init();
@@ -124,8 +139,9 @@ public class PlayerController : MonoBehaviour {
         // コントローラ表示
         controller.Enable(false);
 
-        // 地面に落とす
-        rigidbody.constraints = RigidbodyConstraints.None;
+        // 沈む演出
+        // 軸の固定を解除して、重力を有効にする
+        rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         rigidbody.useGravity = true;
 
         valid = false;
@@ -176,6 +192,7 @@ public class PlayerController : MonoBehaviour {
     {
         Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
+        // 回転演出
         controller.SetAngle(transform.localEulerAngles.y);
     }
 
@@ -183,6 +200,12 @@ public class PlayerController : MonoBehaviour {
     {
         Vector3 vec = speed.current * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
+        // スピードの変化演出
+        marinesnowEffect.SetSpeed(speed.Rate());
     }
 
+    public void AddSpeed(float value) 
+    {
+        speed.Change( value );
+    }
 }

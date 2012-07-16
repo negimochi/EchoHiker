@@ -3,15 +3,17 @@ using System.Collections;
 
 public class CuationUpdater : MonoBehaviour {
 
-    private Hashtable list;
     private GameObject uiObj = null;
+    private RandomGenerator generator = null;
+    private GameObject maxCautionEnemy = null;
 
     void Start()
     {
         uiObj = GameObject.Find("/UI");
-        list = new Hashtable();
+        generator = GetComponent<RandomGenerator>();
     }
 
+    /*
     private void OnDestroyObject(GameObject obj)
     {
         Debug.Log("EnemyManager.OnDestroyObject");
@@ -24,24 +26,45 @@ public class CuationUpdater : MonoBehaviour {
         // 表示用に通知
         if(uiObj) uiObj.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
     }
-    private void OnGenerated( GameObject target )
+     */
+    private void OnUpdateArray( GameObject[] array )
     {
-        // 生成したオブジェクトを登録
-        Debug.Log("EnemyManager.OnGenerated");
-        list.Add(target, 0);
+        int maxValue = GetCaution(maxCautionEnemy);
+        int size = array.Length;
+        for (int i = 0; i < size; i++)
+        {
+            int caution = GetCaution(array[i]);
+            if (caution > maxValue)
+            {
+                maxValue = caution;
+                maxCautionEnemy = array[i];
+            }
+        }
+        // 最大値を表示用に通知
+        uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 
-    public void UpdateCautionValue(DictionaryEntry target)
+    public void DisplayValue(GameObject updateEnemy, int newValue)
     {
-//        Debug.Log("EnemyManager.UpdateCautionValue");
-        list[target.Key] = target.Value;
-        int result = (int)target.Value;
-
-        foreach( DictionaryEntry de in list ) {
-            if( de.Key == target.Key ) continue;
-            if( (int)de.Value > result ) result = (int)de.Value;
+        int maxValue = GetCaution(maxCautionEnemy);
+        if (updateEnemy != maxCautionEnemy)
+        {
+            //int newValue = GetCaution(updateEnemy);
+            if (maxValue > newValue)
+            {
+                maxValue = newValue;
+                maxCautionEnemy = updateEnemy;
+            }
         }
-        // 表示用に通知
-        uiObj.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
+        // 最大値を表示用に通知
+        uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
+    }
+
+    static private int GetCaution(GameObject enemyObj)
+    {
+        if(enemyObj == null ) return 0;
+        EnemyCaution enemyCauiton = enemyObj.GetComponent<EnemyCaution>();
+        if (enemyCauiton) return enemyCauiton.Value();
+        return 0;
     }
 }
