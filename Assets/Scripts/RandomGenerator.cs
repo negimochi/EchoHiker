@@ -21,14 +21,13 @@ public class RandomGenerator : MonoBehaviour {
 
     private bool limitChecker;
     private bool ready;
-    private float counter;
     private GameObject[] childrenArray = null;
+    private GameObject[] sonarArray = null;
 
     void Start()
     {
         ready = false;
         limitChecker = false;
-        counter = 0.0f;
     }
 
     void Update()
@@ -38,11 +37,6 @@ public class RandomGenerator : MonoBehaviour {
             Generate();
             ready = false;
             StartCoroutine("Delay");
-//            counter += Time.deltaTime;
-//            if (counter >= delaytime)
-//            {
-//                counter = 0.0f;
-//            }
         }
     }
 
@@ -133,5 +127,7 @@ public class RandomGenerator : MonoBehaviour {
         if (childrenArray != null) return childrenArray.Length;
         return 0;
     }
+
+    public GameObject[] ChildrenArray() { return childrenArray; }
 
 }

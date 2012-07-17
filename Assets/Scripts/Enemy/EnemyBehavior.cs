@@ -15,7 +15,9 @@ public class EnemyBehavior : MonoBehaviour
         [SerializeField]
         private float usualMax = 5.0f;
         [SerializeField]
-        private float emergencyMax = 10.0f;
+        private float emergencyMax = 0.0f;
+        [SerializeField]
+        private float backwardMax = 10.0f;
 
         private float current = 1.0f;
         private float max;
@@ -40,8 +42,16 @@ public class EnemyBehavior : MonoBehaviour
         public void Change()
         {
             current += Random.Range(-max, max);
-            if (current < 0.0f) current = 0.0f;
-            else if (current > max) current = max;
+            current = Mathf.Clamp(current, 0.0f, max);
+        }
+        public void GoBackward()
+        {
+            current = -backwardMax;
+        }
+        public void GoFroward()
+        {
+            current = 0.0f;
+            Change();
         }
     };
     [SerializeField]
@@ -56,7 +66,7 @@ public class EnemyBehavior : MonoBehaviour
         [SerializeField]
         private float usualMax = 20.0f;
         [SerializeField]
-        private float emergencyMax = 30.0f;
+        private float emergencyMax = 0.0f;
         [SerializeField]
         private float swingStep = 20.0f;
         [SerializeField]
@@ -129,6 +139,16 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField]
     private float attackWait = 5.0f;
+    [SerializeField]
+    private float attackDistance = 100.0f;
+        
+    enum Mode
+    {
+        Usual,
+        Caution,
+        Emergency
+    };
+    private Mode mode = Mode.Usual;
 
     private float currentTime;
     private bool valid;
@@ -195,8 +215,12 @@ public class EnemyBehavior : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Playerî≠å©ÅAçUåÇèÛë‘
+    /// </summary>
     void OnEmergency()
     {
+        mode = Mode.Emergency;
         rot.Emergency();
         speed.Emergency();
 
@@ -207,8 +231,12 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// åxâ˙èÛë‘
+    /// </summary>
     void OnCaution()
     {
+        mode = Mode.Caution;
         rot.Emergency();
         speed.Emergency();
         if (autoAttack)
@@ -218,8 +246,12 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// í èÌèÛë‘
+    /// </summary>
     void OnUsual()
     {
+        mode = Mode.Usual;
         rot.Usual();
         speed.Usual();
         if(autoAttack) 
@@ -273,6 +305,18 @@ public class EnemyBehavior : MonoBehaviour
     /// </summary>
     private void MoveForward()
     {
+        if (mode == Mode.Emergency)
+        {
+            // PlayerÇ∆ÇÃãóó£Çï€Ç∆Ç§Ç∆Ç∑ÇÈ
+            float dist = Vector3.Distance(transform.position, player.transform.position);
+            if (dist <= attackDistance)
+            {
+                speed.GoBackward();
+            }
+            else {
+                speed.GoFroward();
+            }
+        }
         Vector3 deltaVec = speed.Value * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + deltaVec * Time.deltaTime);
     }

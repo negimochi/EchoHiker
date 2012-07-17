@@ -3,14 +3,14 @@ using System.Collections;
 
 public class TitleMenu : MonoBehaviour {
 
-    [SerializeField]
-    private string easySceneName    = "Main";
-    [SerializeField]
-    private string normalSceneName  = "Main";
+//    [SerializeField]
+//    private string easySceneName    = "Main";
+//    [SerializeField]
+//    private string normalSceneName  = "Main";
     [SerializeField]
     private string endlessSceneName = "Main";
 
-    private GUILayer layer = null;
+//    private GUILayer layer = null;
     private GameObject intermission = null;
 
     private string nextScene;
@@ -18,7 +18,7 @@ public class TitleMenu : MonoBehaviour {
 	void Start () 
     {
         intermission = GameObject.Find("/UI/Intermission");
-        layer = Camera.main.GetComponent<GUILayer>();
+//        layer = Camera.main.GetComponent<GUILayer>();
 	}
 	
 	void Update () 

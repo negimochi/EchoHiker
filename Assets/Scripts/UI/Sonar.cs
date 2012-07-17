@@ -29,11 +29,11 @@ public class Sonar : MonoBehaviour {
         if (cameraObj) {
             sonarCamera = cameraObj.AddComponent<SonarCamera>();
         }
-        GameObject playerSonar = GameObject.Find("Player/ActiveSonar");
-        if (playerSonar)
-        {
-            activeSonar = playerSonar.GetComponent<ActiveSonar>();
-        }
+//        GameObject playerSonar = GameObject.Find("Player/ActiveSonar");
+//        if (playerSonar)
+//        {
+//            activeSonar = playerSonar.GetComponent<ActiveSonar>();
+//        }
 
         SetPosition();
         // パッシブソナーがデフォルト
@@ -60,12 +60,12 @@ public class Sonar : MonoBehaviour {
         {
             case SonarMode.ActiveSonar:
                 CreateSonar(activeObj);
-                activeSonar.Search();
+                //activeSonar.Search();
                 break;
 
             case SonarMode.PassiveSonar:
                 CreateSonar(passiveObj);
-                activeSonar.Reset();
+                //activeSonar.Reset();
                 break;
 
             default:

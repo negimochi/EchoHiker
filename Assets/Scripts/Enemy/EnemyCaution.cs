@@ -6,9 +6,13 @@ public class EnemyCaution : MonoBehaviour {
     [SerializeField]
     public float waitTime = 0.5f;
     [SerializeField]
-    public int stepMax = 20;
+    public int countUpStepMax = 20;
     [SerializeField]
-    public int stepMin = 1;
+    public int countUpStepMin = 1;
+
+    [SerializeField]
+    public int countDownStep = 1;
+
 
     private int currentStep = 1;
 
@@ -16,7 +20,7 @@ public class EnemyCaution : MonoBehaviour {
     private int cautionValue = 0;
 
     private bool countUp = false;
-    private bool isCounting = false;
+    private bool counting = false;
     private CuationUpdater updater = null;
 
 	void Start () 
@@ -27,19 +31,39 @@ public class EnemyCaution : MonoBehaviour {
 
     void OnStayPlayer( float rate )
     {
+        // 距離が近いほど早く100%になる
+        currentStep = (int)Mathf.Lerp(countUpStepMax, countUpStepMin, rate);
+
         if (!countUp) countUp = true;
-        if (!isCounting) StartCoroutine("Counter");
-        currentStep = (int)Mathf.Lerp(stepMax, stepMin, rate);
+        if (!counting)
+        {
+            // [Caution] 警戒状態 
+            counting = true;
+            SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
+            StartCoroutine("Counter");
+        }
     }
     void OnExitPlayer( )
     {
-        if (countUp){ countUp = false; }
-        if (!isCounting) StartCoroutine("Counter");
+        // 固定
+        currentStep = countDownStep;
+
+        if (countUp) countUp = false;
+        if (!counting)
+        {
+            // [Caution] 警戒状態 
+            counting = true;
+            SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
+            StartCoroutine("Counter");
+        }
     }
 
+    /// <summary>
+    /// Cautionカウンター
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Counter()
     {
-        isCounting = true;
         yield return new WaitForSeconds(waitTime);
 
         // 更新
@@ -49,17 +73,23 @@ public class EnemyCaution : MonoBehaviour {
         // 条件チェック
         if (cautionValue >= 100)
         {
-            isCounting = false;
+            // [Emergency] Playerを発見 
+            counting = false;
             cautionValue = 100;
             SendMessage("OnEmergency", SendMessageOptions.DontRequireReceiver);
         }
         else if (cautionValue <= 0)
         {
-            isCounting = false;
+            // [Emergency] Playerを見失う
+            counting = false;
             cautionValue = 0;
             SendMessage("OnUsual", SendMessageOptions.DontRequireReceiver);
         }
-        else StartCoroutine("Counter");
+        else
+        {
+            // カウンタを繰り返す
+            StartCoroutine("Counter");
+        }
         // 表示更新
         if (updater) updater.DisplayValue(gameObject, cautionValue);
     }

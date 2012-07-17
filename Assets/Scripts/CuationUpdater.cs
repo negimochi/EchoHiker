@@ -4,29 +4,13 @@ using System.Collections;
 public class CuationUpdater : MonoBehaviour {
 
     private GameObject uiObj = null;
-    private RandomGenerator generator = null;
     private GameObject maxCautionEnemy = null;
 
     void Start()
     {
         uiObj = GameObject.Find("/UI");
-        generator = GetComponent<RandomGenerator>();
     }
 
-    /*
-    private void OnDestroyObject(GameObject obj)
-    {
-        Debug.Log("EnemyManager.OnDestroyObject");
-        list.Remove(obj);
-        int result = 0;
-        foreach (DictionaryEntry de in list)
-        {
-            if ((int)de.Value > result) result = (int)de.Value;
-        }
-        // •\Ž¦—p‚É’Ê’m
-        if(uiObj) uiObj.BroadcastMessage("OnUpdateCaution", result, SendMessageOptions.DontRequireReceiver);
-    }
-     */
     private void OnUpdateArray( GameObject[] array )
     {
         int maxValue = GetCaution(maxCautionEnemy);

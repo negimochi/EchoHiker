@@ -21,8 +21,7 @@ public class PlayerController : MonoBehaviour {
         public void Change( float value )
         {
             current += value * step;
-            if (current < 0.0f) current = 0.0f;
-            else if (current > max) current = max;
+            current = Mathf.Clamp(current, 0.0f, max);
         }
 
         public void Stop() { current = 0.0f; }

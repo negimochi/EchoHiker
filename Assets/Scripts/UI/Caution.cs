@@ -7,12 +7,12 @@ public class Caution : MonoBehaviour {
     private Vector2 offsetPixel = Vector2.zero;  // É[ÉçÇ≈âÊñ í[
     [SerializeField]
     private int disitSize = 3;
-    [SerializeField]
-    private Color safetyColor = Color.white;
+//    [SerializeField]
+//    private Color safetyColor = Color.white;
     [SerializeField]
     private Color cautionColor = Color.yellow;
-    [SerializeField]
-    private Color emergencyColor = Color.red;
+//    [SerializeField]
+//    private Color emergencyColor = Color.red;
 
     private int cautionValue = 0;
 
