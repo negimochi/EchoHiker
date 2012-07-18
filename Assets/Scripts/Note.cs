@@ -20,7 +20,7 @@ public class Note : MonoBehaviour {
 
 	void FixedUpdate () 
     {
-        if (valid) 
+        if (valid && !audio.isPlaying) 
         {
             Clock(Time.deltaTime);
         }

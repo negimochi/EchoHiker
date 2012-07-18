@@ -49,6 +49,16 @@ public class EnemyEyeCollider : MonoBehaviour {
     }
 Å@  */
 
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Player")) return;
+        Debug.Log("TrigStay:" + Time.time);
+
+        float dist = Vector3.Distance(transform.position, other.gameObject.transform.position);
+        float t = Mathf.InverseLerp(0.0f, radius, dist);
+        parentObj.SendMessage("OnStayPlayer", t, SendMessageOptions.DontRequireReceiver);
+    }
     void OnTriggerStay(Collider other)
     {
         // EnterÇÊÇËStayÇ≈Ç∆Ç¡ÇΩÇŸÇ§Ç™ämé¿

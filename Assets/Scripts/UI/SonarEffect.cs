@@ -18,7 +18,7 @@ public class SonarEffect : MonoBehaviour
     private float stepStart = 0.0f;
     private float stepEnd = 1.0f;
 
-    private float alpha = 0.0f;
+    private float rate = 0.0f;
     private float currentTime = 0.0f;
     private GUITexture texture;
     private Rect baseRect;
@@ -39,7 +39,7 @@ public class SonarEffect : MonoBehaviour
         }
 
         texture = GetComponent<GUITexture>();
-        texture.pixelInset = new Rect(baseRect);
+        //texture.pixelInset = new Rect(baseRect);
         texture.enabled = true;
     }
 	
@@ -50,11 +50,13 @@ public class SonarEffect : MonoBehaviour
             float time = currentTime / duration;
             if (time <= 1.0f)
             {
-                alpha = Mathf.SmoothStep(stepStart, stepEnd, time);
-                float w = baseRect.width * alpha;
-                float h = baseRect.height * alpha;
+                rate = Mathf.SmoothStep(stepStart, stepEnd, time);
+                Debug.Log("alpha=" + rate);
+                float w = baseRect.width * rate;
+                float h = baseRect.height * rate;
+                float a = Mathf.Clamp(1.0f - rate, 0.0f, 0.8f);
                 texture.pixelInset = new Rect(baseRect.center.x - w * 0.5f, baseRect.center.y - h * 0.5f, w, h);
-                texture.color = new Color(texture.color.r, texture.color.g, texture.color.b, alpha);
+                texture.color = new Color(texture.color.r, texture.color.g, texture.color.b, a);
                 // ŽžŠÔXV
                 currentTime += Time.deltaTime;
             }
@@ -73,6 +75,6 @@ public class SonarEffect : MonoBehaviour
         currentTime = 0.0f;
     }
 
-    public float Value(){   return alpha;    }
+    public float Value(){   return rate;    }
 
 }
