@@ -51,7 +51,7 @@ public class SonarEffect : MonoBehaviour
             if (time <= 1.0f)
             {
                 rate = Mathf.SmoothStep(stepStart, stepEnd, time);
-                Debug.Log("alpha=" + rate);
+//                Debug.Log("alpha=" + rate);
                 float w = baseRect.width * rate;
                 float h = baseRect.height * rate;
                 float a = Mathf.Clamp(1.0f - rate, 0.0f, 0.8f);

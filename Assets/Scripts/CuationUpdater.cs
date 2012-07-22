@@ -30,15 +30,22 @@ public class CuationUpdater : MonoBehaviour {
 
     public void DisplayValue(GameObject updateEnemy, int newValue)
     {
-        int maxValue = GetCaution(maxCautionEnemy);
+        //Debug.Log(updateEnemy.name + ".cation=" + newValue);
+        int maxValue = 0;
         if (updateEnemy != maxCautionEnemy)
         {
-            //int newValue = GetCaution(updateEnemy);
-            if (maxValue > newValue)
+            // 同一でないなら現状のMax値を持つ敵の現在の値と比較
+            maxValue = GetCaution(maxCautionEnemy);
+            if (newValue > maxValue)
             {
                 maxValue = newValue;
                 maxCautionEnemy = updateEnemy;
             }
+        }
+        else
+        {
+            // 同一ならそのまま更新
+            maxValue = newValue;
         }
         // 最大値を表示用に通知
         uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);

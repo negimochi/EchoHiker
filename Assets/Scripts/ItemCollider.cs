@@ -27,11 +27,9 @@ public class ItemCollider : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        scoreValue -= step;
-        if(scoreValue < scoreMin) {
-           scoreValue = scoreMin;
-        }
-        else {
+        scoreValue = Mathf.Clamp(scoreValue - step, scoreMin, scoreMax);
+        if (scoreValue > scoreMin) 
+        {
             StartCoroutine("ChangeScoreValue");
         }
     }

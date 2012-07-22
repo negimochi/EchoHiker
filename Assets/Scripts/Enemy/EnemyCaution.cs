@@ -4,20 +4,17 @@ using System.Collections;
 public class EnemyCaution : MonoBehaviour {
 
     [SerializeField]
-    public float waitTime = 0.5f;
+    public float waitTimeMax = 0.40f;
     [SerializeField]
-    public int countUpStepMax = 20;
+    public float waitTimeMin = 0.01f;
     [SerializeField]
-    public int countUpStepMin = 1;
+    private int step = 1;
+//    [SerializeField]    // Debug閲覧用
+    private int cautionValue = 0;
 
-    [SerializeField]
-    public int countDownStep = 1;
-
-
+    public float waitTime   = 1.0f;
     private int currentStep = 1;
 
-    [SerializeField]    // Debug閲覧用
-    private int cautionValue = 0;
 
     private bool countUp = false;
     private bool counting = false;
@@ -25,37 +22,41 @@ public class EnemyCaution : MonoBehaviour {
 
 	void Start () 
     {
+        waitTime = waitTimeMax;
         GameObject managerObj = GameObject.Find("/Object/EnemyManager");
         if (managerObj) updater = managerObj.GetComponent<CuationUpdater>();
 	}
 
-    void OnStayPlayer( float rate )
+    void OnStayPlayer( float distRate )
     {
-        // 距離が近いほど早く100%になる
-        currentStep = (int)Mathf.Lerp(countUpStepMax, countUpStepMin, rate);
-
-        if (!countUp) countUp = true;
-        if (!counting)
+        // 距離が近いほど早くCautionが上昇する
+        waitTime = Mathf.Lerp(waitTimeMin, waitTimeMax, distRate);
+        if (!countUp)
         {
-            // [Caution] 警戒状態 
-            counting = true;
-            SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
-            StartCoroutine("Counter");
+            currentStep = step;
+            countUp = true;
         }
+        StartCount();
     }
     void OnExitPlayer( )
     {
-        // 固定
-        currentStep = countDownStep;
-
-        if (countUp) countUp = false;
-        if (!counting)
+        waitTime = waitTimeMax;
+        if (countUp)
         {
-            // [Caution] 警戒状態 
-            counting = true;
-            SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
-            StartCoroutine("Counter");
+            currentStep = -step;
+            countUp = false;
         }
+        StartCount();
+    }
+
+
+
+    void StartCount()
+    {
+        if (counting) return;
+        counting = true;
+        SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
+        StartCoroutine("Counter");
     }
 
     /// <summary>
@@ -66,23 +67,20 @@ public class EnemyCaution : MonoBehaviour {
     {
         yield return new WaitForSeconds(waitTime);
 
-        // 更新
-        if (countUp) cautionValue += currentStep;
-        else cautionValue -= currentStep;
-
+        cautionValue = Mathf.Clamp(cautionValue + currentStep, 0, 100);
+        // 表示更新
+        updater.DisplayValue(gameObject, cautionValue);
         // 条件チェック
         if (cautionValue >= 100)
         {
             // [Emergency] Playerを発見 
             counting = false;
-            cautionValue = 100;
             SendMessage("OnEmergency", SendMessageOptions.DontRequireReceiver);
         }
         else if (cautionValue <= 0)
         {
             // [Emergency] Playerを見失う
             counting = false;
-            cautionValue = 0;
             SendMessage("OnUsual", SendMessageOptions.DontRequireReceiver);
         }
         else
@@ -90,8 +88,6 @@ public class EnemyCaution : MonoBehaviour {
             // カウンタを繰り返す
             StartCoroutine("Counter");
         }
-        // 表示更新
-        if (updater) updater.DisplayValue(gameObject, cautionValue);
     }
 
     public int Value(){ return cautionValue; }
