@@ -6,7 +6,6 @@ public class EnemyEyeCollider : MonoBehaviour {
     [SerializeField]
     public float marginRadius = 100.0f;
 
-    private float oldDistRate;
     private float radius;
     private GameObject parentObj = null;
 
@@ -18,7 +17,6 @@ public class EnemyEyeCollider : MonoBehaviour {
         {
             radius = sphereCollider.radius;
         }
-        oldDist = radius;
     }
 
     void OnTriggerStay(Collider other)
@@ -37,10 +35,7 @@ public class EnemyEyeCollider : MonoBehaviour {
     float GetDistanceRate(GameObject target)
     {
         float dist = Vector3.Distance(transform.position, target.transform.position);
-        float rate = Mathf.InverseLerp(marginRadius, radius, dist);
-
-
-        return ;
+        return Mathf.InverseLerp(marginRadius, radius, dist);
     }
 
 }
