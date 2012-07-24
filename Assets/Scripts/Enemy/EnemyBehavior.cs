@@ -161,6 +161,9 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
+        // スタート時は外側にいるので中心を向いておく
+        transform.LookAt(Vector3.zero);
+
         player = GameObject.Find("/Player");
         torpedo = GetComponent<TorpedoGenerator>();
         currentTime = 0.0f;
@@ -220,6 +223,7 @@ public class EnemyBehavior : MonoBehaviour
     /// </summary>
     void OnEmergency()
     {
+        Debug.Log("OnEmergency");
         mode = Mode.Emergency;
         rot.Emergency();
         speed.Emergency();
@@ -236,6 +240,7 @@ public class EnemyBehavior : MonoBehaviour
     /// </summary>
     void OnCaution()
     {
+        Debug.Log("OnCaution");
         mode = Mode.Caution;
         rot.Emergency();
         speed.Emergency();
@@ -251,6 +256,7 @@ public class EnemyBehavior : MonoBehaviour
     /// </summary>
     void OnUsual()
     {
+        Debug.Log("OnUsual");
         mode = Mode.Usual;
         rot.Usual();
         speed.Usual();

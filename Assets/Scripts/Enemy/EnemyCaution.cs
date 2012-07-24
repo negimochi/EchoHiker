@@ -9,6 +9,9 @@ public class EnemyCaution : MonoBehaviour {
     public float waitTimeMin = 0.01f;
     [SerializeField]
     private int step = 1;
+    [SerializeField]
+    private int sonarHit = 5;
+
 //    [SerializeField]    // Debug閲覧用
     private int cautionValue = 0;
 
@@ -49,7 +52,11 @@ public class EnemyCaution : MonoBehaviour {
         StartCount();
     }
 
-
+    void OnSonar()
+    {
+        // ソナーがヒットするたびに、Cautionが上昇
+        cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
+    }
 
     void StartCount()
     {

@@ -4,7 +4,7 @@ using System.Collections;
 public class ActiveSonar : MonoBehaviour {
 
     [SerializeField]
-    private float maxRadius = 250.0f;
+    private float maxRadius = 300.0f;
 
     private float currentTime = 0.0f;
     private bool search = false;
@@ -32,7 +32,9 @@ public class ActiveSonar : MonoBehaviour {
 	
 	void Update () 
     {
+        // 手抜き探索
         float effectDist = Mathf.Lerp(0.0f, maxRadius, effect.Value());
+        //Debug.Log("ActiveSonar="+effectDist + ":" + Time.time);
         if (enemy) Search(enemy.ChildrenArray(), effectDist);
         if (item) Search(item.ChildrenArray(), effectDist);
     }
@@ -43,8 +45,10 @@ public class ActiveSonar : MonoBehaviour {
         for (int i = 0; i < size; i++ )
         {
             float dist = Vector3.Distance(array[i].transform.position, transform.position);
+            Debug.Log("dist=" + dist + ":" + array[i].name);
             if (effectDist > dist)
             {
+                // 指定距離以内だったらソナーがヒット
                 array[i].BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
             }
         }

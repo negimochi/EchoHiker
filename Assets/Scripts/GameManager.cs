@@ -3,6 +3,17 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+    // 生成状況変更
+    //[SerializeField]
+    //private GenerateParameter[] enemyVariation = new GenerateParameter[]{ };
+    //[SerializeField]
+    //private GenerateParameter[] itemVariation = new GenerateParameter[] { };
+
+    private int enemyIndex = 0;
+    private int itemIndex  = 0;
+    private RandomGenerator enemyGenerator = null;
+    private RandomGenerator itemGenerator = null;
+
     private GameObject player = null;
     private GameObject enemy = null;
     private GameObject item = null;
@@ -12,15 +23,17 @@ public class GameManager : MonoBehaviour {
     {
         player = GameObject.Find("/Player");
         enemy = GameObject.Find("/Object/EnemyManager");
+        if (enemy) {
+            enemyGenerator = enemy.GetComponent<RandomGenerator>();
+        }
         item = GameObject.Find("/Object/ItemManager");
+        if (item)
+        {
+            itemGenerator = enemy.GetComponent<RandomGenerator>();
+        }
+
     }
 	
-	void Update () 
-    {
-	
-	}
-
-
     void OnIntermissionEnd()
     {
         // Intermissionの終了。ゲームスタート

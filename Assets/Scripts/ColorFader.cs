@@ -9,8 +9,6 @@ public class ColorFader : MonoBehaviour {
     private float delay = 1.0f;
     [SerializeField]
     private float minAlpha = 0.1f;
-//    [SerializeField]
-//    private bool valid = false;
 
     private float max;
     private float currentTime;
@@ -19,8 +17,6 @@ public class ColorFader : MonoBehaviour {
 
 	void Start () 
     {
-        //renderer.enabled = valid;
-       
         max = 1.0f - minAlpha;
         isWait = false;
         currentTime = 0.0f;
@@ -52,12 +48,13 @@ public class ColorFader : MonoBehaviour {
     /// </summary>
     void OnHit()
     {
-        // ソナーから見えなくする
+        // ヒットした瞬間でソナーから見えなくする
         SetEnable(false);
     }
 
     void OnSonar()
     {
+        // ソナー表示
         SetEnable(true);
     }
 

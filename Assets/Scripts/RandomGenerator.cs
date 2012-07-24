@@ -12,12 +12,15 @@ public class RandomGenerator : MonoBehaviour {
     [SerializeField]
     private bool fill;      // true: posXZ内を全部対象とする 
                             // flase: posXZの外周上を対象とする
+
     [SerializeField]
-    private int limitNum;  // 最大数
-    [SerializeField]
-    private float delayTime = 1.0f;
-    [SerializeField]
-    private bool endless = true;   // リミット数から減った時に自動追加するか
+    private GenerateParameter param = new GenerateParameter();
+//    [SerializeField]
+//    private int limitNum = 1;  // 最大数
+//    [SerializeField]
+//    private float delayTime = 1.0f;
+//    [SerializeField]
+//    private bool endless = true;   // リミット数から減った時に自動追加するか
 
     private bool limitChecker;
     private bool ready;
@@ -26,6 +29,7 @@ public class RandomGenerator : MonoBehaviour {
 
     void Start()
     {
+        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
         ready = false;
         limitChecker = false;
     }
@@ -43,16 +47,16 @@ public class RandomGenerator : MonoBehaviour {
     public bool TimingCheck()
     {
         // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
-        if (limitChecker && !endless) return false;
+        if (limitChecker && !param.endless) return false;
         // 準備できてない
         if (!ready) return false;
         // 個数チェック
-        return (ChildrenNum() < limitNum)?true:false;
+        return (ChildrenNum() < param.limitNum) ? true : false;
     }
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(delayTime);
+        yield return new WaitForSeconds(param.delayTime);
         ready = true;
     }
 
@@ -105,18 +109,12 @@ public class RandomGenerator : MonoBehaviour {
         newObj.transform.parent = transform;
         Debug.Log("generated[" + ChildrenNum() + "]=" + newObj.name);
 
-        // 中央を向かせておく
-        if( target.CompareTag("Enemy") ) {
-            newObj.transform.LookAt(Vector3.zero);
-        }
-
         // 配列更新
         UpdateArray();
     }
 
     private void UpdateArray()
     {
-        // 配列更新
         childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
         // 通知
         SendMessage("OnUpdateArray", childrenArray, SendMessageOptions.DontRequireReceiver);
@@ -128,6 +126,12 @@ public class RandomGenerator : MonoBehaviour {
         return 0;
     }
 
+    // 管理している子の参照
     public GameObject[] ChildrenArray() { return childrenArray; }
+
+    public void SetParam(GenerateParameter param_)
+    {
+        param = param_;
+    }
 
 }

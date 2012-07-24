@@ -4,9 +4,9 @@ using System.Collections;
 public class EnemyEyeCollider : MonoBehaviour {
 
     [SerializeField]
-    public float marginRadius = 100.0f;
+    public float insideRadius = 100.0f;
 
-    private float radius;
+    private float outsideRadius;
     private GameObject parentObj = null;
 
 	void Start () 
@@ -15,7 +15,7 @@ public class EnemyEyeCollider : MonoBehaviour {
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         if (sphereCollider)
         {
-            radius = sphereCollider.radius;
+            outsideRadius = sphereCollider.radius;
         }
     }
 
@@ -35,7 +35,7 @@ public class EnemyEyeCollider : MonoBehaviour {
     float GetDistanceRate(GameObject target)
     {
         float dist = Vector3.Distance(transform.position, target.transform.position);
-        return Mathf.InverseLerp(marginRadius, radius, dist);
+        return Mathf.InverseLerp(insideRadius, outsideRadius, dist);
     }
 
 }
