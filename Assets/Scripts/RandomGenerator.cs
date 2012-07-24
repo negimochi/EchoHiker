@@ -24,12 +24,21 @@ public class RandomGenerator : MonoBehaviour {
 
     private bool limitChecker;
     private bool ready;
-    private GameObject[] childrenArray = null;
-    private GameObject[] sonarArray = null;
+
+//    private GameObject[] childrenArray = null;
+//    private GameObject[] sonarArray = null;
+    private ArrayList childrenArray = new ArrayList();
+    private ArrayList sonarArray = new ArrayList();
 
     void Start()
     {
-        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
+        // 初期配置分がある場合はここで登録しておく
+        GameObject[] children = GameObject.FindGameObjectsWithTag(target.tag);
+        for (int i = 0; i < children.Length; i++ )
+        {
+            childrenArray.Add(children[i]);
+            sonarArray.Add(children[i]);
+        }
         ready = false;
         limitChecker = false;
     }
@@ -74,10 +83,15 @@ public class RandomGenerator : MonoBehaviour {
     /// <summary>
     /// [ Message ] オブジェクト破壊
     /// </summary>
-    void OnDestroyObject()
+    void OnDestroyObject( GameObject target )
     {
         // 配列更新
-        UpdateArray();
+        //UpdateArray();
+        childrenArray.Remove(target);
+        sonarArray.Remove(target);
+        SendMessage("OnDestroyChild", target, SendMessageOptions.DontRequireReceiver);
+
+        Destroy(target);
     }
 
     public void Generate()
@@ -103,35 +117,40 @@ public class RandomGenerator : MonoBehaviour {
             }
         }
 
-        // 生成
-        GameObject newObj = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;
+        // インスタンス生成
+        GameObject newChild = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;
         // 自分を親にする
-        newObj.transform.parent = transform;
-        Debug.Log("generated[" + ChildrenNum() + "]=" + newObj.name);
+        newChild.transform.parent = transform;
+        Debug.Log("generated[" + ChildrenNum() + "]=" + newChild.name);
 
         // 配列更新
-        UpdateArray();
+        //UpdateArray();
+        childrenArray.Add(newChild);
+        sonarArray.Add(newChild);
+        SendMessage("OnInstantiatedChild", newChild, SendMessageOptions.DontRequireReceiver);
     }
 
+    /*
     private void UpdateArray()
     {
+        // 手抜き収集
         childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
-        // 通知
+        // OnUpdateArrayがあれば通知
         SendMessage("OnUpdateArray", childrenArray, SendMessageOptions.DontRequireReceiver);
     }
+     */
 
     public int ChildrenNum()
     {
-        if (childrenArray != null) return childrenArray.Length;
+        if (childrenArray != null) return childrenArray.Count;
         return 0;
     }
 
     // 管理している子の参照
-    public GameObject[] ChildrenArray() { return childrenArray; }
-
-    public void SetParam(GenerateParameter param_)
-    {
-        param = param_;
-    }
+    public ArrayList Children() { return childrenArray; }
+    // ソナーにあたった分をとっておく
+    public ArrayList SonarChildren() { return sonarArray; }
+    // 生成パラメータセット
+    public void SetParam(GenerateParameter param_) {  param = param_; }
 
 }

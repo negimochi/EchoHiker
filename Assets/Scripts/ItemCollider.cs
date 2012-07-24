@@ -36,9 +36,10 @@ public class ItemCollider : MonoBehaviour
 
     void OnDestroyObject()
     {
+        // êeÇ©ÇÁè¡ÇµÇƒÇ‡ÇÁÇ§
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
         StopAllCoroutines();
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider other)

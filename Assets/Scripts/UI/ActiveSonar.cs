@@ -5,6 +5,8 @@ public class ActiveSonar : MonoBehaviour {
 
     [SerializeField]
     private float maxRadius = 300.0f;
+    [SerializeField]
+    private float delayTime = 0.2f;
 
     private float currentTime = 0.0f;
     private bool search = false;
@@ -19,38 +21,53 @@ public class ActiveSonar : MonoBehaviour {
         effect = GetComponent<SonarEffect>();
         player = GameObject.Find("/Player");
         GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
-        if (enemyObj) 
-        {
-            enemy = enemyObj.GetComponent<RandomGenerator>();
-        }
+        if (enemyObj) enemy = enemyObj.GetComponent<RandomGenerator>();
         GameObject itemObj = GameObject.Find("/Object/ItemManager");
         if (itemObj)
         {
             item = itemObj.GetComponent<RandomGenerator>();
         }
+
+        StartCoroutine("Delay");
 	}
-	
-	void Update () 
+
+    private IEnumerator Delay()
     {
+        yield return new WaitForSeconds(delayTime);
+
         // 手抜き探索
         float effectDist = Mathf.Lerp(0.0f, maxRadius, effect.Value());
         //Debug.Log("ActiveSonar="+effectDist + ":" + Time.time);
-        if (enemy) Search(enemy.ChildrenArray(), effectDist);
-        if (item) Search(item.ChildrenArray(), effectDist);
-    }
-
-    void Search(GameObject[] array, float effectDist) 
-    {
-        int size = array.Length;
-        for (int i = 0; i < size; i++ )
+        if (enemy)
         {
-            float dist = Vector3.Distance(array[i].transform.position, transform.position);
-            Debug.Log("dist=" + dist + ":" + array[i].name);
+            Debug.Log("Enemy Search :" + enemy.SonarChildren().Count);
+            Search(enemy.SonarChildren(), effectDist);
+        }
+        if (item)
+        {
+            //Debug.Log("Item Search");
+            Search(item.SonarChildren(), effectDist);
+        }
+
+        StartCoroutine("Delay");
+    }
+	
+    void Search(ArrayList array, float effectDist) 
+    {
+        Debug.Log(array.Count);
+        int i = 0;
+        while (i < array.Count)
+        {
+            GameObject target = array[i] as GameObject;
+            float dist = Vector3.Distance(target.transform.position, player.transform.position);
+            Debug.Log("dist=" + dist + ":" + target.name);
             if (effectDist > dist)
             {
                 // 指定距離以内だったらソナーがヒット
-                array[i].BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
+                target.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
+                array.RemoveAt(i);
             }
+            else i++;
         }
     }
 }

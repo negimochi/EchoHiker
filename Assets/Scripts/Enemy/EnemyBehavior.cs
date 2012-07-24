@@ -213,9 +213,9 @@ public class EnemyBehavior : MonoBehaviour
     void OnDestroyObject()
     {
         Debug.Log("EnemyBehaviour.OnDestroyObject:" + name);
-        // 親に伝えておく
-        transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
-        Destroy(gameObject);
+        // 親に伝えておく。親から消してもらう
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
+        //Destroy(gameObject);
     }
 
     /// <summary>
@@ -231,6 +231,7 @@ public class EnemyBehavior : MonoBehaviour
         if (!autoAttack)
         {
             autoAttack = true;
+            Debug.Log("AutoAttack");
             StartCoroutine("AutoAttack");
         }
     }
@@ -315,6 +316,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             // Playerとの距離を保とうとする
             float dist = Vector3.Distance(transform.position, player.transform.position);
+            Debug.Log("dist="+dist);
             if (dist <= attackDistance)
             {
                 speed.GoBackward();

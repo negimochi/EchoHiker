@@ -19,7 +19,6 @@ public class EnemyCaution : MonoBehaviour {
     private int currentStep = 1;
 
 
-    private bool countUp = false;
     private bool counting = false;
     private CuationUpdater updater = null;
 
@@ -34,35 +33,32 @@ public class EnemyCaution : MonoBehaviour {
     {
         // 距離が近いほど早くCautionが上昇する
         waitTime = Mathf.Lerp(waitTimeMin, waitTimeMax, distRate);
-        if (!countUp)
-        {
-            currentStep = step;
-            countUp = true;
-        }
-        StartCount();
+
+        // カウントしてない場合は開始
+        if (counting) return;
+        counting = true;
+        StartCount(true);
     }
     void OnExitPlayer( )
     {
-        waitTime = waitTimeMax;
-        if (countUp)
-        {
-            currentStep = -step;
-            countUp = false;
-        }
-        StartCount();
+        waitTime = waitTimeMin;
+        currentStep = -step;
+        StartCount(false);
     }
 
     void OnSonar()
     {
+        Debug.Log("HitSonar");
         // ソナーがヒットするたびに、Cautionが上昇
         cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
     }
 
-    void StartCount()
+    void StartCount(bool isCountup )
     {
-        if (counting) return;
-        counting = true;
+        currentStep = (isCountup) ? step : (-step);
+        // カウント中はCaution状態
         SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
+        // コルーチンでカウント
         StartCoroutine("Counter");
     }
 
@@ -81,7 +77,7 @@ public class EnemyCaution : MonoBehaviour {
         if (cautionValue >= 100)
         {
             // [Emergency] Playerを発見 
-            counting = false;
+            //counting = false;
             SendMessage("OnEmergency", SendMessageOptions.DontRequireReceiver);
         }
         else if (cautionValue <= 0)
