@@ -13,19 +13,23 @@ public class ColorFader : MonoBehaviour {
     private float max;
     private float currentTime;
     private Color startColor;
-    private bool isWait;
+    private bool wait;
+    private bool sonarHit;
+    private bool sonarInside;
 
 	void Start () 
     {
+        sonarHit = false;
+        sonarInside = false;
+        wait = false;
         max = 1.0f - minAlpha;
-        isWait = false;
         currentTime = 0.0f;
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 	}
 
 	void Update () 
     {
-        if (!isWait)
+        if (!wait)
         {
             float time = currentTime / duration;
             if (time <= (2.0f*max))
@@ -37,7 +41,7 @@ public class ColorFader : MonoBehaviour {
             }
             else
             {
-                isWait = true;
+                wait = true;
                 StartCoroutine("Delay", delay);
             }
         }
@@ -49,28 +53,38 @@ public class ColorFader : MonoBehaviour {
     void OnHit()
     {
         // ヒットした瞬間でソナーから見えなくする
-        SetEnable(false);
+        sonarHit = false;
+        Enable();
     }
 
     void OnSonar()
     {
-        // ソナー表示
-        SetEnable(true);
+        // ソナーから見えることを許可する
+        sonarHit = true;
+        Enable();
     }
 
-    /// <summary>
-    /// 表示・非表示切り替え
-    /// </summary>
-    /// <param name="flag"></param>
-    public void SetEnable(bool flag)
+    void OnSonarInside()
     {
-        renderer.enabled = flag;
+        sonarInside = true;
+        Enable();
+    }
+    void OnSonarOutside()
+    {
+        sonarInside = false;
+        Enable();
+    }
+
+    private void Enable()
+    {
+        renderer.enabled = sonarInside & sonarHit;
     }
 
     private IEnumerator Delay(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        isWait = false;
+        wait = false;
         currentTime = 0.0f;
     }
+
 }

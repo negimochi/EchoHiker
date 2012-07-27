@@ -10,7 +10,7 @@ public class EnemyCaution : MonoBehaviour {
     [SerializeField]
     private int step = 1;
     [SerializeField]
-    private int sonarHit = 5;
+    private int sonarHit = 10;
 
 //    [SerializeField]    // Debug‰{———p
     private int cautionValue = 0;

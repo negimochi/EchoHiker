@@ -3,10 +3,55 @@ using System.Collections;
 
 public class SonarCamera : MonoBehaviour {
 
-	void Start () 
-    {
-	}
+    private float radius = 0.0f;
 
+    void Start()
+    {
+        SphereCollider shereCollider = GetComponent<SphereCollider>();
+        if (shereCollider)
+        {
+            radius = shereCollider.radius;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (CheckObject(other.gameObject))
+        {
+            other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        ;
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (CheckObject(other.gameObject))
+        {
+            other.gameObject.BroadcastMessage("OnSonarOutside", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
+    private bool CheckObject( GameObject target )
+    {
+        return (target.CompareTag("Torpedo") ||
+                 target.CompareTag("Item") ||
+                 target.CompareTag("Enemy")) ? true : false;
+    }
+
+    public void Check( GameObject target )
+    {
+        if (Vector3.Distance(transform.position, target.transform.position) <= radius)
+        {
+            target.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+        }
+        else {
+            target.BroadcastMessage("OnSonarOutside", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
+    // •\Ž¦ˆÊ’u’²®
 	public void SetRect( Rect rect )
     {
         //Camera sonarCamera = gameObject.GetComponent<Camera>();

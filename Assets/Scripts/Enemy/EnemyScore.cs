@@ -23,6 +23,7 @@ public class EnemyScore : MonoBehaviour {
     {
         Debug.Log("OnGetScore");
 
+        // Œ©‚Â‚©‚Á‚Ä‚¢‚È‚¢‚Ù‚¤‚ª“_”‚ª‚‚¢‚æ‚¤‚Éİ’è
         float time = 1.0f - Mathf.InverseLerp(0, 100, caution.Value());
         scoreValue = (int)Mathf.Lerp(scoreMin, scoreMax, time);
 

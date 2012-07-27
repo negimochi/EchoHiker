@@ -72,9 +72,10 @@ public class TorpedoGenerator : MonoBehaviour {
         else Debug.LogError("Not exists Note");
 
         // ソナーの設定
-        ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
-        if (colorFader) colorFader.SetEnable(sonar);
-        else Debug.LogError("Not exists ColorFader");
+        //ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
+        //if (colorFader) colorFader.SetEnable(sonar);
+        //else Debug.LogError("Not exists ColorFader");
+
 
         // クールタイム開始
         valid = false;
