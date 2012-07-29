@@ -80,6 +80,11 @@ public class Airgage : MonoBehaviour {
         BroadcastMessage("OnDisplayDamageLv", damageLv, SendMessageOptions.DontRequireReceiver);
     }
 
+    void OnInflate(int value )
+    {
+        air += value;
+    }
+
     /// <summary>
     /// airçXêV
     /// </summary>
