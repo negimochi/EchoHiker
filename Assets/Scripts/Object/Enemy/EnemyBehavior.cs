@@ -316,7 +316,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             // Player‚Æ‚Ì‹——£‚ð•Û‚Æ‚¤‚Æ‚·‚é
             float dist = Vector3.Distance(transform.position, player.transform.position);
-            Debug.Log("dist="+dist);
+            //Debug.Log("dist="+dist);
             if (dist <= attackDistance)
             {
                 speed.GoBackward();

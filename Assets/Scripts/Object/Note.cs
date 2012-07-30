@@ -10,11 +10,12 @@ public class Note : MonoBehaviour {
     private bool valid   = true;
 
     private float counter = 0.0f;
-    private ParticleSystem particle = null;
+
+    private HitEffector hitEffector = null;
 
 	void Start () 
     {
-        particle = gameObject.GetComponentInChildren<ParticleSystem>();
+        hitEffector = gameObject.GetComponentInChildren<HitEffector>();
         counter = offset;
     }
 
@@ -50,12 +51,12 @@ public class Note : MonoBehaviour {
         //audio.Stop();
 
         // 終了エフェクト開始
-        if (particle)
-        {
-            particle.Play();
-            Debug.Log("Particle Start");
-        }
-
+//        if (particle)
+//        {
+//            particle.Play();
+//            Debug.Log("Particle Start");
+//        }
+        Debug.Log("OnHit");
         StartCoroutine("Fadeout", 1.0f);
     }
 
@@ -78,9 +79,9 @@ public class Note : MonoBehaviour {
         }
 
         // エフェクトが完全に終了していたらオブジェクト破棄
-        if (particle)
+        if (hitEffector)
         {
-            while (particle.isPlaying)
+            while (hitEffector.IsPlaying())
             {
                 yield return new WaitForSeconds(waitTime);
             }

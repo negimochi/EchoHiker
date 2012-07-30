@@ -10,17 +10,18 @@ public class ColorFader : MonoBehaviour {
     [SerializeField]
     private float minAlpha = 0.1f;
 
+    [SerializeField]
+    private bool sonarHit = false;
+    [SerializeField]
+    private bool sonarInside = false;
+   
     private float max;
     private float currentTime;
     private Color startColor;
     private bool wait;
-    private bool sonarHit;
-    private bool sonarInside;
 
 	void Start () 
     {
-        sonarHit = false;
-        sonarInside = false;
         wait = false;
         max = 1.0f - minAlpha;
         currentTime = 0.0f;
@@ -56,6 +57,7 @@ public class ColorFader : MonoBehaviour {
     void OnHit()
     {
         // ヒットした瞬間でソナーから見えなくする
+        Debug.Log("OnHit" + gameObject.transform.parent.gameObject.name);
         sonarHit = false;
         Enable();
     }
@@ -71,7 +73,7 @@ public class ColorFader : MonoBehaviour {
     void OnSonarInside()
     {
         // ソナー表示領域の内側
-        Debug.Log("SonarInside" + gameObject.transform.parent.gameObject.name);
+        Debug.Log("SonarInside:" + gameObject.transform.parent.gameObject.name);
         sonarInside = true;
         Enable();
     }
@@ -79,7 +81,7 @@ public class ColorFader : MonoBehaviour {
     void OnSonarOutside()
     {
         // ソナー表示領域の外側
-        Debug.Log("SonarOutside" + gameObject.transform.parent.gameObject.name);
+        Debug.Log("SonarOutside:" + gameObject.transform.parent.gameObject.name);
         sonarInside = false;
         Enable();
     }
