@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ActiveSonar : MonoBehaviour {
 
-    [SerializeField]
+//    [SerializeField]
     private float maxRadius = 300.0f;
     [SerializeField]
     private float delayTime = 0.2f;
@@ -14,6 +14,7 @@ public class ActiveSonar : MonoBehaviour {
     private GameObject player = null;
     private RandomGenerator enemy = null;
     private RandomGenerator item  = null;
+    private TorpedoManager torpedo = null;
     private SonarEffect effect = null;
 
 	void Start () 
@@ -23,10 +24,11 @@ public class ActiveSonar : MonoBehaviour {
         GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
         if (enemyObj) enemy = enemyObj.GetComponent<RandomGenerator>();
         GameObject itemObj = GameObject.Find("/Object/ItemManager");
-        if (itemObj)
-        {
-            item = itemObj.GetComponent<RandomGenerator>();
-        }
+        if (itemObj) item = itemObj.GetComponent<RandomGenerator>();
+        GameObject torpedoObj = GameObject.Find("/Object/TorpedoManager");
+        if (torpedoObj) torpedo = torpedoObj.GetComponent<TorpedoManager>();
+        GameObject sonarCameraObj = GameObject.Find("/Player/SonarCamera");
+        if (sonarCameraObj) maxRadius = sonarCameraObj.GetComponent<SphereCollider>().radius;
 
         StartCoroutine("Delay");
 	}
@@ -47,6 +49,11 @@ public class ActiveSonar : MonoBehaviour {
         {
             //Debug.Log("Item Search");
             Search(item.SonarChildren(), effectDist);
+        }
+        if (torpedo)
+        {
+            Debug.Log("SonarTorpedo:" + torpedo.SonarChildren().Count);
+            Search(torpedo.SonarChildren(), effectDist);
         }
 
         StartCoroutine("Delay");

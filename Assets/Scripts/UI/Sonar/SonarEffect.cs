@@ -75,6 +75,7 @@ public class SonarEffect : MonoBehaviour
         currentTime = 0.0f;
     }
 
+    public Rect Rect() { return texture.pixelInset; }
     public float Value(){   return rate;    }
 
 }

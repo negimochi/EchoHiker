@@ -80,6 +80,8 @@ public class TorpedoCollider : MonoBehaviour {
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // Collider–³Œø‰»
             collider.enabled = false;
+            // e‚É“`‚¦‚Ä‚¨‚­
+            transform.parent.SendMessage("OnDestroyChild", gameObject);
         }
     }
 

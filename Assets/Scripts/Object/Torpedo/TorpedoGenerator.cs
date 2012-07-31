@@ -48,7 +48,7 @@ public class TorpedoGenerator : MonoBehaviour {
         // クールタイム中は生成しない
         if (valid == false)
         {
-            Debug.Log("Cool time:" + Time.time);
+            //Debug.Log("Cool time:" + Time.time);
             return;
         }
 
@@ -62,6 +62,8 @@ public class TorpedoGenerator : MonoBehaviour {
         GameObject newObj = Object.Instantiate(target, vec, rot) as GameObject;
         // 親を設定
         newObj.transform.parent = parentObj.transform;
+        // 親に伝えておく
+        parentObj.SendMessage("OnInstantiatedChild", gameObject);
 
         // Owner設定
         TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();

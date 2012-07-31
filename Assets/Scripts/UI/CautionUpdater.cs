@@ -43,6 +43,7 @@ public class CautionUpdater : MonoBehaviour
         if (target.Equals(maxCautionEnemy))
         {
             maxCautionEnemy = null;
+            uiObj.BroadcastMessage("OnUpdateCaution", 0, SendMessageOptions.DontRequireReceiver);
         }
     }
 
