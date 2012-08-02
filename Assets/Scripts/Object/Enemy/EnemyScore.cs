@@ -23,13 +23,13 @@ public class EnemyScore : MonoBehaviour {
     {
         Debug.Log("OnGetScore");
 
-        // Œ©‚Â‚©‚Á‚Ä‚¢‚È‚¢‚Ù‚¤‚ª“_”‚ª‚‚¢‚æ‚¤‚Éİ’è
+        // è¦‹ã¤ã‹ã£ã¦ã„ãªã„ã»ã†ãŒç‚¹æ•°ãŒé«˜ã„ã‚ˆã†ã«è¨­å®š
         float time = 1.0f - Mathf.InverseLerp(0, 100, caution.Value());
         scoreValue = (int)Mathf.Lerp(scoreMin, scoreMax, time);
 
-        // ƒXƒRƒA’l‚ğ‘—‚é
+        // ã‚¹ã‚³ã‚¢å€¤ã‚’é€ã‚‹
         uiObj.BroadcastMessage("OnGetScore", scoreValue);
-        // ©•ª‚Éƒqƒbƒg”»’è
+        // è‡ªåˆ†ã«ãƒ’ãƒƒãƒˆåˆ¤å®š
         BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
     }
 }

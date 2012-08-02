@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
         public float current = 1.0f;
 
         /// <summary>
-        /// ƒXƒs[ƒh•ÏX
+        /// ã‚¹ãƒ”ãƒ¼ãƒ‰å¤‰æ›´
         /// </summary>
         /// <param name="value"></param>
         public void Change( float value )
@@ -56,25 +56,25 @@ public class PlayerController : MonoBehaviour {
         }
 
         /// <summary>
-        /// ‰ñ“]—Ê•ÏX
+        /// å›è»¢é‡å¤‰æ›´
         /// </summary>
         public void Change(float value)
         {
-            // ‘€ì«‚ğŒüã‚³‚¹‚é‚½‚ß‚ÉáŠ±ƒ}[ƒWƒ“‚ğİ‚¯‚é
+            // æ“ä½œæ€§ã‚’å‘ä¸Šã•ã›ã‚‹ãŸã‚ã«è‹¥å¹²ãƒãƒ¼ã‚¸ãƒ³ã‚’è¨­ã‘ã‚‹
             if (-margin < value && value < margin) return;
 
-            // ‰ñ“]—Ê‚ÌƒuƒŒƒ“ƒh
+            // å›è»¢é‡ã®ãƒ–ãƒ¬ãƒ³ãƒ‰
             current.y = Mathf.Lerp(current.y, current.y + value, blend);
             if (current.y > max) current.y = max;
-            // Œ¸ŠƒŠƒZƒbƒg
+            // æ¸›è¡°ãƒªã‚»ãƒƒãƒˆ
             attenuationStart = current.y;
             attenuationTime = 0.0f;
         }
         /// <summary>
-        /// Œ¸Š
+        /// æ¸›è¡°
         /// </summary>
-        /// <param name="time">ŠÔ•ÏˆÊ</param>
-        /// <returns>Œ¸Š’†/Œ¸Š‚µ‚Ä‚È‚¢</returns>
+        /// <param name="time">æ™‚é–“å¤‰ä½</param>
+        /// <returns>æ¸›è¡°ä¸­/æ¸›è¡°ã—ã¦ãªã„</returns>
         public bool Attenuate(float time)
         {
             if (current.y == 0.0f) return false;
@@ -105,19 +105,19 @@ public class PlayerController : MonoBehaviour {
 	void Start () 
     {
         valid = false;
-        // UI‚ÌƒRƒ“ƒgƒ[ƒ‰[B•p”É‚ÉXV‚·‚é‚Ì‚ÅQÆ‚ğ‚Á‚Ä‚¨‚­
+        // UIã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã€‚é »ç¹ã«æ›´æ–°ã™ã‚‹ã®ã§å‚ç…§ã‚’æŒã£ã¦ãŠã
         GameObject uiObj = GameObject.Find("/UI/Controller");
         if (uiObj) 
         {
             controller = uiObj.GetComponent<Controller>();
         }
-        // MarinSnow‚ÌƒGƒtƒFƒNƒg‚ÍƒXƒs[ƒhˆË‘¶B•p”É‚ÉXV‚·‚é‚Ì‚ÅQÆ‚ğ‚Á‚Ä‚¨‚­
+        // MarinSnowã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã¯ã‚¹ãƒ”ãƒ¼ãƒ‰ä¾å­˜ã€‚é »ç¹ã«æ›´æ–°ã™ã‚‹ã®ã§å‚ç…§ã‚’æŒã£ã¦ãŠã
         GameObject effect = GameObject.Find("Effect_MarineSnow");
         if (effect)
         {
             marinesnowEffect = effect.GetComponent<MarineSnow>();
         }
-        // ‹›—‹”­ËƒXƒNƒŠƒvƒg
+        // é­šé›·ç™ºå°„ã‚¹ã‚¯ãƒªãƒ—ãƒˆ
         torpedo = GetComponent<TorpedoGenerator>();
 
         rot.Init();
@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour {
     void OnGameStart()
     {
         valid = true;
-        // ƒRƒ“ƒgƒ[ƒ‰•\¦
+        // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©è¡¨ç¤º
         controller.Enable( true );
     }
 
@@ -135,11 +135,11 @@ public class PlayerController : MonoBehaviour {
         speed.Stop();
         rot.Stop();
 
-        // ƒRƒ“ƒgƒ[ƒ‰•\¦
+        // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©è¡¨ç¤º
         controller.Enable(false);
 
-        // ’¾‚Ş‰‰o
-        // ²‚ÌŒÅ’è‚ğ‰ğœ‚µ‚ÄAd—Í‚ğ—LŒø‚É‚·‚é
+        // æ²ˆã‚€æ¼”å‡º
+        // è»¸ã®å›ºå®šã‚’è§£é™¤ã—ã¦ã€é‡åŠ›ã‚’æœ‰åŠ¹ã«ã™ã‚‹
         rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         rigidbody.useGravity = true;
 
@@ -148,42 +148,42 @@ public class PlayerController : MonoBehaviour {
 	
 	void FixedUpdate () 
     {
-        // ‰ñ“]‚ÌŒ¸Š
+        // å›è»¢ã®æ¸›è¡°
         rot.Attenuate(Time.deltaTime);
 
         if (valid)
         {
-            // ‹›—‹”­Ë
+            // é­šé›·ç™ºå°„
             if (Input.GetKeyDown(KeyCode.B))
             {
                 //Debug.Log("B ender : " + Time.time);
                 torpedo.Generate();
             }
 
-            // ƒhƒ‰ƒbƒO’†
+            // ãƒ‰ãƒ©ãƒƒã‚°ä¸­
             if (Input.GetMouseButton(0))
             {
                 //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
-                // ‰ñ“]
+                // å›è»¢
                 rot.Change(Input.GetAxis("Mouse X"));
-                // ‰Á‘¬
+                // åŠ é€Ÿ
                 speed.Change(Input.GetAxis("Mouse Y"));
             }
 
-            // ƒhƒ‰ƒbƒOŠJn
+            // ãƒ‰ãƒ©ãƒƒã‚°é–‹å§‹
             if (Input.GetMouseButtonDown(0))
             {
                 rot.BrakeAttenuation();
             }
-            // ƒhƒ‰ƒbƒOI—¹
+            // ãƒ‰ãƒ©ãƒƒã‚°çµ‚äº†
             if (Input.GetMouseButtonUp(0))
             {
                 rot.UsualAttenuation();
             }
         }
-        // ‰ñ“]‚·‚é
+        // å›è»¢ã™ã‚‹
         Rotate();
-        // ‘O‚Éi‚Ş
+        // å‰ã«é€²ã‚€
         MoveForward();
 	}
     
@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour {
     {
         Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
-        // ‰ñ“]‰‰o
+        // å›è»¢æ¼”å‡º
         controller.SetAngle(transform.localEulerAngles.y);
     }
 
@@ -199,7 +199,7 @@ public class PlayerController : MonoBehaviour {
     {
         Vector3 vec = speed.current * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
-        // ƒXƒs[ƒh‚Ì•Ï‰»‰‰o
+        // ã‚¹ãƒ”ãƒ¼ãƒ‰ã®å¤‰åŒ–æ¼”å‡º
         marinesnowEffect.SetSpeed(speed.Rate());
     }
 

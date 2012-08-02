@@ -27,7 +27,7 @@ public class ColorFader : MonoBehaviour {
         currentTime = 0.0f;
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 
-        // ¶¬‚³‚ê‚½’iŠK‚Åƒ\ƒi[“à‚É‚¢‚é‚©ƒ`ƒFƒbƒN
+        // ç”Ÿæˆã•ã‚ŒãŸæ®µéšã§ã‚½ãƒŠãƒ¼å†…ã«ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
         GameObject sonarCameraObj = GameObject.Find("/Player/SonarCamera");
         if (sonarCameraObj) {
             sonarCameraObj.SendMessage("OnInstantiatedChild", gameObject);
@@ -43,7 +43,7 @@ public class ColorFader : MonoBehaviour {
             {
                 float alpha = 1.0f - Mathf.PingPong(time, max);
                 renderer.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-                // ŠÔXV
+                // æ™‚é–“æ›´æ–°
                 currentTime += Time.deltaTime;
             }
             else
@@ -56,7 +56,7 @@ public class ColorFader : MonoBehaviour {
 
     void OnHit()
     {
-        // ƒqƒbƒg‚µ‚½uŠÔ‚Åƒ\ƒi[‚©‚çŒ©‚¦‚È‚­‚·‚é
+        // ãƒ’ãƒƒãƒˆã—ãŸç¬é–“ã§ã‚½ãƒŠãƒ¼ã‹ã‚‰è¦‹ãˆãªãã™ã‚‹
         Debug.Log("OnHit" + gameObject.transform.parent.gameObject.name);
         sonarHit = false;
         Enable();
@@ -64,7 +64,7 @@ public class ColorFader : MonoBehaviour {
 
     void OnSonar()
     {
-        // ƒ\ƒi[‚©‚çŒ©‚¦‚é‚±‚Æ‚ğ‹–‰Â‚·‚é
+        // ã‚½ãƒŠãƒ¼ã‹ã‚‰è¦‹ãˆã‚‹ã“ã¨ã‚’è¨±å¯ã™ã‚‹
         Debug.Log("OnSonar" + gameObject.transform.parent.gameObject.name);
         sonarHit = true;
         Enable();
@@ -72,7 +72,7 @@ public class ColorFader : MonoBehaviour {
 
     void OnSonarInside()
     {
-        // ƒ\ƒi[•\¦—Ìˆæ‚Ì“à‘¤
+        // ã‚½ãƒŠãƒ¼è¡¨ç¤ºé ˜åŸŸã®å†…å´
         Debug.Log("SonarInside:" + gameObject.transform.parent.gameObject.name);
         sonarInside = true;
         Enable();
@@ -80,7 +80,7 @@ public class ColorFader : MonoBehaviour {
 
     void OnSonarOutside()
     {
-        // ƒ\ƒi[•\¦—Ìˆæ‚ÌŠO‘¤
+        // ã‚½ãƒŠãƒ¼è¡¨ç¤ºé ˜åŸŸã®å¤–å´
         Debug.Log("SonarOutside:" + gameObject.transform.parent.gameObject.name);
         sonarInside = false;
         Enable();

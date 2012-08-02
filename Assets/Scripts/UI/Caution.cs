@@ -4,7 +4,7 @@ using System.Collections;
 public class Caution : MonoBehaviour {
 
     [SerializeField]
-    private Vector2 offsetPixel = Vector2.zero;  // ƒ[ƒ‚Å‰æ–Ê’[
+    private Vector2 offsetPixel = Vector2.zero;  // ã‚¼ãƒ­ã§ç”»é¢ç«¯
     [SerializeField]
     private int disitSize = 3;
 //    [SerializeField]
@@ -21,7 +21,7 @@ public class Caution : MonoBehaviour {
         GUITexture texture = GetComponentInChildren<GUITexture>();
         if (texture)
         {
-            // ˆÊ’u’²®
+            // ä½ç½®èª¿æ•´
             float w = (float)Screen.width;
             float h = (float)Screen.height;
             float xPos = 1.0f - (texture.texture.width + offsetPixel.x)/w;
@@ -43,7 +43,7 @@ public class Caution : MonoBehaviour {
         //if( cautionValue == 0 ) guiText.material.color = safetyColor;
         //else if (cautionValue < 90) guiText.material.color = cautionColor;
         //else  guiText.material.color = emergencyColor;
-        // •\¦
+        // è¡¨ç¤º
         guiText.text = cautionValue.ToString("D" + disitSize);
     }
 

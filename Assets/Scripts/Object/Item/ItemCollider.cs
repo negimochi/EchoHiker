@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class ItemCollider : MonoBehaviour
@@ -20,7 +20,7 @@ public class ItemCollider : MonoBehaviour
     void Start()
     {
         uiObj = GameObject.Find("/UI");
-        // —”‚ÅŠl“¾ƒ|ƒCƒ“ƒg‚ğU‚ç‚·
+        // ä¹±æ•°ã§ç²å¾—ãƒã‚¤ãƒ³ãƒˆã‚’æ•£ã‚‰ã™
         scoreValue = scoreMax;
         StartCoroutine("ChangeScoreValue");
     }
@@ -38,7 +38,7 @@ public class ItemCollider : MonoBehaviour
 
     void OnDestroyObject()
     {
-        // e‚©‚çÁ‚µ‚Ä‚à‚ç‚¤
+        // è¦ªã‹ã‚‰æ¶ˆã—ã¦ã‚‚ã‚‰ã†
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
         StopAllCoroutines();
         //Destroy(gameObject);
@@ -46,13 +46,13 @@ public class ItemCollider : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))   // ƒvƒŒƒCƒ„[‚©”»’è
+        if (other.CompareTag("Player"))   // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹åˆ¤å®š
         {
-            // ƒXƒRƒA‰ÁZ
+            // ã‚¹ã‚³ã‚¢åŠ ç®—
             if (uiObj) uiObj.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
-            // ƒqƒbƒgŒã‚Ì©•ª‚Ìˆ—
+            // ãƒ’ãƒƒãƒˆå¾Œã®è‡ªåˆ†ã®å‡¦ç†
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-            // Collider‚ğØ‚é
+            // Colliderã‚’åˆ‡ã‚‹
             collider.enabled = false;
         }
     }

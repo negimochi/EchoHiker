@@ -26,6 +26,7 @@ public class TitleMenu : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log(Input.mousePosition);
+            audio.Play();
             nextScene = endlessSceneName;
             intermission.SendMessage("OnIntermissionStart");
             /*
@@ -49,7 +50,7 @@ public class TitleMenu : MonoBehaviour {
     void OnIntermissionEnd()
     {
         Debug.Log("LoadLevel");
-        // Ÿ‚ÌƒV[ƒ“‚ğƒ[ƒh
+        // æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰
         Application.LoadLevel(nextScene);
     }
 }

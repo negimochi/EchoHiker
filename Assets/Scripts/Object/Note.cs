@@ -39,7 +39,7 @@ public class Note : MonoBehaviour {
     }
 
     /// <summary>
-    /// ‰¹‚Ì—LŒøE–³Œø
+    /// éŸ³ã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹
     /// </summary>
     /// <param name="flag"></param>
     public void SetEnable(bool flag) { valid = flag; }
@@ -47,10 +47,10 @@ public class Note : MonoBehaviour {
     void OnHit()
     {
         valid = false;
-        // Stop‚Æg‚¤‚Æ‰¹‚ª‚Ô‚ÂØ‚è‚É‚È‚éê‡‚ª‚ ‚é‚½‚ßA‰¹—Ê‚ğƒtƒF[ƒhƒAƒEƒg‚³‚¹‚Ä‘Î‰
+        // Stopã¨ä½¿ã†ã¨éŸ³ãŒã¶ã¤åˆ‡ã‚Šã«ãªã‚‹å ´åˆãŒã‚ã‚‹ãŸã‚ã€éŸ³é‡ã‚’ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã•ã›ã¦å¯¾å¿œ
         //audio.Stop();
 
-        // I—¹ƒGƒtƒFƒNƒgŠJn
+        // çµ‚äº†ã‚¨ãƒ•ã‚§ã‚¯ãƒˆé–‹å§‹
 //        if (particle)
 //        {
 //            particle.Play();
@@ -61,13 +61,13 @@ public class Note : MonoBehaviour {
     }
 
     /// <summary>
-    /// ƒtƒF[ƒhƒAƒEƒgƒRƒ‹[ƒ`ƒ“
+    /// ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã‚³ãƒ«ãƒ¼ãƒãƒ³
     /// </summary>
     /// <param name="duration"></param>
     /// <returns></returns>
     private IEnumerator Fadeout(float duration)
     {
-        // ƒtƒF[ƒhƒAƒEƒg
+        // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
         float currentTime = 0.0f;
         float waitTime = 0.02f;
         float firstVol = audio.volume;
@@ -78,7 +78,7 @@ public class Note : MonoBehaviour {
             currentTime += waitTime;
         }
 
-        // ƒGƒtƒFƒNƒg‚ªŠ®‘S‚ÉI—¹‚µ‚Ä‚¢‚½‚çƒIƒuƒWƒFƒNƒg”jŠü
+        // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãŒå®Œå…¨ã«çµ‚äº†ã—ã¦ã„ãŸã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´æ£„
         if (hitEffector)
         {
             while (hitEffector.IsPlaying())
@@ -86,7 +86,7 @@ public class Note : MonoBehaviour {
                 yield return new WaitForSeconds(waitTime);
             }
         }
-        // íœƒƒbƒZ[ƒW‚ğ—v‹
+        // å‰Šé™¤ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¦æ±‚
         transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
     }
 }

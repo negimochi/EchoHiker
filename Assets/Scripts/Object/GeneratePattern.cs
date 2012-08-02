@@ -3,10 +3,10 @@ using System.Collections;
 
 public class GeneratePattern : MonoBehaviour {
 
-    // ”­¶ŠÔ
+    // ç™ºç”Ÿæ™‚é–“
     [SerializeField]
     private float[] timing = new float[] { };
-    // ¶¬ó‹µ•ÏX
+    // ç”ŸæˆçŠ¶æ³å¤‰æ›´
     [SerializeField]
     private GenerateParameter[] variation = new GenerateParameter[]{ };
 

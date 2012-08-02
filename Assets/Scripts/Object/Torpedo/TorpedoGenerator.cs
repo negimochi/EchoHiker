@@ -6,16 +6,16 @@ public class TorpedoGenerator : MonoBehaviour {
     [SerializeField]
     private GameObject target;
     [SerializeField]
-    private Vector3 pos;            // Å‰‚Ì¶¬ˆÊ’u
+    private Vector3 pos;            // æœ€åˆã®ç”Ÿæˆä½ç½®
     [SerializeField]
-    private float coolTime = 3.0f;  // ƒN[ƒ‹ƒ^ƒCƒ€
+    private float coolTime = 3.0f;  // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ 
     [SerializeField]
-    private bool sound = false;    // ‰¹‚ğo‚·‚©
+    private bool sound = false;    // éŸ³ã‚’å‡ºã™ã‹
     [SerializeField]
-    private bool sonar = false;  // ƒ\ƒi[•\¦‚·‚é‚©
+    private bool sonar = false;  // ã‚½ãƒŠãƒ¼è¡¨ç¤ºã™ã‚‹ã‹
     [SerializeField]
     private TorpedoCollider.OwnerType type = TorpedoCollider.OwnerType.Enemy;
-                                        // Š—LÒ
+                                        // æ‰€æœ‰è€…
 
     private float current;
 
@@ -25,7 +25,7 @@ public class TorpedoGenerator : MonoBehaviour {
 
     void Start()
     {
-        // ‹›—‹‚Ì”z’uæ
+        // é­šé›·ã®é…ç½®å…ˆ
         parentObj = GameObject.Find("/Object/TorpedoManager");
 //        sonarCameraObj = GameObject.Find("/Player/SonarCamera");
     }
@@ -34,7 +34,7 @@ public class TorpedoGenerator : MonoBehaviour {
     {
         if (!valid)
         {
-            // ƒN[ƒ‹ƒ^ƒCƒ€Œv‘ª
+            // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ è¨ˆæ¸¬
             current += Time.deltaTime;
             if (current >= coolTime)
             {
@@ -45,37 +45,37 @@ public class TorpedoGenerator : MonoBehaviour {
 
     public void Generate()
     {
-        // ƒN[ƒ‹ƒ^ƒCƒ€’†‚Í¶¬‚µ‚È‚¢
+        // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ ä¸­ã¯ç”Ÿæˆã—ãªã„
         if (valid == false)
         {
             //Debug.Log("Cool time:" + Time.time);
             return;
         }
 
-        // ˆÊ’uEŠp“x‚ğ‹‚ß‚é
+        // ä½ç½®ãƒ»è§’åº¦ã‚’æ±‚ã‚ã‚‹
         Vector3 vec = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         vec += pos.x * transform.right;
         vec += pos.y * transform.up;
         vec += pos.z * transform.forward;
         Quaternion rot = Quaternion.Euler(transform.eulerAngles);
-        // ¶¬
+        // ç”Ÿæˆ
         GameObject newObj = Object.Instantiate(target, vec, rot) as GameObject;
-        // e‚ğİ’è
+        // è¦ªã‚’è¨­å®š
         newObj.transform.parent = parentObj.transform;
-        // e‚É“`‚¦‚Ä‚¨‚­
+        // è¦ªã«ä¼ãˆã¦ãŠã
         parentObj.SendMessage("OnInstantiatedChild", gameObject);
 
-        // Ownerİ’è
+        // Ownerè¨­å®š
         TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
         if (torpedoCollider) torpedoCollider.SetOwner(type);
         else Debug.LogError("Not exists TorpedoCollider");
 
-        // ‰¹‚Ìİ’è
+        // éŸ³ã®è¨­å®š
         Note note = newObj.GetComponentInChildren<Note>();
         if (note) note.SetEnable(sound);
         else Debug.LogError("Not exists Note");
 
-        // ƒ\ƒi[‚Ìİ’è
+        // ã‚½ãƒŠãƒ¼ã®è¨­å®š
         //sonarCameraObj.SendMessage("OnInstantiatedChild", newObj);
         if (sonar) newObj.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
         //ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
@@ -83,7 +83,7 @@ public class TorpedoGenerator : MonoBehaviour {
         //else Debug.LogError("Not exists ColorFader");
 
 
-        // ƒN[ƒ‹ƒ^ƒCƒ€ŠJn
+        // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ é–‹å§‹
         valid = false;
         current = 0.0f;
     }

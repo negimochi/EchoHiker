@@ -12,7 +12,7 @@ public class EnemyCaution : MonoBehaviour {
     [SerializeField]
     private int sonarHit = 10;
 
-//    [SerializeField]    // Debug‰{———p
+//    [SerializeField]    // Debugé–²è¦§ç”¨
     private int cautionValue = 0;
 
     public float waitTime   = 1.0f;
@@ -31,16 +31,17 @@ public class EnemyCaution : MonoBehaviour {
 
     void OnStayPlayer( float distRate )
     {
-        // ‹——£‚ª‹ß‚¢‚Ù‚Ç‘‚­Caution‚ªã¸‚·‚é
+        // è·é›¢ãŒè¿‘ã„ã»ã©æ—©ãCautionãŒä¸Šæ˜‡ã™ã‚‹
         waitTime = Mathf.Lerp(waitTimeMin, waitTimeMax, distRate);
 
-        // ƒJƒEƒ“ƒg‚µ‚Ä‚È‚¢ê‡‚ÍŠJn
+        // ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãªã„å ´åˆã¯é–‹å§‹
         if (counting) return;
         counting = true;
         StartCount(true);
     }
     void OnExitPlayer( )
     {
+        // Cautionã®å€¤ãŒæ¸›å°‘ã™ã‚‹
         waitTime = waitTimeMin;
         currentStep = -step;
         StartCount(false);
@@ -49,46 +50,41 @@ public class EnemyCaution : MonoBehaviour {
     void OnSonar()
     {
         Debug.Log("HitSonar");
-        // ƒ\ƒi[‚ªƒqƒbƒg‚·‚é‚½‚Ñ‚ÉACaution‚ªã¸
+        // ã‚½ãƒŠãƒ¼ãŒãƒ’ãƒƒãƒˆã™ã‚‹ãŸã³ã«ã€CautionãŒä¸Šæ˜‡
         cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
     }
 
     void StartCount(bool isCountup )
     {
         currentStep = (isCountup) ? step : (-step);
-        // ƒJƒEƒ“ƒg’†‚ÍCautionó‘Ô
+        // ã‚«ã‚¦ãƒ³ãƒˆä¸­ã¯CautionçŠ¶æ…‹
         SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
-        // ƒRƒ‹[ƒ`ƒ“‚ÅƒJƒEƒ“ƒg
+        // ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼é–‹å§‹
         StartCoroutine("Counter");
     }
 
-    /// <summary>
-    /// CautionƒJƒEƒ“ƒ^[
-    /// </summary>
-    /// <returns></returns>
     private IEnumerator Counter()
     {
         yield return new WaitForSeconds(waitTime);
 
         cautionValue = Mathf.Clamp(cautionValue + currentStep, 0, 100);
-        // •\¦XV
+        // è¡¨ç¤ºæ›´æ–°
         updater.DisplayValue(gameObject, cautionValue);
-        // ğŒƒ`ƒFƒbƒN
+        // æ¡ä»¶ãƒã‚§ãƒƒã‚¯
         if (cautionValue >= 100)
         {
-            // [Emergency] Player‚ğ”­Œ© 
+            // Playerã‚’ç™ºè¦‹ 
             //counting = false;
             SendMessage("OnEmergency", SendMessageOptions.DontRequireReceiver);
         }
         else if (cautionValue <= 0)
         {
-            // [Emergency] Player‚ğŒ©¸‚¤
+            // Playerã‚’è¦‹å¤±ã†
             counting = false;
             SendMessage("OnUsual", SendMessageOptions.DontRequireReceiver);
         }
         else
         {
-            // ƒJƒEƒ“ƒ^‚ğŒJ‚è•Ô‚·
             StartCoroutine("Counter");
         }
     }

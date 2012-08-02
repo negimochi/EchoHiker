@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ‹›—‹‚ÌˆÚ“®
+/// é­šé›·ã®ç§»å‹•
 /// </summary>
 public class TorpedoBehavior : MonoBehaviour {
 
@@ -10,7 +10,7 @@ public class TorpedoBehavior : MonoBehaviour {
     private float speed = 1.0f;
 
     [SerializeField]
-    private Rect runningArea;   // —LŒø”ÍˆÍiƒ[ƒ‹ƒhÀ•Wj
+    private Rect runningArea;   // æœ‰åŠ¹ç¯„å›²ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼‰
 
 	void Start () 
     {
@@ -21,12 +21,12 @@ public class TorpedoBehavior : MonoBehaviour {
     {
         if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
         {
-            // ‰Â“®”ÍˆÍ‚ğ’´‚¦‚½‚çíœ
+            // å¯å‹•ç¯„å›²ã‚’è¶…ãˆãŸã‚‰å‰Šé™¤
             OnDestroyObject();
         }
         else
         {
-            // ’Êí‚Í‘O‚Éi‚Ş
+            // é€šå¸¸ã¯å‰ã«é€²ã‚€
             MoveForward();
         }
 	}

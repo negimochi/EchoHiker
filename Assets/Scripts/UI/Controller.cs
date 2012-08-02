@@ -27,13 +27,13 @@ public class Controller : MonoBehaviour {
     void OnGUI()
     {
         if (!enable) return;
-        // ƒeƒNƒXƒ`ƒƒ‚Ì‰ñ“]‚ÍGUIUtility.RotateAroundPivot‚Å‚Í‚È‚¢‚Æ‰ñ“]‚Å‚«‚È‚¢
-        tmpMat = GUI.matrix;    // ˆê‘Ş”ğ
+        // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å›è»¢ã¯GUIUtility.RotateAroundPivotã§ã¯ãªã„ã¨å›è»¢ã§ããªã„
+        tmpMat = GUI.matrix;    // ä¸€æ™‚é€€é¿
         {
             GUIUtility.RotateAroundPivot(angleY, pivotPoint);
             GUI.DrawTexture(textureRect, guiCompass);
         }
-        GUI.matrix = tmpMat;    // –ß‚·
+        GUI.matrix = tmpMat;    // æˆ»ã™
     }
 
     public void Enable( bool flag )

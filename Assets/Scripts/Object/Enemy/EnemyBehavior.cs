@@ -2,12 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// “G‚Ì“®‚«
+/// æ•µã®å‹•ã
 /// </summary>
 public class EnemyBehavior : MonoBehaviour
 {
     /// <summary>
-    /// ƒXƒs[ƒh’²®
+    /// ã‚¹ãƒ”ãƒ¼ãƒ‰èª¿æ•´
     /// </summary>
     [System.Serializable]
     public class SpeedValue
@@ -37,7 +37,7 @@ public class EnemyBehavior : MonoBehaviour
         public void Stop() { current = 0.0f; }
 
         /// <summary>
-        /// ‘¬“x•ÏX
+        /// é€Ÿåº¦å¤‰æ›´
         /// </summary>
         public void Change()
         {
@@ -58,7 +58,7 @@ public class EnemyBehavior : MonoBehaviour
     private SpeedValue speed;
 
     /// <summary>
-    /// ‰ñ“]’²®
+    /// å›è»¢èª¿æ•´
     /// </summary>
     [System.Serializable]
     public class RotationValue
@@ -103,23 +103,23 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         /// <summary>
-        /// ‰ñ“]—Ê•ÏX
+        /// å›è»¢é‡å¤‰æ›´
         /// </summary>
         public void Change()
         {
             float value = Random.Range(-max, max);
-            // ‰ñ“]—Ê‚ÌƒuƒŒƒ“ƒh
+            // å›è»¢é‡ã®ãƒ–ãƒ¬ãƒ³ãƒ‰
             current.y = Mathf.Lerp(current.y, current.y + value, blending);
-            // Œ¸ŠƒŠƒZƒbƒg
+            // æ¸›è¡°ãƒªã‚»ãƒƒãƒˆ
             attenuationStart = current.y;
             attenuationTime = 0.0f;
         }
 
         /// <summary>
-        /// Œ¸Š
+        /// æ¸›è¡°
         /// </summary>
-        /// <param name="time">ŠÔ•ÏˆÊ</param>
-        /// <returns>Œ¸Š’†/Œ¸Š‚µ‚Ä‚È‚¢</returns>
+        /// <param name="time">æ™‚é–“å¤‰ä½</param>
+        /// <returns>æ¸›è¡°ä¸­/æ¸›è¡°ã—ã¦ãªã„</returns>
         public bool Attenuate(float time)
         {
             if (current.y == 0.0f) return false;
@@ -133,7 +133,7 @@ public class EnemyBehavior : MonoBehaviour
     private RotationValue rot;
 
     [SerializeField]
-    private Rect runningArea;   // ˆÚ“®”ÍˆÍ
+    private Rect runningArea;   // ç§»å‹•ç¯„å›²
     [SerializeField]
     private float waitTime = 10.0f;
 
@@ -161,7 +161,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
-        // ƒXƒ^[ƒg‚ÍŠO‘¤‚É‚¢‚é‚Ì‚Å’†S‚ğŒü‚¢‚Ä‚¨‚­
+        // ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚ã¯å¤–å´ã«ã„ã‚‹ã®ã§ä¸­å¿ƒã‚’å‘ã„ã¦ãŠã
         transform.LookAt(Vector3.zero);
 
         player = GameObject.Find("/Player");
@@ -174,24 +174,24 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        // ‰ñ“]‚ÌŒ¸Š
+        // å›è»¢ã®æ¸›è¡°
         if (! rot.Attenuate(Time.deltaTime))
         {
             if (valid)
             {
-                // Œ¸ŠI—¹ŒãAƒJƒEƒ“ƒg‚µ‚ÄÄ“xˆÚ“®
+                // æ¸›è¡°çµ‚äº†å¾Œã€ã‚«ã‚¦ãƒ³ãƒˆã—ã¦å†åº¦ç§»å‹•
                 currentTime += Time.deltaTime;
                 if (currentTime > waitTime) AutoController();
             }
         }
-        // ‰ñ“]‚·‚é
+        // å›è»¢ã™ã‚‹
         Rotate();
-        // ‘O‚Éi‚Ş
+        // å‰ã«é€²ã‚€
         MoveForward();
     }
 
     /// <summary>
-    /// ŠO•”‚©‚ç
+    /// å¤–éƒ¨ã‹ã‚‰
     /// </summary>
     void OnGameOver()
     {
@@ -203,23 +203,23 @@ public class EnemyBehavior : MonoBehaviour
     void OnHit()
     {
         //Debug.Log("EnemyBehaviour.OnHit:" + name);
-        // –³Œø‰»
+        // ç„¡åŠ¹åŒ–
         SphereCollider collider = GetComponent<SphereCollider>();
         if (collider) collider.enabled = false;
-        // ”O‚Ì‚½‚ß
+        // å¿µã®ãŸã‚
         StopAllCoroutines();
     }
 
     void OnDestroyObject()
     {
         //Debug.Log("EnemyBehaviour.OnDestroyObject:" + name);
-        // e‚É“`‚¦‚Ä‚¨‚­Be‚©‚çÁ‚µ‚Ä‚à‚ç‚¤
+        // è¦ªã«ä¼ãˆã¦ãŠãã€‚è¦ªã‹ã‚‰æ¶ˆã—ã¦ã‚‚ã‚‰ã†
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
         //Destroy(gameObject);
     }
 
     /// <summary>
-    /// Player”­Œ©AUŒ‚ó‘Ô
+    /// Playerç™ºè¦‹ã€æ”»æ’ƒçŠ¶æ…‹
     /// </summary>
     void OnEmergency()
     {
@@ -237,7 +237,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// Œx‰úó‘Ô
+    /// è­¦æˆ’çŠ¶æ…‹
     /// </summary>
     void OnCaution()
     {
@@ -253,7 +253,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ’Êíó‘Ô
+    /// é€šå¸¸çŠ¶æ…‹
     /// </summary>
     void OnUsual()
     {
@@ -281,7 +281,7 @@ public class EnemyBehavior : MonoBehaviour
 
 
     /// <summary>
-    /// ˆÚ“®‚Ì©“®XV
+    /// ç§»å‹•ã®è‡ªå‹•æ›´æ–°
     /// </summary>
     private void AutoController()
     {
@@ -291,13 +291,13 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ‰ñ“]XV
+    /// å›è»¢æ›´æ–°
     /// </summary>
     private void Rotate()
     {
         if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
         {
-            // ˆÚ“®ƒGƒŠƒAŠO‚¾‚Á‚½‚çù‰ñ
+            // ç§»å‹•ã‚¨ãƒªã‚¢å¤–ã ã£ãŸã‚‰æ—‹å›
             Vector3 aimVec = -transform.position.normalized;
             float angle = Vector3.Angle(transform.forward, aimVec);
             Debug.Log("angle=" + angle + ": (" + transform.position.x + "," +  transform.position.z + ")");
@@ -308,13 +308,13 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ˆÚ“®XV
+    /// ç§»å‹•æ›´æ–°
     /// </summary>
     private void MoveForward()
     {
         if (mode == Mode.Emergency)
         {
-            // Player‚Æ‚Ì‹——£‚ğ•Û‚Æ‚¤‚Æ‚·‚é
+            // Playerã¨ã®è·é›¢ã‚’ä¿ã¨ã†ã¨ã™ã‚‹
             float dist = Vector3.Distance(transform.position, player.transform.position);
             //Debug.Log("dist="+dist);
             if (dist <= attackDistance)

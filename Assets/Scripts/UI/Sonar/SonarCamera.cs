@@ -21,7 +21,7 @@ public class SonarCamera : MonoBehaviour {
             other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
         }
     }
-    // –ˆ‰ñ‚İ‚é‚Ì‚Í‚¿‚å‚Á‚ÆEEE
+    // æ¯å›ã¿ã‚‹ã®ã¯ã¡ã‚‡ã£ã¨ãƒ»ãƒ»ãƒ»
 //    void OnTriggerStay(Collider other)
 //    {
 //    }
@@ -40,7 +40,7 @@ public class SonarCamera : MonoBehaviour {
 
     void OnInstantiatedChild(GameObject target)
     {
-        // ‚·‚Å‚Éƒ\ƒi[“à‚É‚¢‚é‚©ƒ`ƒFƒbƒN‚·‚é
+        // ã™ã§ã«ã‚½ãƒŠãƒ¼å†…ã«ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
         Vector3 pos = new Vector3( transform.position.x, 0.0f, transform.position.z );
         if (Vector3.Distance(pos, target.transform.position) <= radius)
         {
@@ -51,12 +51,12 @@ public class SonarCamera : MonoBehaviour {
         }
     }
 
-    // •\¦ˆÊ’u’²®
+    // è¡¨ç¤ºä½ç½®èª¿æ•´
 	public void SetRect( Rect rect )
     {
         camera.pixelRect = new Rect(rect.x, rect.y, rect.width, rect.height);
 
-        // ƒJƒƒ‰•\¦—Ìˆæ‚ğƒeƒNƒXƒ`ƒƒ‚É“àÚ‚³‚¹‚éê‡
+        // ã‚«ãƒ¡ãƒ©è¡¨ç¤ºé ˜åŸŸã‚’ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«å†…æ¥ã•ã›ã‚‹å ´åˆ
         //float r = rect.width * 0.5f;
         //float newWidth = r * Mathf.Pow(2.0f,0.5f);
         //float sub = (rect.width - newWidth)*0.5f;

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ‹›—‹‚ÌÕ“Ë
+/// é­šé›·ã®è¡çª
 /// </summary>
 public class TorpedoCollider : MonoBehaviour {
 
@@ -47,7 +47,7 @@ public class TorpedoCollider : MonoBehaviour {
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         if (sphereCollider) explosion.SetRadius( sphereCollider.radius );
 
-        // ”­Ë‚µ‚½©•ª‚Éƒqƒbƒg‚·‚é‚Ì‚ÅA”­Ë”•b‚¾‚¯Õ“Ë”»’è‚µ‚È‚¢B
+        // ç™ºå°„ã—ãŸè‡ªåˆ†ã«ãƒ’ãƒƒãƒˆã™ã‚‹ã®ã§ã€ç™ºå°„æ•°ç§’ã ã‘è¡çªåˆ¤å®šã—ãªã„ã€‚
         collider.enabled = false;
         StartCoroutine("Delay");
 	}
@@ -76,11 +76,11 @@ public class TorpedoCollider : MonoBehaviour {
         hit |= CheckEnemy(target);
         hit |= CheckTorpedo(target);
         if( hit ) {
-            // ƒqƒbƒgŒã‚Ì©•ª‚Ìˆ—
+            // ãƒ’ãƒƒãƒˆå¾Œã®è‡ªåˆ†ã®å‡¦ç†
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-            // Collider–³Œø‰»
+            // Colliderç„¡åŠ¹åŒ–
             collider.enabled = false;
-            // e‚É“`‚¦‚Ä‚¨‚­
+            // è¦ªã«ä¼ãˆã¦ãŠã
             transform.parent.SendMessage("OnDestroyChild", gameObject);
         }
     }
@@ -90,7 +90,7 @@ public class TorpedoCollider : MonoBehaviour {
         if (target.CompareTag("Torpedo"))
         {
             Debug.Log("CheckTorpedo");
-            // ‘Šè‚Ì‹›—‹‚Éƒqƒbƒg
+            // ç›¸æ‰‹ã®é­šé›·ã«ãƒ’ãƒƒãƒˆ
             //target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             return true;
         }
@@ -102,12 +102,12 @@ public class TorpedoCollider : MonoBehaviour {
         if (target.CompareTag("Player"))
         {
             Debug.Log("CheckPlayer");
-            // ÕŒ‚‚ğ—^‚¦‚é
+            // è¡æ’ƒã‚’ä¸ãˆã‚‹
             explosion.Add( target.rigidbody, transform.position );
 
-            // ƒqƒbƒg’Ê’m‚¾‚¯—¬‚·
+            // ãƒ’ãƒƒãƒˆé€šçŸ¥ã ã‘æµã™
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
-            // ƒ_ƒ[ƒW’Ê’m
+            // ãƒ€ãƒ¡ãƒ¼ã‚¸é€šçŸ¥
             if (uiObj) uiObj.BroadcastMessage("OnDamage", damegeValue, SendMessageOptions.DontRequireReceiver);
             return true;
         }
@@ -121,12 +121,12 @@ public class TorpedoCollider : MonoBehaviour {
             Debug.Log("CheckEnemy");
             if (owner == OwnerType.Player)
             {
-                // ©•ª‚Ì‹›—‹‚ª“G‚Éƒqƒbƒg‚µ‚½‚Æ‚«‚¾‚¯A“G‚Ì‚Á‚Ä‚¢‚éƒXƒRƒA‚ğ‰ÁZ‚·‚é’Ê’m
+                // è‡ªåˆ†ã®é­šé›·ãŒæ•µã«ãƒ’ãƒƒãƒˆã—ãŸã¨ãã ã‘ã€æ•µã®æŒã£ã¦ã„ã‚‹ã‚¹ã‚³ã‚¢ã‚’åŠ ç®—ã™ã‚‹é€šçŸ¥
                 target.SendMessage("OnGetScore", SendMessageOptions.DontRequireReceiver);
             }
             else
             {
-                // “G‚Éƒqƒbƒg’Ê’m‚¾‚¯—¬‚·
+                // æ•µã«ãƒ’ãƒƒãƒˆé€šçŸ¥ã ã‘æµã™
                 target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             }
             return true;
@@ -135,12 +135,12 @@ public class TorpedoCollider : MonoBehaviour {
     }
 
     /// <summary>
-    /// ‹›—‹‚ğ”­Ë‚µ‚½ƒI[ƒi[‚ğƒZƒbƒg
+    /// é­šé›·ã‚’ç™ºå°„ã—ãŸã‚ªãƒ¼ãƒŠãƒ¼ã‚’ã‚»ãƒƒãƒˆ
     /// </summary>
     /// <param name="type"></param>
     public void SetOwner(OwnerType type) { owner = type; }
     /// <summary>
-    /// ƒ_ƒ[ƒW—Ê‚ğƒZƒbƒgB’Êí‚·‚é•K—v‚È‚µ
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸é‡ã‚’ã‚»ãƒƒãƒˆã€‚é€šå¸¸ã™ã‚‹å¿…è¦ãªã—
     /// </summary>
     /// <param name="value"></param>
     public void SetDamageValue(int value) { damegeValue = value; }

@@ -15,7 +15,7 @@ public class ValueTest : MonoBehaviour {
 
     void Generate( float offset, float value ) {
         Vector3 pos = new Vector3(-20.0f, 0.0f, offset);
-        // ƒAƒCƒeƒ€¶¬
+        // ã‚¢ã‚¤ãƒ†ãƒ ç”Ÿæˆ
         GameObject newItem = Object.Instantiate(gameobj, pos, Quaternion.identity) as GameObject;
         newItem.transform.parent = transform;
 

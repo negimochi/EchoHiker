@@ -4,23 +4,23 @@ using System.Collections;
 public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]
-    private GameObject target;  // ¶¬‘ÎÛ
+    private GameObject target;  // ç”Ÿæˆå¯¾è±¡
     [SerializeField]
-    private Rect posRange;     // ¶¬”ÍˆÍ(x,z)‚ğRectw’è
+    private Rect posRange;     // ç”Ÿæˆç¯„å›²(x,z)ã‚’RectæŒ‡å®š
     [SerializeField]
-    private float posY;         // ¶¬‚·‚éYÀ•WˆÊ’u
+    private float posY;         // ç”Ÿæˆã™ã‚‹Yåº§æ¨™ä½ç½®
     [SerializeField]
-    private bool fill;      // true: posXZ“à‚ğ‘S•”‘ÎÛ‚Æ‚·‚é 
-                            // flase: posXZ‚ÌŠOüã‚ğ‘ÎÛ‚Æ‚·‚é
+    private bool fill;      // true: posXZå†…ã‚’å…¨éƒ¨å¯¾è±¡ã¨ã™ã‚‹ 
+                            // flase: posXZã®å¤–å‘¨ä¸Šã‚’å¯¾è±¡ã¨ã™ã‚‹
 
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
 //    [SerializeField]
-//    private int limitNum = 1;  // Å‘å”
+//    private int limitNum = 1;  // æœ€å¤§æ•°
 //    [SerializeField]
 //    private float delayTime = 1.0f;
 //    [SerializeField]
-//    private bool endless = true;   // ƒŠƒ~ƒbƒg”‚©‚çŒ¸‚Á‚½‚É©“®’Ç‰Á‚·‚é‚©
+//    private bool endless = true;   // ãƒªãƒŸãƒƒãƒˆæ•°ã‹ã‚‰æ¸›ã£ãŸæ™‚ã«è‡ªå‹•è¿½åŠ ã™ã‚‹ã‹
 
     private bool limitChecker;
     private bool ready;
@@ -36,7 +36,7 @@ public class RandomGenerator : MonoBehaviour {
     {
 //        sonarCameraObj = GameObject.Find("/Player/SonarCamera");
 
-        // ‰Šú”z’u•ª‚ª‚ ‚éê‡‚Í‚±‚±‚Å“o˜^‚µ‚Ä‚¨‚­
+        // åˆæœŸé…ç½®åˆ†ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã§ç™»éŒ²ã—ã¦ãŠã
         GameObject[] children = GameObject.FindGameObjectsWithTag(target.tag);
         for (int i = 0; i < children.Length; i++ )
         {
@@ -59,11 +59,11 @@ public class RandomGenerator : MonoBehaviour {
 
     public bool TimingCheck()
     {
-        // 1“xƒŠƒ~ƒbƒg‚É“’B‚µ‚Ä‚¢‚ÄAƒGƒ“ƒhƒŒƒXƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚È‚¢‚Æ‚«‚Í’Ç‰Á‚µ‚È‚¢
+        // 1åº¦ãƒªãƒŸãƒƒãƒˆã«åˆ°é”ã—ã¦ã„ã¦ã€ã‚¨ãƒ³ãƒ‰ãƒ¬ã‚¹ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ãªã„ã¨ãã¯è¿½åŠ ã—ãªã„
         if (limitChecker && !param.endless) return false;
-        // €”õ‚Å‚«‚Ä‚È‚¢
+        // æº–å‚™ã§ãã¦ãªã„
         if (!ready) return false;
-        // ŒÂ”ƒ`ƒFƒbƒN
+        // å€‹æ•°ãƒã‚§ãƒƒã‚¯
         return (ChildrenNum() < param.limitNum) ? true : false;
     }
 
@@ -85,15 +85,15 @@ public class RandomGenerator : MonoBehaviour {
     }
 
     /// <summary>
-    /// [ Message ] ƒIƒuƒWƒFƒNƒg”j‰ó
+    /// [ Message ] ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç ´å£Š
     /// </summary>
     void OnDestroyObject( GameObject target )
     {
         //UpdateArray();
-        // ”z—ñ‚Éc‚Á‚Ä‚¢‚ê‚Îíœ
+        // é…åˆ—ã«æ®‹ã£ã¦ã„ã‚Œã°å‰Šé™¤
         childrenArray.Remove(target);
         sonarArray.Remove(target);
-        // q‹Ÿ‚ªŒ¸‚Á‚½’Ê’m
+        // å­ä¾›ãŒæ¸›ã£ãŸé€šçŸ¥
         SendMessage("OnDestroyChild", target, SendMessageOptions.DontRequireReceiver);
 
         Destroy(target);
@@ -104,12 +104,12 @@ public class RandomGenerator : MonoBehaviour {
         Vector3 pos = new Vector3(posRange.xMin, posY, posRange.yMin);
         if (fill)
         {
-            // posRange“à‚Éƒ‰ƒ“ƒ_ƒ€‚ÉˆÊ’u‚ğŒˆ‚ß‚é
+            // posRangeå†…ã«ãƒ©ãƒ³ãƒ€ãƒ ã«ä½ç½®ã‚’æ±ºã‚ã‚‹
             pos.x += posRange.width * Random.value;
             pos.z += posRange.height * Random.value;
         }
         else {
-            // posRangeŠOüã‚Éƒ‰ƒ“ƒ_ƒ€‚ÉˆÊ’u‚ğŒˆ‚ß‚é
+            // posRangeå¤–å‘¨ä¸Šã«ãƒ©ãƒ³ãƒ€ãƒ ã«ä½ç½®ã‚’æ±ºã‚ã‚‹
             if (Random.Range(0, 2) == 1)
             {
                 pos.x += posRange.width * Random.value;
@@ -122,28 +122,28 @@ public class RandomGenerator : MonoBehaviour {
             }
         }
 
-        // ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+        // ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
         GameObject newChild = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;
-        // ©•ª‚ğe‚É‚·‚é
+        // è‡ªåˆ†ã‚’è¦ªã«ã™ã‚‹
         newChild.transform.parent = transform;
         Debug.Log("generated[" + ChildrenNum() + "]=" + newChild.name);
 
-        // ”z—ñXV
+        // é…åˆ—æ›´æ–°
         //UpdateArray();
         childrenArray.Add(newChild);
         sonarArray.Add(newChild);
-        // q‹Ÿ‚ğ‘‚â‚µ‚½’Ê’m
+        // å­ä¾›ã‚’å¢—ã‚„ã—ãŸé€šçŸ¥
         SendMessage("OnInstantiatedChild", newChild, SendMessageOptions.DontRequireReceiver);
-        // ƒ\ƒi[ƒJƒƒ‰‚É‚à“`‚¦‚é
+        // ã‚½ãƒŠãƒ¼ã‚«ãƒ¡ãƒ©ã«ã‚‚ä¼ãˆã‚‹
         //sonarCameraObj.SendMessage("OnInstantiatedChild", newChild);
     }
 
     /*
-    // è”²‚«ûW
+    // æ‰‹æŠœãåé›†
     private void UpdateArray()
     {
         childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
-        // OnUpdateArray‚ª‚ ‚ê‚Î’Ê’m
+        // OnUpdateArrayãŒã‚ã‚Œã°é€šçŸ¥
         SendMessage("OnUpdateArray", childrenArray, SendMessageOptions.DontRequireReceiver);
     }
     */
@@ -154,11 +154,11 @@ public class RandomGenerator : MonoBehaviour {
         return 0;
     }
 
-    // ŠÇ—‚µ‚Ä‚¢‚éq‚ÌQÆ
+    // ç®¡ç†ã—ã¦ã„ã‚‹å­ã®å‚ç…§
     public ArrayList Children() { return childrenArray; }
-    // ƒ\ƒi[‚É‚ ‚½‚Á‚½•ª‚ğ‚Æ‚Á‚Ä‚¨‚­
+    // ã‚½ãƒŠãƒ¼ã«ã‚ãŸã£ãŸåˆ†ã‚’ã¨ã£ã¦ãŠã
     public ArrayList SonarChildren() { return sonarArray; }
-    // ¶¬ƒpƒ‰ƒ[ƒ^ƒZƒbƒg
+    // ç”Ÿæˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆ
     public void SetParam(GenerateParameter param_) {  param = param_; }
 
 }

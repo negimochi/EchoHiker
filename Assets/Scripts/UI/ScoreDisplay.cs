@@ -4,7 +4,7 @@ using System.Collections;
 public class ScoreDisplay : MonoBehaviour {
 
     [SerializeField]
-    private float offsetPixelY = 0.0f;  // ƒ[ƒ‚Å‰æ–Ê’[
+    private float offsetPixelY = 0.0f;  // ã‚¼ãƒ­ã§ç”»é¢ç«¯
     [SerializeField]
     private int disitSize = 6;
 
@@ -12,16 +12,16 @@ public class ScoreDisplay : MonoBehaviour {
 
     void Start() 
     {
-        // ˆÊ’u’²®
+        // ä½ç½®èª¿æ•´
         float h = (float)Screen.height;
         float yPos = 1.0f - offsetPixelY/h;
         transform.position = new Vector3(0.5f, yPos, 0.0f);
     }
 
     /// <summary>
-    /// [BroadcastMessage]ƒXƒRƒAæ“¾
+    /// [BroadcastMessage]ã‚¹ã‚³ã‚¢å–å¾—
     /// </summary>
-    /// <param name="value">Šl“¾‚µ‚½ƒXƒRƒA</param>
+    /// <param name="value">ç²å¾—ã—ãŸã‚¹ã‚³ã‚¢</param>
     void OnGetScore( int value )
     {
         score += value;

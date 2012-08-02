@@ -9,11 +9,11 @@ public class SonarSwitcher : MonoBehaviour
     [SerializeField]
     private GameObject passiveObj;
     [SerializeField]
-    private int offsetPixel = 10;   // ¶’[‚©‚ç‚ÌˆÊ’uƒIƒtƒZƒbƒg
+    private int offsetPixel = 10;   // å·¦ç«¯ã‹ã‚‰ã®ä½ç½®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
     [SerializeField]
-    private float aspect = 0.4f;    // ‰æ–Ê‚É‘Î‚·‚éƒTƒCƒY”ä
+    private float aspect = 0.4f;    // ç”»é¢ã«å¯¾ã™ã‚‹ã‚µã‚¤ã‚ºæ¯”
     [SerializeField]
-    private int cameraRayoutPixel = 8;  // Œ©‰h‚¦ãAƒeƒNƒXƒ`ƒƒƒTƒCƒY‚æ‚è­‚µ“à‘¤‚ÌƒTƒCƒY‚ÅƒJƒƒ‰ˆÊ’u‚ğŒˆ‚ß‚é
+    private int cameraRayoutPixel = 8;  // è¦‹æ „ãˆä¸Šã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã‚ˆã‚Šå°‘ã—å†…å´ã®ã‚µã‚¤ã‚ºã§ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’æ±ºã‚ã‚‹
 
     private GameObject currentObj = null;
     private ActiveSonar activeSonar = null;
@@ -39,13 +39,13 @@ public class SonarSwitcher : MonoBehaviour
 //        }
 
         SetPosition();
-        // ƒpƒbƒVƒuƒ\ƒi[‚ªƒfƒtƒHƒ‹ƒg
+        // ãƒ‘ãƒƒã‚·ãƒ–ã‚½ãƒŠãƒ¼ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
         SetMode(SonarMode.PassiveSonar);
     }
 
     void Update()
     {
-        // ‰Ÿ‚µ‚Ä‚éŠÔ‚¾‚¯ƒAƒNƒeƒBƒuƒ\ƒi[
+        // æŠ¼ã—ã¦ã‚‹é–“ã ã‘ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚½ãƒŠãƒ¼
         if (Input.GetKeyDown(KeyCode.Space)) SetMode(SonarMode.ActiveSonar);
         if (Input.GetKeyUp(KeyCode.Space)) SetMode(SonarMode.PassiveSonar);
     }
@@ -54,7 +54,7 @@ public class SonarSwitcher : MonoBehaviour
     {
         if (mode == mode_) return;
 
-        // ƒXƒNƒŠ[ƒ“ƒTƒCƒY‚É‡‚í‚¹‚ÄƒTƒCƒYEˆÊ’u’²®
+        // ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºã«åˆã‚ã›ã¦ã‚µã‚¤ã‚ºãƒ»ä½ç½®èª¿æ•´
         if (currentObj != null)
         {
             Destroy(currentObj);
@@ -85,7 +85,7 @@ public class SonarSwitcher : MonoBehaviour
         guiTexture.enabled = true;
         guiTexture.pixelInset = new Rect(offsetPixel, Screen.height - offsetPixel - size, size, size);
 
-        // ƒJƒƒ‰‚ÉƒeƒNƒXƒ`ƒƒƒTƒCƒY‚ğ“`‚¦‚é
+        // ã‚«ãƒ¡ãƒ©ã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µã‚¤ã‚ºã‚’ä¼ãˆã‚‹
         Rect cameraRect = new Rect(guiTexture.pixelInset);
         cameraRect.x += cameraRayoutPixel;
         cameraRect.y += cameraRayoutPixel;

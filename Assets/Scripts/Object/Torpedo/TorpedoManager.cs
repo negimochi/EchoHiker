@@ -26,8 +26,8 @@ public class TorpedoManager : MonoBehaviour {
         return 0;
     }
 
-    // ŠÇ—‚µ‚Ä‚¢‚éŽq‚ÌŽQÆ
+    // ç®¡ç†ã—ã¦ã„ã‚‹å­ã®å‚ç…§
     public ArrayList Children() { return childrenArray; }
-    // ƒ\ƒi[‚É‚ ‚½‚Á‚½•ª‚ð‚Æ‚Á‚Ä‚¨‚­
+    // ã‚½ãƒŠãƒ¼ã«ã‚ãŸã£ãŸåˆ†ã‚’ã¨ã£ã¦ãŠã
     public ArrayList SonarChildren() { return sonarArray; }
 }

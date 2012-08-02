@@ -4,13 +4,13 @@ using System.Collections;
 public class AirgageMeter : MonoBehaviour {
 
     /// <summary>
-    /// [SendMessage]値更新
+    /// [SendMessage]蛟､譖ｴ譁ｰ
     /// </summary>
-    /// <param name="value">更新値[0,1]</param>
+    /// <param name="value">譖ｴ譁ｰ蛟､[0,1]</param>
     void OnDisplayAirgage(float value)
     {
         //Debug.Log("OnDeflate: Air=" + value);
-        // シェーダのアルファcutoffの値を変更して表示更新
+        // 繧ｷ繧ｧ繝ｼ繝縺ｮ繧｢繝ｫ繝輔ぃcutoff縺ｮ蛟､繧貞､画峩縺励※陦ｨ遉ｺ譖ｴ譁ｰ
         renderer.material.SetFloat("_Cutoff", value);
     }
 }

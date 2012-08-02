@@ -4,25 +4,25 @@ using System.Collections;
 public class Airgage : MonoBehaviour {
 
     [SerializeField]
-    private float offsetGageSize = 120.0f;  // ƒ[ƒ‚Å‰æ–Ê’[
+    private float offsetGageSize = 120.0f;  // ã‚¼ãƒ­ã§ç”»é¢ç«¯
     [SerializeField]
-    private Vector2 offsetPixelGage = Vector2.zero;  // ƒ[ƒ‚Å‰æ–Ê’[
+    private Vector2 offsetPixelGage = Vector2.zero;  // ã‚¼ãƒ­ã§ç”»é¢ç«¯
     [SerializeField]
-    private Vector2 offsetPixelText = Vector2.zero;  // ƒ[ƒ‚Å‰æ–Ê’[
+    private Vector2 offsetPixelText = Vector2.zero;  // ã‚¼ãƒ­ã§ç”»é¢ç«¯
     
     [SerializeField]
     private float[] airUpdateTime = new float[] {
         8.0f, 5.0f, 3.0f, 2.0f, 1.0f, 0.5f
-    };  // _‘f‚ªŒ¸‚éXV•p“x
+    };  // é…¸ç´ ãŒæ¸›ã‚‹æ›´æ–°é »åº¦
 
     [SerializeField]
-    private float airMax = 1000.0f;     // air‚ÌÅ‘å’l
+    private float airMax = 1000.0f;     // airã®æœ€å¤§å€¤
     [SerializeField]
-    private float step = 1.0f;          // ˆê“x‚ÌXV‚ÉŒ¸‚é—Ê
+    private float step = 1.0f;          // ä¸€åº¦ã®æ›´æ–°ã«æ¸›ã‚‹é‡
 
-    private float air = 0;              // Œ»İ‚Ìair’l
+    private float air = 0;              // ç¾åœ¨ã®airå€¤
 
-    private int damageLv = 0;           // ƒ_ƒ[ƒWƒŒƒxƒ‹
+    private int damageLv = 0;           // ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ¬ãƒ™ãƒ«
     private float counter = 0;
 
     private GameObject meterObj;
@@ -37,7 +37,7 @@ public class Airgage : MonoBehaviour {
         damageLvObj = GameObject.Find("DamageLvText");
         uiObj = GameObject.Find("/UI");
 
-        // ˆÊ’u’²®
+        // ä½ç½®èª¿æ•´
         float w = (float)Screen.width;
         float h = (float)Screen.height;
 
@@ -56,7 +56,7 @@ public class Airgage : MonoBehaviour {
 
     void Update()
     {
-        // ƒJƒEƒ“ƒ^‚É‚æ‚éXV
+        // ã‚«ã‚¦ãƒ³ã‚¿ã«ã‚ˆã‚‹æ›´æ–°
         counter += Time.deltaTime;
         if (counter > airUpdateTime[damageLv])
         {
@@ -67,15 +67,15 @@ public class Airgage : MonoBehaviour {
 
     /// <summary>
     /// [BroadcastMessage]
-    /// ƒ_ƒ[ƒW‚ğó‚¯‚½
+    /// ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸ
     /// </summary>
-    /// <param name="value">ƒ_ƒ[ƒW—ÊB’Êí1</param>
+    /// <param name="value">ãƒ€ãƒ¡ãƒ¼ã‚¸é‡ã€‚é€šå¸¸1</param>
     void OnDamage(int value)
     {
-        // ƒ_ƒ[ƒWƒŒƒxƒ‹‰ÁZ
+        // ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ¬ãƒ™ãƒ«åŠ ç®—
         damageLv += value;
         if (damageLv >= airUpdateTime.Length) damageLv = airUpdateTime.Length - 1;
-        // •\¦—p‚ÌƒIƒuƒWƒFƒNƒg‚É“`‚¦‚é
+        // è¡¨ç¤ºç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ä¼ãˆã‚‹
         //damageLvObj.SendMessage("OnDisplayDamageLv", damageLv);
         BroadcastMessage("OnDisplayDamageLv", damageLv, SendMessageOptions.DontRequireReceiver);
     }
@@ -86,24 +86,24 @@ public class Airgage : MonoBehaviour {
     }
 
     /// <summary>
-    /// airXV
+    /// airæ›´æ–°
     /// </summary>
     private void Deflate()
     {
         bool gameover = false;
-        // ’lXV
+        // å€¤æ›´æ–°
         air -= step;
         if( air <= 0.0f ) {
             air = 0.0f;
             gameover = true;
         }
-        // ƒ[ƒ^[‚É’l‚ğ“`‚¦‚é
+        // ãƒ¡ãƒ¼ã‚¿ãƒ¼ã«å€¤ã‚’ä¼ãˆã‚‹
         float threshold = Mathf.InverseLerp(0, airMax, air);
         meterObj.SendMessage("OnDisplayAirgage", threshold);
 
         if (gameover)
         {
-            // _‘fØ‚êBƒQ[ƒ€ƒI[ƒo[
+            // é…¸ç´ åˆ‡ã‚Œã€‚ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
             uiObj.SendMessage("OnNotifyGameEnd");
         }
     }

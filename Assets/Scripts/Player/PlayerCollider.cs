@@ -11,7 +11,7 @@ public class PlayerCollider : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-        // コントローラー
+        // 繧ｳ繝ｳ繝医Ο繝ｼ繝ｩ繝ｼ
         controller = GetComponent<PlayerController>();
 	}
 

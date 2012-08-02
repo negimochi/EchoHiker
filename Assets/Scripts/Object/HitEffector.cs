@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HitEffector : MonoBehaviour {
 
-    // ヒット時の挙動管理と終了タイミング
+    // 繝偵ャ繝域凾縺ｮ謖吝虚邂｡逅�縺ｨ邨ゆｺ�繧ｿ繧､繝溘Φ繧ｰ
     void OnHit()
     {
         Debug.Log("HitEffector.OnHit");

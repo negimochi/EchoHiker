@@ -57,7 +57,7 @@ public class SonarEffect : MonoBehaviour
                 float a = Mathf.Clamp(1.0f - rate, 0.0f, 0.8f);
                 texture.pixelInset = new Rect(baseRect.center.x - w * 0.5f, baseRect.center.y - h * 0.5f, w, h);
                 texture.color = new Color(texture.color.r, texture.color.g, texture.color.b, a);
-                // ŠÔXV
+                // æ™‚é–“æ›´æ–°
                 currentTime += Time.deltaTime;
             }
             else 

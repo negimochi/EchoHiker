@@ -7,7 +7,7 @@ public class DamageLvText : MonoBehaviour {
     private int disitSize = 1;
 
     /// <summary>
-    /// [SendMessage]•\¦XV
+    /// [SendMessage]è¡¨ç¤ºæ›´æ–°
     /// </summary>
     /// <param name="value"></param>
     void OnDisplayDamageLv(int value)

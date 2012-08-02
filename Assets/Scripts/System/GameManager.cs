@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
 	
     void OnIntermissionEnd()
     {
-        // Intermission‚ÌI—¹BƒQ[ƒ€ƒXƒ^[ƒg
+        // Intermissionã®çµ‚äº†ã€‚ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆ
         start = true;
         if (player) player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
         if (enemy) enemy.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
 
     void OnNotifyGameEnd()
     { 
-        // I—¹’Ê’m‚ğ‘—‚é
+        // çµ‚äº†é€šçŸ¥ã‚’é€ã‚‹
         start = false;
         if (player) player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
         Debug.Log("Player End");
@@ -53,6 +53,6 @@ public class GameManager : MonoBehaviour {
         BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
     }
 
-    // ”O‚Ì‚½‚ßˆø‚¯‚é‚æ‚¤‚É‚µ‚Æ‚­
+    // å¿µã®ãŸã‚å¼•ã‘ã‚‹ã‚ˆã†ã«ã—ã¨ã
     public bool IsGameStart() { return start; }
 }

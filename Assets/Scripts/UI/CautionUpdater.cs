@@ -27,14 +27,14 @@ public class CautionUpdater : MonoBehaviour
                 maxCautionEnemy = target;
             }
         }
-        // Å‘å’l‚ğ•\¦—p‚É’Ê’m
+        // æœ€å¤§å€¤ã‚’è¡¨ç¤ºç”¨ã«é€šçŸ¥
         uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
      */
 
     void OnInstantiatedChild(GameObject target)
     {
-        // ’Êíƒ[ƒ‚É‚È‚Á‚Ä‚¢‚é‚Í‚¸‚¾‚ªA”O‚Ì‚½‚ßUpdate
+        // é€šå¸¸ã‚¼ãƒ­ã«ãªã£ã¦ã„ã‚‹ã¯ãšã ãŒã€å¿µã®ãŸã‚Update
         DisplayValue(target, GetCaution(target));
     }
 
@@ -53,7 +53,7 @@ public class CautionUpdater : MonoBehaviour
         int maxValue = 0;
         if (!updateEnemy.Equals(maxCautionEnemy))
         {
-            // “¯ˆê‚Å‚È‚¢‚È‚çŒ»ó‚ÌMax’l‚ğ‚Â“G‚ÌŒ»İ‚Ì’l‚Æ”äŠr
+            // åŒä¸€ã§ãªã„ãªã‚‰ç¾çŠ¶ã®Maxå€¤ã‚’æŒã¤æ•µã®ç¾åœ¨ã®å€¤ã¨æ¯”è¼ƒ
             maxValue = GetCaution(maxCautionEnemy);
             if (newValue > maxValue)
             {
@@ -63,10 +63,10 @@ public class CautionUpdater : MonoBehaviour
         }
         else
         {
-            // “¯ˆê‚È‚ç‚»‚Ì‚Ü‚ÜXV
+            // åŒä¸€ãªã‚‰ãã®ã¾ã¾æ›´æ–°
             maxValue = newValue;
         }
-        // Å‘å’l‚ğ•\¦—p‚É’Ê’m
+        // æœ€å¤§å€¤ã‚’è¡¨ç¤ºç”¨ã«é€šçŸ¥
         uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 

@@ -37,7 +37,7 @@ public class ActiveSonar : MonoBehaviour {
     {
         yield return new WaitForSeconds(delayTime);
 
-        // Žè”²‚«’Tõ
+        // æ‰‹æŠœãæŽ¢ç´¢
         float effectDist = Mathf.Lerp(0.0f, maxRadius, effect.Value());
         //Debug.Log("ActiveSonar="+effectDist + ":" + Time.time);
         if (enemy)
@@ -70,7 +70,7 @@ public class ActiveSonar : MonoBehaviour {
             //Debug.Log("dist=" + dist + ":" + target.name);
             if (effectDist > dist)
             {
-                // Žw’è‹——£ˆÈ“à‚¾‚Á‚½‚çƒ\ƒi[‚ªƒqƒbƒg
+                // æŒ‡å®šè·é›¢ä»¥å†…ã ã£ãŸã‚‰ã‚½ãƒŠãƒ¼ãŒãƒ’ãƒƒãƒˆ
                 target.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
                 array.RemoveAt(i);
             }
