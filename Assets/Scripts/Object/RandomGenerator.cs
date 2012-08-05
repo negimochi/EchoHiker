@@ -5,12 +5,12 @@ public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]
     private GameObject target;  // 生成対象
-    [SerializeField]
-    private Rect posRange;     // 生成範囲(x,z)をRect指定
+//    [SerializeField]
+//    private Rect posRange;     // 生成範囲(x,z)をRect指定
     [SerializeField]
     private float posY;         // 生成するY座標位置
-    [SerializeField]
-    private bool fill;      // true: posXZ内を全部対象とする 
+//    [SerializeField]
+//    private bool fill;     // true: posXZ内を全部対象とする 
                             // flase: posXZの外周上を対象とする
 
     [SerializeField]
@@ -101,8 +101,9 @@ public class RandomGenerator : MonoBehaviour {
 
     public void Generate()
     {
+        Rect posRange = param.pos;
         Vector3 pos = new Vector3(posRange.xMin, posY, posRange.yMin);
-        if (fill)
+        if (param.fill)
         {
             // posRange内にランダムに位置を決める
             pos.x += posRange.width * Random.value;
