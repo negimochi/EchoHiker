@@ -7,11 +7,26 @@ public class SonarCamera : MonoBehaviour {
 
     void Start()
     {
+        // カメラとCollider半径を揃えておく
+        radius = camera.orthographicSize;
         SphereCollider shereCollider = GetComponent<SphereCollider>();
         if (shereCollider)
         {
-            radius = shereCollider.radius;
+            shereCollider.radius = radius;
         }
+
+        // 初期配置されていた場合の対応
+        GameObject enemy = GameObject.Find("/Object/EnemyManager");
+        if (enemy) {
+            ArrayList enemyArr = enemy.GetComponent<RandomGenerator>().Children();
+//            foreach( enemyArr ) ;
+        }
+        GameObject item = GameObject.Find("/Object/ItemManager");
+        if (item)
+        {
+            RandomGenerator itemGen = enemy.GetComponent<RandomGenerator>();
+        }
+//        sonarArray
     }
 
     void OnTriggerEnter(Collider other)

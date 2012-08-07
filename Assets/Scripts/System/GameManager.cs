@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour {
 
     private int enemyIndex = 0;
     private int itemIndex  = 0;
-    private RandomGenerator enemyGenerator = null;
-    private RandomGenerator itemGenerator = null;
 
     private GameObject player = null;
     private GameObject enemy = null;
@@ -18,15 +16,6 @@ public class GameManager : MonoBehaviour {
     {
         player = GameObject.Find("/Player");
         enemy = GameObject.Find("/Object/EnemyManager");
-        if (enemy) {
-            enemyGenerator = enemy.GetComponent<RandomGenerator>();
-        }
-        item = GameObject.Find("/Object/ItemManager");
-        if (item)
-        {
-            itemGenerator = enemy.GetComponent<RandomGenerator>();
-        }
-
     }
 	
     void OnIntermissionEnd()
