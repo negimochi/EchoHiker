@@ -39,19 +39,32 @@ public class EnemyCaution : MonoBehaviour {
         counting = true;
         StartCount(true);
     }
-    void OnExitPlayer( )
-    {
-        // Cautionの値が減少する
-        waitTime = waitTimeMin;
-        currentStep = -step;
-        StartCount(false);
-    }
+
+// ルール変更に伴いコメントアウト。
+//    void OnExitPlayer( )
+//    {
+//        // Cautionの値が減少する
+//        waitTime = waitTimeMin;
+//        currentStep = -step;
+//        StartCount(false);
+//    }
 
     void OnSonar()
     {
         Debug.Log("HitSonar");
         // ソナーがヒットするたびに、Cautionが上昇
         cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
+    }
+
+    public void SetCountUp( float setWaitTime )
+    {
+        waitTime = setWaitTime;
+        StartCount(true);
+    }
+    public void SetCountDown(float setWaitTime)
+    {
+        waitTime = setWaitTime;
+        StartCount(false);
     }
 
     void StartCount(bool isCountup )

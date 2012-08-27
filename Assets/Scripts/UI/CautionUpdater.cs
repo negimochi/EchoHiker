@@ -3,6 +3,10 @@ using System.Collections;
 
 public class CautionUpdater : MonoBehaviour
 {
+    [SerializeField]
+    private float maxWaitTime = 1.0f;
+
+    private int instantiatedCount = 0;
 
     private GameObject uiObj = null;
     private GameObject maxCautionEnemy = null;
@@ -12,28 +16,11 @@ public class CautionUpdater : MonoBehaviour
         uiObj = GameObject.Find("/UI");
     }
 
-    /*
-    private void OnUpdateArray( ArrayList array )
-    {
-        int maxValue = GetCaution(maxCautionEnemy);
-        int size = array.Count;
-        for (int i = 0; i < size; i++)
-        {
-            GameObject target = (GameObject)array[i];
-            int caution = GetCaution(target);
-            if (caution > maxValue)
-            {
-                maxValue = caution;
-                maxCautionEnemy = target;
-            }
-        }
-        // 最大値を表示用に通知
-        uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
-    }
-     */
-
     void OnInstantiatedChild(GameObject target)
     {
+        instantiatedCount++;
+        EnemyCaution enemyCaution = target.GetComponent<EnemyCaution>();
+        enemyCaution.SetCountUp(maxWaitTime / (float)instantiatedCount);
         // 通常ゼロになっているはずだが、念のためUpdate
         DisplayValue(target, GetCaution(target));
     }
@@ -70,7 +57,7 @@ public class CautionUpdater : MonoBehaviour
         uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 
-    static private int GetCaution(GameObject enemyObj)
+    private int GetCaution(GameObject enemyObj)
     {
         if(enemyObj == null ) return 0;
         EnemyCaution enemyCauiton = enemyObj.GetComponent<EnemyCaution>();

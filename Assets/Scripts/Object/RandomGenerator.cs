@@ -5,37 +5,21 @@ public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]
     private GameObject target;  // 生成対象
-//    [SerializeField]
-//    private Rect posRange;     // 生成範囲(x,z)をRect指定
     [SerializeField]
     private float posY;         // 生成するY座標位置
-//    [SerializeField]
-//    private bool fill;     // true: posXZ内を全部対象とする 
-                            // flase: posXZの外周上を対象とする
 
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
-//    [SerializeField]
-//    private int limitNum = 1;  // 最大数
-//    [SerializeField]
-//    private float delayTime = 1.0f;
-//    [SerializeField]
-//    private bool endless = true;   // リミット数から減った時に自動追加するか
 
     private bool limitChecker;
     private bool ready;
 
-//    private GameObject[] childrenArray = null;
-//    private GameObject[] sonarArray = null;
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
 
-//    private GameObject sonarCameraObj = null;
    
     void Start()
     {
-//        sonarCameraObj = GameObject.Find("/Player/SonarCamera");
-
         // 初期配置分がある場合はここで登録しておく
         GameObject[] children = GameObject.FindGameObjectsWithTag(target.tag);
         for (int i = 0; i < children.Length; i++ )
