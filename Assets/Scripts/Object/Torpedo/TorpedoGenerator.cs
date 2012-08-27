@@ -14,6 +14,8 @@ public class TorpedoGenerator : MonoBehaviour {
     [SerializeField]
     private bool sonar = false;  // ソナー表示するか
     [SerializeField]
+    private float speed = 15.0f;
+    [SerializeField]
     private TorpedoCollider.OwnerType type = TorpedoCollider.OwnerType.Enemy;
                                         // 所有者
 
@@ -69,6 +71,10 @@ public class TorpedoGenerator : MonoBehaviour {
         TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
         if (torpedoCollider) torpedoCollider.SetOwner(type);
         else Debug.LogError("Not exists TorpedoCollider");
+
+        TorpedoBehavior torpedoBehavior = newObj.GetComponent<TorpedoBehavior>();
+        if (torpedoBehavior) torpedoBehavior.SetSpeed(speed);
+        else Debug.LogError("Not exists TorpedoBehavior");
 
         // 音の設定
         Note note = newObj.GetComponentInChildren<Note>();

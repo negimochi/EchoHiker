@@ -66,7 +66,7 @@ public class EnemyBehavior : MonoBehaviour
         [SerializeField]
         private float usualMax = 20.0f;
         [SerializeField]
-        private float emergencyMax = 0.0f;
+        private float emergencyMax = 10.0f;
         [SerializeField]
         private float swingStep = 20.0f;
         [SerializeField]
@@ -273,7 +273,6 @@ public class EnemyBehavior : MonoBehaviour
         yield return new WaitForSeconds(attackWait);
 
         transform.LookAt(player.transform);
-
         torpedo.Generate();
 
         StartCoroutine("AutoAttack");
@@ -303,6 +302,16 @@ public class EnemyBehavior : MonoBehaviour
             Debug.Log("angle=" + angle + ": (" + transform.position.x + "," +  transform.position.z + ")");
             if (!Mathf.Approximately(angle, 0.0f)) rot.Swing(-angle);
         }
+
+        if (mode == Mode.Emergency)
+        {
+            // プレイヤーの方を向く
+//            Vector3 aimVec = player.transform.position - transform.position;
+//            float angle = Vector3.Angle(transform.forward, aimVec);
+//            Debug.Log("angle=" + angle + ": (" + transform.position.x + "," + transform.position.z + ")");
+//            if (!Mathf.Approximately(angle, 0.0f)) rot.Swing(-angle);
+        }
+
         Quaternion deltaRot = Quaternion.Euler(rot.Value * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
     }

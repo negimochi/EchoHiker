@@ -43,4 +43,6 @@ public class TorpedoBehavior : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    public void SetSpeed( float speed_ ) { speed = speed_; }
+
 }
