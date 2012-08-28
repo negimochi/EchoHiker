@@ -8,8 +8,7 @@ public class ActiveSonar : MonoBehaviour {
     [SerializeField]
     private float delayTime = 0.2f;
 
-    private float currentTime = 0.0f;
-    private bool search = false;
+//    private float currentTime = 0.0f;
 
     private GameObject player = null;
     private RandomGenerator enemy = null;
@@ -66,12 +65,12 @@ public class ActiveSonar : MonoBehaviour {
         while (i < array.Count)
         {
             GameObject target = array[i] as GameObject;
-            float dist = Vector3.Distance(target.transform.position, player.transform.position);
-            //Debug.Log("dist=" + dist + ":" + target.name);
+            float dist = 0.0f;
+            if ( target ) dist = Vector3.Distance(target.transform.position, player.transform.position);
             if (effectDist > dist)
             {
                 // 指定距離以内だったらソナーがヒット
-                target.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
+                if (target) target.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
                 array.RemoveAt(i);
             }
             else i++;

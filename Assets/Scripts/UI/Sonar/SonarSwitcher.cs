@@ -16,7 +16,7 @@ public class SonarSwitcher : MonoBehaviour
     private int cameraRayoutPixel = 8;  // 見栄え上、テクスチャサイズより少し内側のサイズでカメラ位置を決める
 
     private GameObject currentObj = null;
-    private ActiveSonar activeSonar = null;
+//    private ActiveSonar activeSonar = null;
     private SonarCamera sonarCamera = null;
 
     public enum SonarMode {

@@ -16,7 +16,6 @@ public class RandomGenerator : MonoBehaviour {
 
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
-
    
     void Start()
     {
@@ -34,14 +33,14 @@ public class RandomGenerator : MonoBehaviour {
     void Update()
     {
         if (TimingCheck())
-        {
+        {   
             Generate();
             ready = false;
             StartCoroutine("Delay");
         }
     }
 
-    public bool TimingCheck()
+    private bool TimingCheck()
     {
         // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
         if (limitChecker && !param.endless) return false;

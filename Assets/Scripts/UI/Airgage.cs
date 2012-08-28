@@ -20,10 +20,13 @@ public class Airgage : MonoBehaviour {
     [SerializeField]
     private float step = 1.0f;          // 一度の更新に減る量
 
+    [SerializeField]    // debug
     private float air = 0;              // 現在のair値
 
     private int damageLv = 0;           // ダメージレベル
     private float counter = 0;
+
+    private bool gameover = false;
 
     private GameObject meterObj;
     private GameObject damageLvObj;
@@ -57,11 +60,14 @@ public class Airgage : MonoBehaviour {
     void Update()
     {
         // カウンタによる更新
-        counter += Time.deltaTime;
-        if (counter > airUpdateTime[damageLv])
+        if (!gameover)
         {
-            Deflate();
-            counter = 0;
+            counter += Time.deltaTime;
+            if (counter > airUpdateTime[damageLv])
+            {
+                Deflate();
+                counter = 0;
+            }
         }
     }
 
@@ -90,7 +96,6 @@ public class Airgage : MonoBehaviour {
     /// </summary>
     private void Deflate()
     {
-        bool gameover = false;
         // 値更新
         air -= step;
         if( air <= 0.0f ) {

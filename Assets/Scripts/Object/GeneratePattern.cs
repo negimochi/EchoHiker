@@ -17,8 +17,7 @@ public class GeneratePattern : MonoBehaviour {
 
 	void Start () 
     {
-        validSize = (timing.Length > variation.Length) ?
-            variation.Length : timing.Length;
+        validSize = (timing.Length > variation.Length) ? variation.Length : timing.Length;
 
         generator = GetComponent<RandomGenerator>();
 

@@ -34,20 +34,10 @@ public class IntermissionEffector : MonoBehaviour {
 
         width  = (float)Screen.width;
         height = (float)guiTexture.texture.height;
-        float closePos = -(float)fadeAreaPixel;
-        switch (type) {
-            case Type.SlideIn:
-                startPos = height;
-                endPos = closePos;
-                break;
-            case Type.SlideOut: 
-                startPos = closePos;
-                endPos = height;
-                break;
-            default:break;
-        }
+
         guiTexture.pixelInset = new Rect(0, startPos, width, height);
 
+        SetType(type);
         if (playOnAwake) StartIntermission();
 	}
 	
@@ -73,9 +63,27 @@ public class IntermissionEffector : MonoBehaviour {
         currentTime = 0.0f;
     }
 
-    void OnIntermissionStart()
+    void OnIntermissionStart(bool flag=false)
     {
+        if (flag) SetType(Type.SlideIn);
         StartIntermission();
     }
 
+    void SetType(Type type_)
+    { 
+        type = type_;
+        float closePos = -(float)fadeAreaPixel;
+        switch (type)
+        {
+            case Type.SlideIn:
+                startPos = height;
+                endPos = closePos;
+                break;
+            case Type.SlideOut: 
+                startPos = closePos;
+                endPos = height;
+                break;
+            default:break;
+        }
+    }
 }

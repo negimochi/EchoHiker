@@ -16,16 +16,16 @@ public class SonarCamera : MonoBehaviour {
         }
 
         // 初期配置されていた場合の対応
-        GameObject enemy = GameObject.Find("/Object/EnemyManager");
-        if (enemy) {
-            ArrayList enemyArr = enemy.GetComponent<RandomGenerator>().Children();
+//        GameObject enemy = GameObject.Find("/Object/EnemyManager");
+//        if (enemy) {
+//            ArrayList enemyArr = enemy.GetComponent<RandomGenerator>().Children();
 //            foreach( enemyArr ) ;
-        }
-        GameObject item = GameObject.Find("/Object/ItemManager");
-        if (item)
-        {
-            RandomGenerator itemGen = enemy.GetComponent<RandomGenerator>();
-        }
+//        }
+//        GameObject item = GameObject.Find("/Object/ItemManager");
+//      if (item)
+//        {
+//            RandomGenerator itemGen = enemy.GetComponent<RandomGenerator>();
+//        }
 //        sonarArray
     }
 
@@ -36,10 +36,12 @@ public class SonarCamera : MonoBehaviour {
             other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
         }
     }
+
     // 毎回みるのはちょっと・・・
 //    void OnTriggerStay(Collider other)
 //    {
 //    }
+
     void OnTriggerExit(Collider other)
     {
         if (CheckObject(other.gameObject))

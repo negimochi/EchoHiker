@@ -6,6 +6,7 @@ public class CautionUpdater : MonoBehaviour
     [SerializeField]
     private float maxWaitTime = 1.0f;
 
+    [SerializeField] // debug
     private int instantiatedCount = 0;
 
     private GameObject uiObj = null;
