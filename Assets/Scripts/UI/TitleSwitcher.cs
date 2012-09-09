@@ -16,6 +16,8 @@ public class TitleSwitcher : MonoBehaviour {
     private Color startColor;
     private bool wait = true;
 
+    private bool pushed = false;
+
     private GameObject intermission = null;
    
     void Start()
@@ -45,8 +47,9 @@ public class TitleSwitcher : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if ( !pushed && Input.GetMouseButtonDown(0))
         {
+            pushed = true;
             audio.Play();
             intermission.SendMessage("OnIntermissionStart", true);
         }

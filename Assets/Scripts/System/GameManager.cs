@@ -4,8 +4,9 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
     private GameObject player = null;
-    private GameObject enemy = null;
-    private GameObject item = null;
+    private GameObject objects = null;
+//    private GameObject enemy = null;
+//    private GameObject item = null;
     private bool gameover = false;
 
     [SerializeField]
@@ -15,23 +16,24 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("GameStart!!");
         player = GameObject.Find("/Player");
-        enemy = GameObject.Find("/Object/EnemyManager");
-        item  = GameObject.Find("/Object/ItemManager");
+        objects = GameObject.Find("/Object");
+//        enemy = GameObject.Find("/Object/EnemyManager");
+//        item  = GameObject.Find("/Object/ItemManager");
     }
 	
     void OnIntermissionEnd()
     {
         if (gameover)
         {
-            // タイトルに戻る
+            // ゲームオーバーだったら、タイトルに戻る
             Application.LoadLevel(nextSceneName);
         }
         else
         {
-            // ゲームスタート
-            if (player) player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-            if (enemy) enemy.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-            if (item) item.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+            if (player)  player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+            if (objects) objects.SendMessage("OnGameStart");
+//            if (enemy) enemy.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+//            if (item) item.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
             BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
         }
     }
@@ -40,10 +42,12 @@ public class GameManager : MonoBehaviour {
     void OnNotifyGameEnd()
     { 
         // 終了通知を送る
-        if (player) player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
-        if (enemy) enemy.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
-        if (item) item.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+        if (player)  player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+        if (objects) objects.BroadcastMessage("OnGameOver", );
+//        if (enemy) enemy.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+//        if (item) item.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
         BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+        // ゲームオーバーを記録
         gameover = true;
     }
 
