@@ -14,13 +14,14 @@ public class ItemCollider : MonoBehaviour
     [SerializeField]
     public int step = 10;
 
+    [SerializeField]
     private int scoreValue = 100;
     GameObject uiObj = null;
 
     void Start()
     {
         uiObj = GameObject.Find("/UI");
-        // 乱数で獲得ポイントを散らす
+        // 獲得ポイントを散らす
         scoreValue = scoreMax;
         StartCoroutine("ChangeScoreValue");
     }
@@ -30,9 +31,13 @@ public class ItemCollider : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         scoreValue = Mathf.Clamp(scoreValue - step, scoreMin, scoreMax);
-        if (scoreValue > scoreMin) 
+        if (scoreValue > scoreMin)
         {
             StartCoroutine("ChangeScoreValue");
+        }
+        else {
+            // 強制削除
+            OnDestroyObject();
         }
     }
 

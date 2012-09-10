@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             if (player)  player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-            if (objects) objects.SendMessage("OnGameStart");
+            if (objects) objects.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
 //            if (enemy) enemy.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
 //            if (item) item.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
             BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
     { 
         // 終了通知を送る
         if (player)  player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
-        if (objects) objects.BroadcastMessage("OnGameOver", );
+        if (objects) objects.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
 //        if (enemy) enemy.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
 //        if (item) item.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
         BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
