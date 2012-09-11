@@ -89,6 +89,7 @@ public class Airgage : MonoBehaviour {
     void OnInflate(int value )
     {
         air += value;
+        if (airMax < air) air = airMax;
     }
 
     /// <summary>

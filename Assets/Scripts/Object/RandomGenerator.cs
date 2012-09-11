@@ -11,8 +11,12 @@ public class RandomGenerator : MonoBehaviour {
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
 
-    private bool limitChecker;
-    private bool ready;
+    [SerializeField]
+    private int counter = 0;
+    [SerializeField]
+    private bool limitCheck = false;
+    [SerializeField]
+    private bool ready = false;
 
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
@@ -26,45 +30,59 @@ public class RandomGenerator : MonoBehaviour {
             childrenArray.Add(children[i]);
             sonarArray.Add(children[i]);
         }
-        ready = false;
-        limitChecker = false;
     }
 
-    void Update()
-    {
-        if (TimingCheck())
-        {   
-            Generate();
-            ready = false;
-            StartCoroutine("Delay");
-        }
-    }
+//    void Update()
+//    {
+//        if (TimingCheck())
+//        {   
+//            Generate();
+//            ready = false;
+//            StartCoroutine("Delay");
+//        }
+//    }
 
     private bool TimingCheck()
     {
-        // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
-        if (limitChecker && !param.endless) return false;
         // 準備できてない
         if (!ready) return false;
+        // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
+        if (!param.endless && limitCheck) return false;
+
+        Debug.Log("num check");
+
         // 個数チェック
         return (ChildrenNum() < param.limitNum) ? true : false;
     }
 
-    private IEnumerator Delay()
+//    private IEnumerator Delay()
+//    {
+//        yield return new WaitForSeconds(param.delayTime);
+//
+//        ready = true;
+//
+//        if (TimingCheck())
+//        {   
+//            Generate();
+//            ready = false;
+//            StartCoroutine("Delay");
+//        }
+//
+//    }
+
+    void OnStart()
     {
-        yield return new WaitForSeconds(param.delayTime);
+        counter = 0;
         ready = true;
+        limitCheck = false;
+
+        Generate();
     }
 
-    void OnGameStart()
-    {
-        ready = true;
-    }
-
-    void OnGameOver()
+    void OnSuspend()
     {
         ready = false;
-        StopCoroutine("Delay");
+        //StopCoroutine("Delay");
     }
 
     /// <summary>
@@ -120,6 +138,13 @@ public class RandomGenerator : MonoBehaviour {
         SendMessage("OnInstantiatedChild", newChild, SendMessageOptions.DontRequireReceiver);
         // ソナーカメラにも伝える
         //sonarCameraObj.SendMessage("OnInstantiatedChild", newChild);
+
+        counter++;
+        if (counter > param.limitNum)
+        {
+            limitCheck = true;
+            Debug.Log("/// LIMIT ////");
+        }
     }
 
     /*

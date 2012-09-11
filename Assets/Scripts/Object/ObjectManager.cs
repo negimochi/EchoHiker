@@ -3,18 +3,20 @@ using System.Collections;
 
 public class ObjectManager : MonoBehaviour {
 
-    private RandomGenerator[] generators = null;
+
+    private ArrayList generators = null;
     private RandomGenerator currentGen = null;
     private int current = 0;
 
 	void Start () 
     {
         // 全Generatorの配列
-        generators = gameObject.GetComponentsInChildren<RandomGenerator>();
-//        GameObject itemObj = GameObject.Find("/Object/ItemManager");
-//        GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
-//        if (itemObj)  item  = itemObj.GetComponent<RandomGenerator>();
-//        if (enemyObj) enemy = enemyObj.GetComponent<RandomGenerator>();
+//      generators = gameObject.GetComponentsInChildren<RandomGenerator>();
+        generators = new ArrayList();
+        GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
+        GameObject itemObj = GameObject.Find("/Object/ItemManager");
+        if (itemObj) generators.Add(itemObj.GetComponent<RandomGenerator>());
+        if (enemyObj) generators.Add(enemyObj.GetComponent<RandomGenerator>());
     }
 	
 	void Update () 
@@ -24,40 +26,46 @@ public class ObjectManager : MonoBehaviour {
         {
             // オブジェクト数がゼロなら生成タイプを変更
             Switch();
-            // 生成
-            Generate();
+            // 開始
+            Run();
         }
 	}
 
-    private void Generate()
+    private void Run()
     {
         if (currentGen == null) return;
 
+        currentGen.SendMessage("OnStart");
     }
 
     private void Switch()
     {
-        if (generators.Length == 0) return;
+        if (generators.Count == 0) return;
+
+        currentGen.SendMessage("OnSuspend");
+
         current++;
-        if (generators.Length <= current) current = 0;
-        currentGen = generators[current];
+        if (current >= generators.Count) current = 0;
+        Debug.Log("current=" + current);
+        currentGen = generators[current] as RandomGenerator;
     }
 
     void OnGameStart()
     {
-        if( generators.Length == 0 ) {
+        if( generators.Count == 0 ) {
             Debug.Log("RandomGenerator is not exists..");
             Application.Quit();
         }
 
-        foreach (RandomGenerator gen in generators)
-        {
-            gen.BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-        }
+//        foreach (RandomGenerator gen in generators)
+//        {
+//            gen.BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+//        }
 
-        // ゲームを始める。
-        currentGen = generators[0];
-        Generate();
+        // ゲームを始める
+        current = 0;
+        currentGen = generators[current] as RandomGenerator;
+        Run();
     }
 
     void OnGameOver()
