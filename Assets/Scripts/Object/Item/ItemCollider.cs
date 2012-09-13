@@ -15,6 +15,9 @@ public class ItemCollider : MonoBehaviour
     public int step = 10;
 
     [SerializeField]
+    private int inflateValue = 100;
+
+    [SerializeField]
     private int scoreValue = 100;
     GameObject uiObj = null;
 
@@ -55,6 +58,8 @@ public class ItemCollider : MonoBehaviour
         {
             // スコア加算
             if (uiObj) uiObj.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
+            if (uiObj) uiObj.BroadcastMessage("OnInflate", inflateValue, SendMessageOptions.DontRequireReceiver);
+            
             // ヒット後の自分の処理
             BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // Colliderを切る
