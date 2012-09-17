@@ -57,7 +57,7 @@ public class IntermissionEffector : MonoBehaviour {
         }
 	}
     
-    void StartIntermission()
+    public void StartIntermission()
     {
         slide = true;
         currentTime = 0.0f;

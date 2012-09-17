@@ -10,7 +10,7 @@ public class ObjectManager : MonoBehaviour {
 
 	void Start () 
     {
-        // ‘SGenerator‚Ì”z—ñ
+        // å…¨Generatorã®é…åˆ—
 //      generators = gameObject.GetComponentsInChildren<RandomGenerator>();
         generators = new ArrayList();
         GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
@@ -24,9 +24,9 @@ public class ObjectManager : MonoBehaviour {
         if (currentGen == null) return;
         if (currentGen.ChildrenNum() == 0)
         {
-            // ƒIƒuƒWƒFƒNƒg”‚ªƒ[ƒ‚È‚ç¶¬ƒ^ƒCƒv‚ğ•ÏX
+            // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ•°ãŒã‚¼ãƒ­ãªã‚‰ç”Ÿæˆã‚¿ã‚¤ãƒ—ã‚’å¤‰æ›´
             Switch();
-            // ŠJn
+            // é–‹å§‹
             Run();
         }
 	}
@@ -57,12 +57,7 @@ public class ObjectManager : MonoBehaviour {
             Application.Quit();
         }
 
-//        foreach (RandomGenerator gen in generators)
-//        {
-//            gen.BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-//        }
-
-        // ƒQ[ƒ€‚ğn‚ß‚é
+        // ã‚²ãƒ¼ãƒ ã‚’å§‹ã‚ã‚‹
         current = 0;
         currentGen = generators[current] as RandomGenerator;
         Run();
@@ -73,7 +68,7 @@ public class ObjectManager : MonoBehaviour {
         foreach( RandomGenerator gen in generators ) {
             gen.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
         }
-        // ƒQ[ƒ€‚ğI‚í‚éB
+        // ã‚²ãƒ¼ãƒ ã‚’çµ‚ã‚ã‚‹ã€‚
         currentGen = null;
     }
 }

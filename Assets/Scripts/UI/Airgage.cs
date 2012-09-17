@@ -109,8 +109,8 @@ public class Airgage : MonoBehaviour {
 
         if (gameover)
         {
-            // 酸素切れ。ゲームオーバー
-            uiObj.SendMessage("OnNotifyGameEnd");
+            // 酸素切れ。ゲームオーバー(falseをわたす)
+            uiObj.SendMessage("OnNotifyGameEnd", false);
         }
     }
 
