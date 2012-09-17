@@ -36,13 +36,6 @@ public class Controller : MonoBehaviour {
         GUI.matrix = tmpMat;    // 戻す
     }
 
-    public void Enable( bool flag )
-    {  
-        enable = flag;
-    }
-
-    public void SetAngle(float angle)
-    {
-        angleY = angle;
-    }
+    public void Enable( bool flag )   {  enable = flag;   }
+    public void SetAngle(float angle) {  angleY = angle;  }
 }

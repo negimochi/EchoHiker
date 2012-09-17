@@ -6,6 +6,7 @@ public class IntermissionEffector : MonoBehaviour {
 //    [System.Serializable]
     public enum Type
     {
+        None,
         SlideIn,
         SlideOut
     };
@@ -26,12 +27,9 @@ public class IntermissionEffector : MonoBehaviour {
 
     private float startPos = 0.0f;
     private float endPos = 0.0f;
-    private GameObject uiObj = null;
 
 	void Start () 
     {
-        uiObj = GameObject.Find("/UI");
-
         width  = (float)Screen.width;
         height = (float)guiTexture.texture.height;
 
@@ -52,20 +50,24 @@ public class IntermissionEffector : MonoBehaviour {
             if (timeRate >= 1.0f)
             {
                 slide = false;
-                uiObj.SendMessage("OnIntermissionEnd");
+                //GameObject uiObj = GameObject.Find("/UI");
+                //if (uiObj) uiObj.SendMessage("OnIntermissionEnd");
+                //else Debug.Log("OnIntermissionEnd");
+                GameObject root = GameObject.Find("/Root");
+                if (root) root.SendMessage("OnIntermissionEnd");
             }
         }
 	}
     
-    public void StartIntermission()
+    private void StartIntermission()
     {
         slide = true;
         currentTime = 0.0f;
     }
 
-    void OnIntermissionStart(bool flag=false)
+    void OnIntermissionStart( Type type = Type.None )
     {
-        if (flag) SetType(Type.SlideIn);
+        if (type!=Type.None) SetType(type);
         StartIntermission();
     }
 
@@ -83,7 +85,7 @@ public class IntermissionEffector : MonoBehaviour {
                 startPos = closePos;
                 endPos = height;
                 break;
-            default:break;
+            default:    break;
         }
     }
 }

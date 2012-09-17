@@ -16,8 +16,7 @@ public class SonarSwitcher : MonoBehaviour
     private int cameraRayoutPixel = 8;  // 見栄え上、テクスチャサイズより少し内側のサイズでカメラ位置を決める
 
     private GameObject currentObj = null;
-//    private ActiveSonar activeSonar = null;
-    private SonarCamera sonarCamera = null;
+//    private SonarCamera sonarCamera = null;
 
     public enum SonarMode {
         None,
@@ -28,17 +27,7 @@ public class SonarSwitcher : MonoBehaviour
 
 	void Start () 
     {
-        GameObject cameraObj = GameObject.Find("/Player/SonarCamera");
-        if (cameraObj) {
-            sonarCamera = cameraObj.AddComponent<SonarCamera>();
-        }
-//        GameObject playerSonar = GameObject.Find("Player/ActiveSonar");
-//        if (playerSonar)
-//        {
-//            activeSonar = playerSonar.GetComponent<ActiveSonar>();
-//        }
-
-        SetPosition();
+        InitPosition();
         // パッシブソナーがデフォルト
         SetMode(SonarMode.PassiveSonar);
     }
@@ -78,7 +67,12 @@ public class SonarSwitcher : MonoBehaviour
         mode = mode_;
     }
 
-    private void SetPosition()
+    void OnGameStart()
+    {
+        InitPosition();
+    }
+
+    private void InitPosition()
     {
         float size = Screen.height * aspect;
 
@@ -91,7 +85,12 @@ public class SonarSwitcher : MonoBehaviour
         cameraRect.y += cameraRayoutPixel;
         cameraRect.width -= cameraRayoutPixel * 2;
         cameraRect.height -= cameraRayoutPixel * 2;
-        sonarCamera.SetRect(cameraRect);
+        GameObject cameraObj = GameObject.Find("/Player/SonarCamera");
+        if (cameraObj)
+        {
+            SonarCamera sonarCamera = cameraObj.AddComponent<SonarCamera>();
+            sonarCamera.SetRect(cameraRect);
+        }
     }
 
     private void CreateSonar( GameObject obj ) 

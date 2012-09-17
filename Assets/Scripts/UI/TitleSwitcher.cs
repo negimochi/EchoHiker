@@ -10,7 +10,6 @@ public class TitleSwitcher : MonoBehaviour {
     [SerializeField]
     private float minAlpha = 0.0f;
 
-
     private float max;
     private float currentTime = 0.0f;
     private Color startColor;
@@ -18,13 +17,15 @@ public class TitleSwitcher : MonoBehaviour {
 
     private bool pushed = false;
 
-    private GameObject intermission = null;
+    private GameObject ui = null;
+//   private GameObject intermission = null;
    
     void Start()
     {
         max = 1.0f - minAlpha;
         startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b);
-        intermission = GameObject.Find("/UI/Intermission");
+        ui = GameObject.Find("/UI");
+//        intermission = GameObject.Find("/UI/Intermission");
     }
 
     void Update()
@@ -39,6 +40,7 @@ public class TitleSwitcher : MonoBehaviour {
                 guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
                 // 時間更新
                 currentTime += Time.deltaTime;
+                Debug.Log(guiText.material.color.a);
             }
             else
             {
@@ -51,11 +53,14 @@ public class TitleSwitcher : MonoBehaviour {
         {
             pushed = true;
             audio.Play();
-            intermission.SendMessage("OnIntermissionStart", true);
+            // シーン終了を伝える
+            if (ui) ui.SendMessage("OnSceneEnd");
+            else Debug.Log("field is not exist...");
+//            intermission.SendMessage("OnIntermissionStart", true);
         }
 	}
 
-    public void StartFade()
+    private void StartFade()
     {
         guiText.enabled = true;
         guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, 0.0f);
@@ -67,5 +72,10 @@ public class TitleSwitcher : MonoBehaviour {
         yield return new WaitForSeconds(waitTime);
         wait = false;
         currentTime = 0.0f;
+    }
+
+    void OnStartSwitcher()
+    {
+        StartFade();
     }
 }

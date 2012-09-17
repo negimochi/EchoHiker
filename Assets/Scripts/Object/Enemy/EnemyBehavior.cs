@@ -18,7 +18,7 @@ public class EnemyBehavior : MonoBehaviour
         private float emergencyMax = 0.0f;
         [SerializeField]
         private float backwardMax = 10.0f;
-
+        [SerializeField]
         private float current = 1.0f;
         private float max;
         public float Value

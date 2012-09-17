@@ -18,8 +18,9 @@ public class GameOver : MonoBehaviour {
     {
         yield return new WaitForSeconds(waitTime);
 
-        TitleSwitcher titleback = GetComponentInChildren<TitleSwitcher>();
-        titleback.StartFade();
+        BroadcastMessage("OnStartSwitcher", SendMessageOptions.DontRequireReceiver);
+        //TitleSwitcher titleback = GetComponentInChildren<TitleSwitcher>();
+        //titleback.StartFade();
     }
 
 }
