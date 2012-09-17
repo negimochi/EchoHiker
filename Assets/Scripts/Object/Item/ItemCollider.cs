@@ -12,19 +12,11 @@ public class ItemCollider : MonoBehaviour
     [SerializeField]
     public float inflateAirRate = 0.5f;
     [SerializeField]
-<<<<<<< HEAD
     public int step = 10;
 
     [SerializeField]
     private int inflateValue = 100;
 
-=======
-    public int step = 10;
-
-    [SerializeField]
-    private int inflateValue = 100;
-
->>>>>>> origin/master
     [SerializeField]
     private int scoreValue = 100;
     GameObject uiObj = null;
@@ -65,11 +57,7 @@ public class ItemCollider : MonoBehaviour
         if (other.CompareTag("Player"))   // プレイヤーか判定
         {
             // スコア加算
-<<<<<<< HEAD
             if (uiObj) uiObj.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
-=======
-            if (uiObj) uiObj.BroadcastMessage("OnGetScore", scoreValue, SendMessageOptions.DontRequireReceiver);
->>>>>>> origin/master
             if (uiObj) uiObj.BroadcastMessage("OnInflate", inflateValue, SendMessageOptions.DontRequireReceiver);
             
             // ヒット後の自分の処理
