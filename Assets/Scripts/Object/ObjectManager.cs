@@ -13,8 +13,8 @@ public class ObjectManager : MonoBehaviour {
         // 全Generatorの配列
 //      generators = gameObject.GetComponentsInChildren<RandomGenerator>();
         generators = new ArrayList();
-        GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
-        GameObject itemObj = GameObject.Find("/Object/ItemManager");
+        GameObject enemyObj = GameObject.Find("EnemyManager");
+        GameObject itemObj = GameObject.Find("ItemManager");
         if (itemObj) generators.Add(itemObj.GetComponent<RandomGenerator>());
         if (enemyObj) generators.Add(enemyObj.GetComponent<RandomGenerator>());
     }

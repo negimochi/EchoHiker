@@ -11,7 +11,7 @@ public class SceneSelector : MonoBehaviour {
         Stage3
     };
     [SerializeField]
-    private string[] fieldSceneName = new string[] { 
+    private string[] mainSceneName = new string[] { 
         "Title",
         "Stage1", "Stage2", "Stage3" 
     };  // 各種ステージ
@@ -23,6 +23,7 @@ public class SceneSelector : MonoBehaviour {
     private bool playOnAwake = true;
 
     private GameObject field = null;
+    private GameObject logic = null;
     private GameObject ui = null;
 
     private int score = 0;
@@ -36,7 +37,13 @@ public class SceneSelector : MonoBehaviour {
 	
     void Start() 
     {
-        if( playOnAwake ) SendMessage("OnStartTitle");
+        if (playOnAwake) StartCoroutine("Wait", 1.0f);
+    }
+    private IEnumerator Wait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        OnStartTitle();
     }
 
     void Load()
@@ -46,13 +53,15 @@ public class SceneSelector : MonoBehaviour {
             case Type.Stage1:
             case Type.Stage2:
             case Type.Stage3:
-                Application.LoadLevel(fieldSceneName[index]);       // フィールドシーンロード
-                if (ui == null) {
-                    Application.LoadLevelAdditive(stageuiSceneName);    // UIが見つからなかったら追加
-                }
+                Application.LoadLevel(mainSceneName[index]);       // フィールドシーンロード
                 break;
             case Type.Title:
-                Application.LoadLevel(fieldSceneName[index]);
+                if (ui != null)
+                {
+                    Debug.Log("Destroy ui");
+                    Destroy(ui);    // UIは強制削除
+                }
+                Application.LoadLevel(mainSceneName[index]);
                 break;
 
             case Type.None:
@@ -60,19 +69,48 @@ public class SceneSelector : MonoBehaviour {
                 Debug.Log("Field Scene is not exist....");
                 break;
         }
-        // 参照を保存
-        InitReference();
-        // インターミッション
-        BroadcastMessage("StartIntermission");
     }
 
-    void InitReference()
+    // ロード終了時に
+    void OnLevelWasLoaded( int level )
+    {
+        Debug.Log("OnLevelWasLoaded : level=" + level + " - " + Application.loadedLevelName);
+        // 参照を保存
+        if (InitReference())
+        {
+            // インターミッション
+            BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideOut);
+        }
+    }
+
+    bool InitReference()
     {
         field = GameObject.Find("/Field");
+        logic = GameObject.Find("/Logic");
         ui = GameObject.Find("/UI");
 
-        if (field) loaded = true;
+        if (logic)
+        {
+            loaded = true;
+            Debug.Log("Field Scene is exist!");
+        }
         else Debug.Log("Field Scene is not exist....");
+
+        switch (currntType)
+        {
+            case Type.Stage1:
+            case Type.Stage2:
+            case Type.Stage3:
+                if (ui == null)
+                {
+                    Debug.Log("LoadLevelAdditive");
+                    Application.LoadLevelAdditive(stageuiSceneName);    // UIが見つからなかったら追加
+                    return false;
+                }
+                break;
+            default: break;
+        }
+        return true;
     }
 
     // タイトルをロード
@@ -80,7 +118,8 @@ public class SceneSelector : MonoBehaviour {
     {
         loaded = false;
         currntType = Type.Title;
-        BroadcastMessage("StartIntermission", IntermissionEffector.Type.SlideOut, SendMessageOptions.DontRequireReceiver);
+        // インターミッション開始
+        BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
     }
 
     // 次のステージをロード
@@ -92,18 +131,18 @@ public class SceneSelector : MonoBehaviour {
             int current = (int)currntType;
             current++;
             // ステージ数をオーバーしていた場合はTitleへ戻す
-            if (current >= fieldSceneName.Length) currntType = Type.Title;
+            if (current >= mainSceneName.Length) currntType = Type.Title;
             else currntType = (Type)(current);
         }
         else currntType = setType;
-        // インターミッション
-        BroadcastMessage("StartIntermission", IntermissionEffector.Type.SlideIn, SendMessageOptions.DontRequireReceiver);
+        // インターミッション開始
+        BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
     }
 
     // インターミッションの終了受け取り
     void OnIntermissionEnd()
     {
-        if (loaded) field.SendMessage("OnGameStart");   // ロード済みならゲームスタート
+        if (loaded) logic.SendMessage("OnGameStart");   // ロード済みならゲームスタート
         else Load();        // ロードできてないならロード開始
     }
 

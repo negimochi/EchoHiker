@@ -5,11 +5,18 @@ public class TitleMenu : MonoBehaviour {
 
     private SceneSelector.Type next = SceneSelector.Type.Stage1;
     private GameObject root = null;
+    private GameObject ui = null;
 
 	void Start () 
     {
         root = GameObject.Find("/Root");
-        BroadcastMessage("OnStartSwitcher");
+        ui = GameObject.Find("/UI");
+    }
+
+    // ここからスタート
+    void OnGameStart()
+    {
+        if(ui) ui.BroadcastMessage("OnStartSwitcher");
     }
 
     // シーン終了時に呼ばれる

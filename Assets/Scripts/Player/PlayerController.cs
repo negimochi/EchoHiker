@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour {
     {
         valid = true;
         // コントローラ表示
-        controller.Enable( true );
+        if (controller) controller.Enable(true);
     }
 
     void OnGameOver()
@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour {
         rot.Stop();
 
         // コントローラ表示
-        controller.Enable(false);
+        if(controller) controller.Enable(false);
 
         // 沈む演出
         // 軸の固定を解除して、重力を有効にする
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour {
         Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * deltaRot);
         // 回転演出
-        controller.SetAngle(transform.localEulerAngles.y);
+        if (controller) controller.SetAngle(transform.localEulerAngles.y);
     }
 
     private void MoveForward()
@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 vec = speed.current * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
         // スピードの変化演出
-        marinesnowEffect.SetSpeed(speed.Rate());
+        if (marinesnowEffect) marinesnowEffect.SetSpeed(speed.Rate());
     }
 
     public void AddSpeed(float value) 

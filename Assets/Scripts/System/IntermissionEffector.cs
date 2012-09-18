@@ -28,14 +28,18 @@ public class IntermissionEffector : MonoBehaviour {
     private float startPos = 0.0f;
     private float endPos = 0.0f;
 
+    GameObject root = null;
+
 	void Start () 
     {
         width  = (float)Screen.width;
         height = (float)guiTexture.texture.height;
 
-        guiTexture.pixelInset = new Rect(0, startPos, width, height);
+        root = GameObject.Find("/Root");
 
         SetType(type);
+        guiTexture.pixelInset = new Rect(0, endPos, width, height);
+
         if (playOnAwake) StartIntermission();
 	}
 	
@@ -53,7 +57,6 @@ public class IntermissionEffector : MonoBehaviour {
                 //GameObject uiObj = GameObject.Find("/UI");
                 //if (uiObj) uiObj.SendMessage("OnIntermissionEnd");
                 //else Debug.Log("OnIntermissionEnd");
-                GameObject root = GameObject.Find("/Root");
                 if (root) root.SendMessage("OnIntermissionEnd");
             }
         }
@@ -61,13 +64,20 @@ public class IntermissionEffector : MonoBehaviour {
     
     private void StartIntermission()
     {
+        Debug.Log("StartIntermission:" + type);
         slide = true;
         currentTime = 0.0f;
     }
 
-    void OnIntermissionStart( Type type = Type.None )
+    void OnIntermissionStart( Type type_ = Type.None )
     {
-        if (type!=Type.None) SetType(type);
+        Debug.Log("OnIntermissionStart:" + type_ + "/" + type);
+        if (type_ == type)
+        {
+            if (root) root.SendMessage("OnIntermissionEnd");
+            return;
+        }
+        if (type_ != Type.None) SetType(type_);
         StartIntermission();
     }
 
