@@ -26,6 +26,16 @@ public class DebugSceneSelector : MonoBehaviour
 	
 	}
 
+    void OnIntermissionStart( IntermissionEffector.Type type)
+    {
+        switch(type)
+        {
+            case IntermissionEffector.Type.SlideIn: break;
+            case IntermissionEffector.Type.SlideOut:    break;
+            default:    break;
+        }
+    }
+
     void OnGUI()
     {
         GUILayout.BeginArea(rectArea);

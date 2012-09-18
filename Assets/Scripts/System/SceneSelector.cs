@@ -16,15 +16,13 @@ public class SceneSelector : MonoBehaviour {
         "Stage1", "Stage2", "Stage3" 
     };  // 各種ステージ
     [SerializeField]
-    private string stageuiSceneName = "StageUI";    // ステージUI。各ステージ共通
-    [SerializeField]
     private Type currntType = Type.None;
     [SerializeField]
     private bool playOnAwake = true;
 
-    private GameObject field = null;
     private GameObject logic = null;
-    private GameObject ui = null;
+//    private GameObject field = null;
+//    private GameObject ui = null;
 
     private int score = 0;
     private bool loaded = false;
@@ -46,29 +44,12 @@ public class SceneSelector : MonoBehaviour {
         OnStartTitle();
     }
 
-    void Load()
+    bool Load()
     {
+        if(currntType == Type.None) return false;
         int index = (int)currntType;
-        switch( currntType ) {
-            case Type.Stage1:
-            case Type.Stage2:
-            case Type.Stage3:
-                Application.LoadLevel(mainSceneName[index]);       // フィールドシーンロード
-                break;
-            case Type.Title:
-                if (ui != null)
-                {
-                    Debug.Log("Destroy ui");
-                    Destroy(ui);    // UIは強制削除
-                }
-                Application.LoadLevel(mainSceneName[index]);
-                break;
-
-            case Type.None:
-            default:
-                Debug.Log("Field Scene is not exist....");
-                break;
-        }
+        Application.LoadLevel(mainSceneName[index]);       // フィールドシーンロード
+        return true;
     }
 
     // ロード終了時に
@@ -85,32 +66,18 @@ public class SceneSelector : MonoBehaviour {
 
     bool InitReference()
     {
-        field = GameObject.Find("/Field");
         logic = GameObject.Find("/Logic");
-        ui = GameObject.Find("/UI");
-
+//        field = GameObject.Find("/Field");
+//        ui = GameObject.Find("/UI");
         if (logic)
         {
+            // logicさえあればロードできたとみなす
             loaded = true;
-            Debug.Log("Field Scene is exist!");
+            return true;
         }
-        else Debug.Log("Field Scene is not exist....");
 
-        switch (currntType)
-        {
-            case Type.Stage1:
-            case Type.Stage2:
-            case Type.Stage3:
-                if (ui == null)
-                {
-                    Debug.Log("LoadLevelAdditive");
-                    Application.LoadLevelAdditive(stageuiSceneName);    // UIが見つからなかったら追加
-                    return false;
-                }
-                break;
-            default: break;
-        }
-        return true;
+        Debug.Log("Logic is not exist....");
+        return false;
     }
 
     // タイトルをロード
