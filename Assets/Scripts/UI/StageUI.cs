@@ -10,4 +10,11 @@ public class StageUI : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 	}
 
+    // スコアを返す
+    public int Score()
+    {
+        GameObject scoreDisp = GameObject.Find("ScoreDisplay");
+        if (scoreDisp) return scoreDisp.GetComponent<ScoreDisplay>().Score();
+        return 0;
+    }
 }

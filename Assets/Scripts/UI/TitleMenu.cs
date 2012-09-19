@@ -3,7 +3,9 @@ using System.Collections;
 
 public class TitleMenu : MonoBehaviour {
 
+    [SerializeField]
     private SceneSelector.Type next = SceneSelector.Type.Stage1;
+
     private GameObject root = null;
     private GameObject ui = null;
 

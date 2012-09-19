@@ -36,6 +36,11 @@ public class Controller : MonoBehaviour {
         GUI.matrix = tmpMat;    // 戻す
     }
 
+    void OnStageReset()
+    {
+        angleY = 0.0f;
+    }
+
     public void Enable( bool flag )   {  enable = flag;   }
     public void SetAngle(float angle) {  angleY = angle;  }
 }

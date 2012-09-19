@@ -31,6 +31,7 @@ public class TitleSwitcher : MonoBehaviour {
     void Update()
     {
         if (!guiText.enabled) return;
+
         if (!wait)
         {
             float time = currentTime / fadeTime;
@@ -40,7 +41,7 @@ public class TitleSwitcher : MonoBehaviour {
                 guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
                 // éûä‘çXêV
                 currentTime += Time.deltaTime;
-                Debug.Log(guiText.material.color.a);
+                //Debug.Log(guiText.material.color.a);
             }
             else
             {
@@ -77,5 +78,12 @@ public class TitleSwitcher : MonoBehaviour {
     void OnStartSwitcher()
     {
         StartFade();
+    }
+
+    void OnStageReset()
+    {
+        guiText.enabled = false;
+        wait = true;
+        pushed = false;
     }
 }

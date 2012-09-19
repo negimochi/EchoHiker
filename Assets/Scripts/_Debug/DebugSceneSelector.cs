@@ -15,6 +15,7 @@ public class DebugSceneSelector : MonoBehaviour
     private Rect rectS3 = new Rect(300, 430, 100, 20);
 
     private GameObject root = null;
+    private bool visible = true;
 
 	// Use this for initialization
 	void Start () {
@@ -26,18 +27,20 @@ public class DebugSceneSelector : MonoBehaviour
 	
 	}
 
-    void OnIntermissionStart( IntermissionEffector.Type type)
+    void OnIntermissionStart( IntermissionEffector.Type type = IntermissionEffector.Type.None )
     {
         switch(type)
         {
-            case IntermissionEffector.Type.SlideIn: break;
-            case IntermissionEffector.Type.SlideOut:    break;
+            case IntermissionEffector.Type.SlideIn: visible = false; break;
+            case IntermissionEffector.Type.SlideOut: visible = true; break;
             default:    break;
         }
     }
 
     void OnGUI()
     {
+        if (!visible) return;
+
         GUILayout.BeginArea(rectArea);
         if (GUI.Button(rectT, "Load Title"))
         {

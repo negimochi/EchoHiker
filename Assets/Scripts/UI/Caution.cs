@@ -7,12 +7,8 @@ public class Caution : MonoBehaviour {
     private Vector2 offsetPixel = Vector2.zero;  // ゼロで画面端
     [SerializeField]
     private int disitSize = 3;
-//    [SerializeField]
-//    private Color safetyColor = Color.white;
     [SerializeField]
     private Color cautionColor = Color.yellow;
-//    [SerializeField]
-//    private Color emergencyColor = Color.red;
 
     private int cautionValue = 0;
 
@@ -37,13 +33,14 @@ public class Caution : MonoBehaviour {
         }
     }
 
+    void OnStageReset()
+    {
+        cautionValue = 0;
+    }
+
     void OnUpdateCaution(int value)
     {
         cautionValue = value;
-        //if( cautionValue == 0 ) guiText.material.color = safetyColor;
-        //else if (cautionValue < 90) guiText.material.color = cautionColor;
-        //else  guiText.material.color = emergencyColor;
-        // 表示
         guiText.text = cautionValue.ToString("D" + disitSize);
     }
 

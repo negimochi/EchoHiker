@@ -13,14 +13,16 @@ public class GameOver : MonoBehaviour {
         StartCoroutine("Wait", backtitleDelay);
     }
 
+    void OnStageReset()
+    {
+        guiText.enabled = false;
+    }
     
     private IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
 
         BroadcastMessage("OnStartSwitcher", SendMessageOptions.DontRequireReceiver);
-        //TitleSwitcher titleback = GetComponentInChildren<TitleSwitcher>();
-        //titleback.StartFade();
     }
 
 }

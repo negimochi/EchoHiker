@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
     private GameObject player = null;
     private GameObject objects = null;
     private GameObject ui = null;
-    private bool gameover = false;
+//    private bool gameover = false;
 	
     void Start() 
     {
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
 
 //    void OnNotifyGameEnd( bool nextStage )
     // シーン終了時に呼ばれる
-    void OnSceneEnd(bool nextStage)
+    void OnGameEnd(bool nextStage)
     { 
 		if(nextStage) {
             // 次のStage
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
 	        if (objects) objects.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
             if (ui) ui.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
 	        // ゲームオーバーを記録
-	        gameover = true;
+//	        gameover = true;
 		}
     }
 

@@ -16,15 +16,20 @@ public class SceneSelector : MonoBehaviour {
         "Stage1", "Stage2", "Stage3" 
     };  // 各種ステージ
     [SerializeField]
-    private Type currntType = Type.None;
+    private string stageuiSceneName = "StageUI";
+    [SerializeField]
+    private Type currentType = Type.None;
+//    [SerializeField]
+//    private Type prevType = Type.None;
     [SerializeField]
     private bool playOnAwake = true;
 
     private GameObject logic = null;
-//    private GameObject field = null;
-//    private GameObject ui = null;
+    private GameObject ui = null;
+    //    private GameObject field = null;
 
-    private int score = 0;
+    [SerializeField]
+    private int hiScore = 0;
     private bool loaded = false;
 
 	void Awake()
@@ -40,14 +45,29 @@ public class SceneSelector : MonoBehaviour {
     private IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-
         OnStartTitle();
     }
 
     bool Load()
     {
-        if(currntType == Type.None) return false;
-        int index = (int)currntType;
+        if (currentType == Type.None) return false;
+        int index = (int)currentType;
+
+        if (ui)
+        {
+            // Titleに戻る場合は事前にuiを削除しておく
+            if (currentType == Type.Title)
+            {
+                // ハイスコア更新
+                int newscore = 0;
+                StageUI stageUI = ui.GetComponent<StageUI>();
+                if (stageUI) newscore = stageUI.Score();
+                if (hiScore < newscore) hiScore = newscore;
+                // 削除
+                Destroy(ui);
+            }
+        }
+
         Application.LoadLevel(mainSceneName[index]);       // フィールドシーンロード
         return true;
     }
@@ -57,34 +77,51 @@ public class SceneSelector : MonoBehaviour {
     {
         Debug.Log("OnLevelWasLoaded : level=" + level + " - " + Application.loadedLevelName);
         // 参照を保存
-        if (InitReference())
+        InitReference();
+        if (loaded)
         {
+            if (ui == null)
+            {
+                // StageだったらStageUIを追加ロード
+                switch (currentType)
+                {
+                    default: break;
+                    case Type.Stage1:
+                    case Type.Stage2:
+                    case Type.Stage3:
+                        Application.LoadLevelAdditive(stageuiSceneName); break;
+                }
+            }
+            else {
+                // スコア以外をリセット
+                ui.BroadcastMessage("OnStageReset", SendMessageOptions.DontRequireReceiver);
+            }
+
             // インターミッション
             BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideOut);
         }
     }
 
-    bool InitReference()
+    void InitReference()
     {
+        ui = GameObject.Find("/UI");
         logic = GameObject.Find("/Logic");
-//        field = GameObject.Find("/Field");
-//        ui = GameObject.Find("/UI");
         if (logic)
         {
             // logicさえあればロードできたとみなす
             loaded = true;
-            return true;
         }
-
-        Debug.Log("Logic is not exist....");
-        return false;
     }
 
     // タイトルをロード
     void OnStartTitle()
     {
         loaded = false;
-        currntType = Type.Title;
+        //prevType = currentType;
+
+        // タイトルを設定
+        currentType = Type.Title;
+        
         // インターミッション開始
         BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
     }
@@ -93,15 +130,19 @@ public class SceneSelector : MonoBehaviour {
     void OnNextStage( Type setType=Type.None )
     {
         loaded = false;
+        //prevType = currentType;
+
+        // currentTypeを設定する
         if (setType == Type.None)
         {
-            int current = (int)currntType;
+            int current = (int)currentType;
             current++;
             // ステージ数をオーバーしていた場合はTitleへ戻す
-            if (current >= mainSceneName.Length) currntType = Type.Title;
-            else currntType = (Type)(current);
+            if (current >= mainSceneName.Length) currentType = Type.Title;
+            else currentType = (Type)(current);
         }
-        else currntType = setType;
+        else currentType = setType;
+        
         // インターミッション開始
         BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
     }
@@ -111,11 +152,5 @@ public class SceneSelector : MonoBehaviour {
     {
         if (loaded) logic.SendMessage("OnGameStart");   // ロード済みならゲームスタート
         else Load();        // ロードできてないならロード開始
-    }
-
-    // データ保存
-    void OnSaveScore( int saveScore )
-    {
-        score = saveScore;
     }
 }

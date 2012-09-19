@@ -31,14 +31,13 @@ public class Airgage : MonoBehaviour {
     private GameObject meterObj;
     private GameObject damageLvObj;
 
-    private GameObject uiObj = null;
+    private GameObject logic = null;
 
     void Start()
     {
-        air = airMax;
         meterObj = GameObject.Find("AirgageMeter");
         damageLvObj = GameObject.Find("DamageLvText");
-        uiObj = GameObject.Find("/UI");
+        logic = GameObject.Find("/Logic");
 
         // 位置調整
         float w = (float)Screen.width;
@@ -55,6 +54,7 @@ public class Airgage : MonoBehaviour {
         posY = 1.0f - offsetPixelText.y / h;
         damageLvObj.transform.position = new Vector3(posX, posY, 0.0f);
 
+        OnStageReset();
     }
 
     void Update()
@@ -92,6 +92,13 @@ public class Airgage : MonoBehaviour {
         if (airMax < air) air = airMax;
     }
 
+    void OnStageReset()
+    {
+        air = airMax;
+        damageLv = 0;
+        gameover = false;
+    }
+
     /// <summary>
     /// air更新
     /// </summary>
@@ -110,7 +117,7 @@ public class Airgage : MonoBehaviour {
         if (gameover)
         {
             // 酸素切れ。ゲームオーバー(falseをわたす)
-            uiObj.SendMessage("OnNotifyGameEnd", false);
+            logic.SendMessage("OnGameEnd", false);
         }
     }
 

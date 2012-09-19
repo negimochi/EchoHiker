@@ -15,8 +15,8 @@ public class ObjectManager : MonoBehaviour {
         generators = new ArrayList();
         GameObject enemyObj = GameObject.Find("EnemyManager");
         GameObject itemObj = GameObject.Find("ItemManager");
-        if (itemObj) generators.Add(itemObj.GetComponent<RandomGenerator>());
         if (enemyObj) generators.Add(enemyObj.GetComponent<RandomGenerator>());
+        if (itemObj) generators.Add(itemObj.GetComponent<RandomGenerator>());
     }
 	
 	void Update () 
