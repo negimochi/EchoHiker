@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TitleMenu : MonoBehaviour {
+public class TitleLogic : MonoBehaviour {
 
     [SerializeField]
     private SceneSelector.Type next = SceneSelector.Type.Stage1;

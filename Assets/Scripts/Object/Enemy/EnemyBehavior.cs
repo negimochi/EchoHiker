@@ -164,7 +164,7 @@ public class EnemyBehavior : MonoBehaviour
         // スタート時は外側にいるので中心を向いておく
         transform.LookAt(Vector3.zero);
 
-        player = GameObject.Find("/Player");
+        player = GameObject.Find("/Field/Player");
         torpedo = GetComponent<TorpedoGenerator>();
         currentTime = 0.0f;
         valid = true;

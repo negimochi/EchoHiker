@@ -19,14 +19,14 @@ public class ActiveSonar : MonoBehaviour {
 	void Start () 
     {
         effect = GetComponent<SonarEffect>();
-        player = GameObject.Find("/Player");
-        GameObject enemyObj = GameObject.Find("/Object/EnemyManager");
+        player = GameObject.Find("/Field/Player");
+        GameObject enemyObj = GameObject.Find("/Field/Object/EnemyManager");
         if (enemyObj) enemy = enemyObj.GetComponent<RandomGenerator>();
-        GameObject itemObj = GameObject.Find("/Object/ItemManager");
+        GameObject itemObj = GameObject.Find("/Field/Object/ItemManager");
         if (itemObj) item = itemObj.GetComponent<RandomGenerator>();
-        GameObject torpedoObj = GameObject.Find("/Object/TorpedoManager");
+        GameObject torpedoObj = GameObject.Find("/Field/Object/TorpedoManager");
         if (torpedoObj) torpedo = torpedoObj.GetComponent<TorpedoManager>();
-        GameObject sonarCameraObj = GameObject.Find("/Player/SonarCamera");
+        GameObject sonarCameraObj = GameObject.Find("/Field/Player/SonarCamera");
         if (sonarCameraObj) maxRadius = sonarCameraObj.GetComponent<SphereCollider>().radius;
 
         StartCoroutine("Delay");

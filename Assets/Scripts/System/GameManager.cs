@@ -3,48 +3,63 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+//    private GameObject player = null;
+//    private GameObject objects = null;
     private GameObject root = null;
-    private GameObject player = null;
-    private GameObject objects = null;
+    private GameObject field = null;
     private GameObject ui = null;
-//    private bool gameover = false;
+    private bool nextStage = false;
 	
-    void Start() 
-    {
-    }
-
     // ここからスタート
     void OnGameStart()
     {
+//        player = GameObject.Find("/Field/Player");
+//        objects = GameObject.Find("/Field/Object");
         root = GameObject.Find("/Root");
-        player = GameObject.Find("/Field/Player");
-        objects = GameObject.Find("/Field/Object");
+        field = GameObject.Find("/Field");
         ui = GameObject.Find("/UI");
         // ゲーム開始
-        if (player)  player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
-        if (objects) objects.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+//        if (player)  player.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+//        if (objects) objects.SendMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
+        if (field) field.BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
         if (ui) ui.BroadcastMessage("OnGameStart", SendMessageOptions.DontRequireReceiver);
     }
 
 
 //    void OnNotifyGameEnd( bool nextStage )
     // シーン終了時に呼ばれる
-    void OnGameEnd(bool nextStage)
-    { 
-		if(nextStage) {
+    void OnGameEnd(bool nextStage_)
+    {
+        nextStage = nextStage_;
+        if (nextStage)
+        {
             // 次のStage
-            if (root) root.SendMessage("OnNextStage");
+            //if (root) root.SendMessage("OnNextStage");
             // ステージクリア通知
 	        //BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
-		}
+            if (field) field.BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
+            if (ui) ui.BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
+        }
 		else {
 	        // 終了通知を送る
-	        if (player)  player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
-	        if (objects) objects.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+//	        if (player)  player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+//	        if (objects) objects.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
+            if (field) field.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
             if (ui) ui.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
-	        // ゲームオーバーを記録
-//	        gameover = true;
 		}
+    }
+
+    void OnSceneEnd()
+    {
+        // TitleSwitcherからよばれる
+        if (nextStage)
+        {
+            if (root) root.SendMessage("OnNextStage");
+        }
+        else
+        {
+            if (root) root.SendMessage("OnStartTitle");
+        }
     }
 
 }

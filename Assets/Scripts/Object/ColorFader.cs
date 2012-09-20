@@ -28,7 +28,7 @@ public class ColorFader : MonoBehaviour {
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 
         // 生成された段階でソナー内にいるかチェック
-        GameObject sonarCameraObj = GameObject.Find("/Player/SonarCamera");
+        GameObject sonarCameraObj = GameObject.Find("/Field/Player/SonarCamera");
         if (sonarCameraObj) {
             sonarCameraObj.SendMessage("OnInstantiatedChild", gameObject);
         }

@@ -25,7 +25,7 @@ public class EnemyCaution : MonoBehaviour {
 	void Start () 
     {
         waitTime = waitTimeMax;
-        GameObject managerObj = GameObject.Find("/Object/EnemyManager");
+        GameObject managerObj = GameObject.Find("/Field/Object/EnemyManager");
         if (managerObj) updater = managerObj.GetComponent<CautionUpdater>();
 	}
 
