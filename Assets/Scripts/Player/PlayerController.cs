@@ -130,20 +130,27 @@ public class PlayerController : MonoBehaviour {
         if (controller) controller.Enable(true);
     }
 
-    void OnGameOver()
+    void InvalidPlayer()
     {
+        valid = false;
         speed.Stop();
         rot.Stop();
+        if (controller) controller.Enable(false);
+    }
 
-        // コントローラ表示
-        if(controller) controller.Enable(false);
+    void OnGameClear()
+    {
+        InvalidPlayer();
+    }
+
+    void OnGameOver()
+    {
+        InvalidPlayer();
 
         // 沈む演出
         // 軸の固定を解除して、重力を有効にする
         rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         rigidbody.useGravity = true;
-
-        valid = false;
     }
 	
 	void FixedUpdate () 

@@ -7,10 +7,10 @@ public class MarineSnow : MonoBehaviour {
     private float maxSpeed = 30.0f;
 
     
-    void OnGameOver() 
-    {
-        particleSystem.Pause();
-    }
+    //void OnGameOver() 
+    //{
+        //particleSystem.Pause();
+    //}
 
     public void SetSpeed( float rate ) 
     {

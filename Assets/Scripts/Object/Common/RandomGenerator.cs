@@ -5,25 +5,24 @@ public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]
     private GameObject target;  // 生成対象
-    [SerializeField]
-    private float posY;         // 生成するY座標位置
-
+//    [SerializeField]
+//    private float posY;         // 生成するY座標位置
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
 
-    [SerializeField]
-    private int counter = 0;
-    [SerializeField]
-    private bool limitCheck = false;
-    [SerializeField]
-    private bool ready = false;
+//    [SerializeField]
+//    private int counter = 0;
+//    [SerializeField]
+//    private bool limitCheck = false;
+//    [SerializeField]
+//    private bool ready = false;
 
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
    
     void Start()
     {
-        // 初期配置分がある場合はここで登録しておく
+        // 初期配置分がある場合はここで登録しておく（主にデバッグ用）
         GameObject[] children = GameObject.FindGameObjectsWithTag(target.tag);
         for (int i = 0; i < children.Length; i++ )
         {
@@ -42,18 +41,18 @@ public class RandomGenerator : MonoBehaviour {
 //        }
 //    }
 
-    private bool TimingCheck()
-    {
-        // 準備できてない
-        if (!ready) return false;
-        // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
-        if (!param.endless && limitCheck) return false;
-
-        Debug.Log("num check");
-
-        // 個数チェック
-        return (ChildrenNum() < param.limitNum) ? true : false;
-    }
+//    private bool TimingCheck()
+//    {
+//        // 準備できてない
+//        if (!ready) return false;
+//        // 1度リミットに到達していて、エンドレスフラグが立っていないときは追加しない
+//        if (!param.endless && limitCheck) return false;
+//
+//        Debug.Log("num check");
+//
+//        // 個数チェック
+//        return (ChildrenNum() < param.limitNum) ? true : false;
+//    }
 
 //    private IEnumerator Delay()
 //    {
@@ -70,27 +69,26 @@ public class RandomGenerator : MonoBehaviour {
 //
 //    }
 
-    void OnStart()
-    {
-        counter = 0;
-        ready = true;
-        limitCheck = false;
+//    void OnStart()
+//    {
+//        counter = 0;
+//        ready = true;
+//        limitCheck = false;
+//
+//        Generate();
+//    }
 
-        Generate();
-    }
-
-    void OnSuspend()
-    {
-        ready = false;
-        //StopCoroutine("Delay");
-    }
+//    void OnSuspend()
+//    {
+//        ready = false;
+//        //StopCoroutine("Delay");
+//    }
 
     /// <summary>
     /// [ Message ] オブジェクト破壊
     /// </summary>
     void OnDestroyObject( GameObject target )
     {
-        //UpdateArray();
         // 配列に残っていれば削除
         childrenArray.Remove(target);
         sonarArray.Remove(target);
@@ -102,8 +100,8 @@ public class RandomGenerator : MonoBehaviour {
 
     public void Generate()
     {
-        Rect posRange = param.pos;
-        Vector3 pos = new Vector3(posRange.xMin, posY, posRange.yMin);
+        Rect posRange = param.posXZ;
+        Vector3 pos = new Vector3(posRange.xMin, 0, posRange.yMin);
         if (param.fill)
         {
             // posRange内にランダムに位置を決める
@@ -131,20 +129,17 @@ public class RandomGenerator : MonoBehaviour {
         Debug.Log("generated[" + ChildrenNum() + "]=" + newChild.name);
 
         // 配列更新
-        //UpdateArray();
         childrenArray.Add(newChild);
         sonarArray.Add(newChild);
-        // 子供を増やした通知
+        // 子供を増やした通知(主にEnemy用)
         SendMessage("OnInstantiatedChild", newChild, SendMessageOptions.DontRequireReceiver);
-        // ソナーカメラにも伝える
-        //sonarCameraObj.SendMessage("OnInstantiatedChild", newChild);
 
-        counter++;
-        if (counter > param.limitNum)
-        {
-            limitCheck = true;
-            Debug.Log("/// LIMIT ////");
-        }
+//        counter++;
+//        if (counter > param.limitNum)
+//        {
+//            limitCheck = true;
+//            Debug.Log("/// LIMIT ////");
+//        }
     }
 
     /*

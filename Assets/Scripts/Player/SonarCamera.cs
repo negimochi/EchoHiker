@@ -14,25 +14,13 @@ public class SonarCamera : MonoBehaviour {
         {
             shereCollider.radius = radius;
         }
-
-        // 初期配置されていた場合の対応
-//        GameObject enemy = GameObject.Find("/Object/EnemyManager");
-//        if (enemy) {
-//            ArrayList enemyArr = enemy.GetComponent<RandomGenerator>().Children();
-//            foreach( enemyArr ) ;
-//        }
-//        GameObject item = GameObject.Find("/Object/ItemManager");
-//      if (item)
-//        {
-//            RandomGenerator itemGen = enemy.GetComponent<RandomGenerator>();
-//        }
-//        sonarArray
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (CheckObject(other.gameObject))
         {
+            Debug.Log("SonarCamera.OnTriggerEnter");
             other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
         }
     }
@@ -46,6 +34,7 @@ public class SonarCamera : MonoBehaviour {
     {
         if (CheckObject(other.gameObject))
         {
+            Debug.Log("SonarCamera.OnTriggerExit");
             other.gameObject.BroadcastMessage("OnSonarOutside", SendMessageOptions.DontRequireReceiver);
         }
     }
@@ -55,8 +44,9 @@ public class SonarCamera : MonoBehaviour {
         return (target.CompareTag("Sonar")) ? true : false;
     }
 
-    void OnInstantiatedChild(GameObject target)
+    void OnInstantiatedSonarPoint(GameObject target)
     {
+        Debug.Log("OnInstantiatedSonarPoint:");
         // すでにソナー内にいるかチェックする
         Vector3 pos = new Vector3( transform.position.x, 0.0f, transform.position.z );
         if (Vector3.Distance(pos, target.transform.position) <= radius)

@@ -24,7 +24,7 @@ public class SceneSelector : MonoBehaviour {
     [SerializeField]
     private bool playOnAwake = true;
 
-    private GameObject logic = null;
+    private GameObject adapter = null;
     private GameObject ui = null;
     //    private GameObject field = null;
 
@@ -48,7 +48,7 @@ public class SceneSelector : MonoBehaviour {
         OnStartTitle();
     }
 
-    bool Load()
+    bool LoadScene()
     {
         if (currentType == Type.None) return false;
         int index = (int)currentType;
@@ -105,10 +105,10 @@ public class SceneSelector : MonoBehaviour {
     void InitReference()
     {
         ui = GameObject.Find("/UI");
-        logic = GameObject.Find("/Logic");
-        if (logic)
+        adapter = GameObject.Find("/Adapter");
+        if (adapter)
         {
-            // logicさえあればロードできたとみなす
+            // adapterさえあればロードできたとみなす
             loaded = true;
         }
     }
@@ -150,7 +150,15 @@ public class SceneSelector : MonoBehaviour {
     // インターミッションの終了受け取り
     void OnIntermissionEnd()
     {
-        if (loaded) logic.SendMessage("OnGameStart");   // ロード済みならゲームスタート
-        else Load();        // ロードできてないならロード開始
+        if (loaded)
+        {
+            // ロード済みならゲームスタート
+            adapter.SendMessage("OnGameStart");   
+        }
+        else
+        {
+            // ロードできてないならロード開始
+            LoadScene(); 
+        }
     }
 }

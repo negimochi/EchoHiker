@@ -17,14 +17,12 @@ public class TitleSwitcher : MonoBehaviour {
 
     private bool pushed = false;
 
-    private GameObject logic = null;
 //   private GameObject intermission = null;
    
     void Start()
     {
         max = 1.0f - minAlpha;
         startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b);
-        logic = GameObject.Find("/Logic");
 //        intermission = GameObject.Find("/UI/Intermission");
     }
 
@@ -55,8 +53,9 @@ public class TitleSwitcher : MonoBehaviour {
             pushed = true;
             audio.Play();
             // ÉVÅ[ÉìèIóπÇì`Ç¶ÇÈ
-            if (logic) logic.SendMessage("OnSceneEnd");
-            else Debug.Log("field is not exist...");
+            GameObject adapter = GameObject.Find("/Adapter");
+            if (adapter) adapter.SendMessage("OnSceneEnd");
+            else Debug.Log("adapter is not exist...");
             //intermission.SendMessage("OnIntermissionStart", true);
         }
 	}

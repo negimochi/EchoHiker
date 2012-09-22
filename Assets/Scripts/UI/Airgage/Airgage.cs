@@ -31,13 +31,11 @@ public class Airgage : MonoBehaviour {
     private GameObject meterObj;
     private GameObject damageLvObj;
 
-    private GameObject logic = null;
 
     void Start()
     {
         meterObj = GameObject.Find("AirgageMeter");
         damageLvObj = GameObject.Find("DamageLvText");
-        logic = GameObject.Find("/Logic");
 
         // 位置調整
         float w = (float)Screen.width;
@@ -117,7 +115,8 @@ public class Airgage : MonoBehaviour {
         if (gameover)
         {
             // 酸素切れ。ゲームオーバー(falseをわたす)
-            logic.SendMessage("OnGameEnd", false);
+            GameObject adapter = GameObject.Find("/Adapter");
+            adapter.SendMessage("OnGameEnd", false);
         }
     }
 

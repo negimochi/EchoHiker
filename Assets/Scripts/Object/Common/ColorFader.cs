@@ -27,10 +27,10 @@ public class ColorFader : MonoBehaviour {
         currentTime = 0.0f;
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 
-        // 生成された段階でソナー内にいるかチェック
+        // 生成された段階で自分がソナー内にいるかチェック
         GameObject sonarCameraObj = GameObject.Find("/Field/Player/SonarCamera");
         if (sonarCameraObj) {
-            sonarCameraObj.SendMessage("OnInstantiatedChild", gameObject);
+            sonarCameraObj.SendMessage("OnInstantiatedSonarPoint", gameObject);
         }
 	}
 

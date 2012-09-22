@@ -1,14 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class GameOver : MonoBehaviour {
+public class StageEndText : MonoBehaviour {
 
     [SerializeField]
     private float backtitleDelay = 3.0f;
 
+    void OnGameClear()
+    {
+        guiText.text = "GAME CLEAR";
+        guiText.enabled = true;
+        StartCoroutine("Wait", backtitleDelay);
+    }
 
     void OnGameOver( )
     {
+        guiText.text = "GAME OVER";
         guiText.enabled = true;
         StartCoroutine("Wait", backtitleDelay);
     }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
+public class StageAdapter : MonoBehaviour {
 
 //    private GameObject player = null;
 //    private GameObject objects = null;
@@ -35,13 +35,13 @@ public class GameManager : MonoBehaviour {
         {
             // 次のStage
             //if (root) root.SendMessage("OnNextStage");
-            // ステージクリア通知
+            // ステージクリアの挙動指示
 	        //BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
             if (field) field.BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
             if (ui) ui.BroadcastMessage("OnGameClear", SendMessageOptions.DontRequireReceiver);
         }
 		else {
-	        // 終了通知を送る
+	        // ゲームオーバーの挙動指示
 //	        if (player)  player.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
 //	        if (objects) objects.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
             if (field) field.BroadcastMessage("OnGameOver", SendMessageOptions.DontRequireReceiver);
