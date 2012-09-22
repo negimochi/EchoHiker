@@ -3,12 +3,13 @@ using System.Collections;
 
 public class IntermissionEffector : MonoBehaviour {
 
-//    [System.Serializable]
     public enum Type
     {
         None,
-        SlideIn,
-        SlideOut
+        SlideIn,    
+        SlideOut,
+        FadeIn,
+        FadeOut
     };
     [SerializeField]
     private Type type = Type.SlideIn;
@@ -20,82 +21,155 @@ public class IntermissionEffector : MonoBehaviour {
     private bool playOnAwake = false;
 
     private float currentTime = 0.0f;
-    private bool slide = false;
+    private bool valid = false;
 
     private float height = 0.0f;
     private float width = 0.0f;
+    private Color mainColor;
 
-    private float startPos = 0.0f;
-    private float endPos = 0.0f;
+    private float startValue = 0.0f;
+    private float endValue = 0.0f;
 
-    GameObject root = null;
+    // 任意完了通知用オブジェクト
+    GameObject notifyObj = null;
 
 	void Start () 
     {
         width  = (float)Screen.width;
         height = (float)guiTexture.texture.height;
-
-        root = GameObject.Find("/Root");
+        Color color = guiTexture.color;
+        mainColor = new Color(color.r, color.g, color.b, color.a);
 
         SetType(type);
-        guiTexture.pixelInset = new Rect(0, endPos, width, height);
+        guiTexture.pixelInset = new Rect(0, endValue, width, height);
 
-        if (playOnAwake) StartIntermission();
+        if (playOnAwake)
+        {
+            switch( type )
+            {
+                case Type.SlideIn: OnSlideIn(null); break;
+                case Type.SlideOut: OnSlideIn(null); break;
+                case Type.FadeIn: OnFadeIn(null); break;
+                case Type.FadeOut: OnFadeOut(null); break;
+                default: break;
+            }
+        }
 	}
 	
 	void Update () 
     {
-        if (slide)
+        if (!valid) return;
+
+        currentTime += Time.deltaTime;
+        float timeRate = currentTime / slideTime;
+        float newValue = Mathf.Lerp(startValue, endValue, timeRate);
+
+        switch( type ) {
+            case Type.SlideIn:
+            case Type.SlideOut:
+                guiTexture.pixelInset = new Rect(0, newValue, width, height);
+                break;
+            case Type.FadeIn:
+            case Type.FadeOut:
+                guiTexture.color = new Color(mainColor.r, mainColor.g, mainColor.b, newValue);
+                break;
+            default: break;
+        }
+
+        if (timeRate >= 1.0f)
         {
-            currentTime += Time.deltaTime;
-            float timeRate = currentTime/slideTime;
-            float newPosY = Mathf.Lerp(startPos, endPos, timeRate);
-            guiTexture.pixelInset = new Rect(0, newPosY, width, height);
-            if (timeRate >= 1.0f)
-            {
-                slide = false;
-                //GameObject uiObj = GameObject.Find("/UI");
-                //if (uiObj) uiObj.SendMessage("OnIntermissionEnd");
-                //else Debug.Log("OnIntermissionEnd");
-                if (root) root.SendMessage("OnIntermissionEnd");
-            }
+            Finish();
         }
 	}
+
+    private void Finish()
+    {
+        valid = false;
+        if (notifyObj)
+        {
+            notifyObj.SendMessage("OnIntermissionEnd");
+            notifyObj = null;
+            switch (type)
+            {
+                case Type.SlideOut:
+                case Type.FadeOut:
+                    guiTexture.enabled = false; // 非表示にしたほうがコスト的によい？
+                    break;
+                default: break;
+            }
+        }
+    }
     
     private void StartIntermission()
     {
         Debug.Log("StartIntermission:" + type);
-        slide = true;
+        valid = true;
         currentTime = 0.0f;
     }
 
-    void OnIntermissionStart( Type type_ = Type.None )
+    void OnSlideIn(GameObject notifyObj_)
     {
-        Debug.Log("OnIntermissionStart:" + type_ + "/" + type);
-        if (type_ == type)
-        {
-            if (root) root.SendMessage("OnIntermissionEnd");
-            return;
-        }
-        if (type_ != Type.None) SetType(type_);
+        if (valid) return;  // 動いている間は無効
+        notifyObj = notifyObj_;
+        SetType(Type.SlideIn);
+        StartIntermission();
+    }
+    void OnSlideOut(GameObject notifyObj_)
+    {
+        if (valid) return;  // 動いている間は無効
+        notifyObj = notifyObj_;
+        SetType(Type.SlideOut);
+        StartIntermission();
+    }
+    void OnFadeIn(GameObject notifyObj_)
+    {
+        if (valid) return;  // 動いている間は無効
+        notifyObj = notifyObj_;
+        SetType(Type.FadeIn);
+        StartIntermission();
+    }
+    void OnFadeOut(GameObject notifyObj_)
+    {
+        if (valid) return;  // 動いている間は無効
+        notifyObj = notifyObj_;
+        SetType(Type.FadeOut);
         StartIntermission();
     }
 
+    void SetDefault()
+    {
+        // デフォルト
+        guiTexture.pixelInset = new Rect(0, -(float)fadeAreaPixel, width, height);
+        guiTexture.color = new Color(mainColor.r, mainColor.g, mainColor.b, mainColor.a);
+        guiTexture.enabled = true;
+    }
+
     void SetType(Type type_)
-    { 
+    {
+        SetDefault();   // 一度デフォルトに戻す
         type = type_;
-        float closePos = -(float)fadeAreaPixel;
         switch (type)
         {
             case Type.SlideIn:
-                startPos = height;
-                endPos = closePos;
+                startValue = height;
+                endValue = -(float)fadeAreaPixel;
                 break;
             case Type.SlideOut: 
-                startPos = closePos;
-                endPos = height;
+                startValue = -(float)fadeAreaPixel;
+                endValue = height;
                 break;
-            default:    break;
+            case Type.FadeIn:
+                startValue = 0.0f;
+                endValue = mainColor.a;
+                break;
+            case Type.FadeOut:
+                startValue = mainColor.a;
+                endValue = 0.0f;
+                guiTexture.pixelInset = new Rect(0, -(float)fadeAreaPixel, width, height);
+                break;
+            default:    
+                guiTexture.enabled = false;
+                break;
         }
     }
 }

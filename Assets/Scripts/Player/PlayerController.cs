@@ -96,7 +96,9 @@ public class PlayerController : MonoBehaviour {
     private RotationValue rot;
 
     private Quaternion deltaRot;
-    private bool valid;
+
+    [SerializeField]
+    private bool valid = false;
 
     private Controller controller;
     private MarineSnow marinesnowEffect;
@@ -104,38 +106,23 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () 
     {
-        valid = false;
-        // UIのコントローラー。頻繁に更新するので参照を持っておく
-        GameObject uiObj = GameObject.Find("/UI/Controller");
-        if (uiObj) 
-        {
-            controller = uiObj.GetComponent<Controller>();
-        }
         // MarinSnowのエフェクトはスピード依存。頻繁に更新するので参照を持っておく
         GameObject effect = GameObject.Find("Effect_MarineSnow");
-        if (effect)
-        {
-            marinesnowEffect = effect.GetComponent<MarineSnow>();
-        }
+        if (effect)  marinesnowEffect = effect.GetComponent<MarineSnow>();
         // 魚雷発射スクリプト
         torpedo = GetComponent<TorpedoGenerator>();
-
-        rot.Init();
     }
 
     void OnGameStart()
     {
+        Debug.Log("OnGameStart");
         valid = true;
+        // UIのコントローラー。頻繁に更新するので参照を持っておく
+        GameObject uiObj = GameObject.Find("/UI/Controller");
+        if (uiObj) controller = uiObj.GetComponent<Controller>();
         // コントローラ表示
         if (controller) controller.Enable(true);
-    }
-
-    void InvalidPlayer()
-    {
-        valid = false;
-        speed.Stop();
-        rot.Stop();
-        if (controller) controller.Enable(false);
+        rot.Init();
     }
 
     void OnGameClear()
@@ -170,7 +157,7 @@ public class PlayerController : MonoBehaviour {
             // ドラッグ中
             if (Input.GetMouseButton(0))
             {
-                //Debug.Log("MouseButton :" + Input.GetAxis("Mouse X"));
+                Debug.Log("MouseButton");
                 // 回転
                 rot.Change(Input.GetAxis("Mouse X"));
                 // 加速
@@ -180,6 +167,7 @@ public class PlayerController : MonoBehaviour {
             // ドラッグ開始
             if (Input.GetMouseButtonDown(0))
             {
+                Debug.Log("MouseDown");
                 rot.BrakeAttenuation();
             }
             // ドラッグ終了
@@ -193,7 +181,15 @@ public class PlayerController : MonoBehaviour {
         // 前に進む
         MoveForward();
 	}
-    
+
+    private void InvalidPlayer()
+    {
+        valid = false;
+        speed.Stop();
+        rot.Stop();
+        if (controller) controller.Enable(false);
+    }
+
     private void Rotate() 
     {
         Quaternion deltaRot = Quaternion.Euler(rot.current * Time.deltaTime);

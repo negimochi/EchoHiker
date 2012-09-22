@@ -3,28 +3,34 @@ using System.Collections;
 
 public class TitleAdapter : MonoBehaviour {
 
-    [SerializeField]
-    private SceneSelector.Type next = SceneSelector.Type.Stage1;
-
     private GameObject root = null;
     private GameObject ui = null;
 
-	void Start () 
+    // ロード終了時
+//    void OnLevelWasLoaded(int level)
+//    {
+//        Debug.Log("OnLevelWasLoaded : level=" + level + " - " + Application.loadedLevelName);
+    // ロード終了時にすると、単体デバッグができないのでStartにしておく
+    void Start()
     {
         root = GameObject.Find("/Root");
         ui = GameObject.Find("/UI");
+
+        if (root) root.BroadcastMessage("OnFadeOut", gameObject);
+        else OnIntermissionEnd();
     }
 
-    // ここからスタート
-    void OnGameStart()
+    // インターミッションの終了受け取り
+    void OnIntermissionEnd()
     {
+        // ここからゲームスタート(プレイヤー操作可能)
         if(ui) ui.BroadcastMessage("OnStartSwitcher");
     }
 
     // シーン終了時に呼ばれる
     void OnSceneEnd()
     {
-        // Stage1をはじめる
-        if (root) root.SendMessage("OnNextStage", next);
+        // Stageをはじめる
+        if (root) root.SendMessage("OnStartStage");
     }
 }

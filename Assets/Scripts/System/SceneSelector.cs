@@ -6,40 +6,30 @@ public class SceneSelector : MonoBehaviour {
     public enum Type {
         None = -1,
         Title = 0,
-        Stage1,
-        Stage2,
-        Stage3
+        Stage
     };
     [SerializeField]
-    private string[] mainSceneName = new string[] { 
-        "Title",
-        "Stage1", "Stage2", "Stage3" 
-    };  // 各種ステージ
+    private string titleSceneName = "Title";
     [SerializeField]
-    private string stageuiSceneName = "StageUI";
+    private string stageSceneName = "Stage";
     [SerializeField]
-    private Type currentType = Type.None;
-//    [SerializeField]
-//    private Type prevType = Type.None;
-    [SerializeField]
-    private bool playOnAwake = true;
-
-    private GameObject adapter = null;
-    private GameObject ui = null;
-    //    private GameObject field = null;
+    private Type type = Type.None;   // 現在のステージ
 
     [SerializeField]
-    private int hiScore = 0;
-    private bool loaded = false;
+    private bool playOnAwake = true;    // 即時スタートするか（Release時はOnにすること）
+
+    [SerializeField]    // debug
+    private int hiScore = 0;        // ハイスコアの記録
 
 	void Awake()
 	{
-		// OnLoadでDestory対象からはずす
+		// LoadLevelでDestoryされる対象からはずす
         DontDestroyOnLoad(gameObject);
 	}
 	
     void Start() 
     {
+        // 即時Titleロード(ロードの関係から念のため1.0f間を置いてから)
         if (playOnAwake) StartCoroutine("Wait", 1.0f);
     }
     private IEnumerator Wait(float waitTime)
@@ -48,117 +38,69 @@ public class SceneSelector : MonoBehaviour {
         OnStartTitle();
     }
 
-    bool LoadScene()
+    private bool LoadScene()
     {
-        if (currentType == Type.None) return false;
-        int index = (int)currentType;
-
-        if (ui)
-        {
-            // Titleに戻る場合は事前にuiを削除しておく
-            if (currentType == Type.Title)
-            {
-                // ハイスコア更新
-                int newscore = 0;
-                StageUI stageUI = ui.GetComponent<StageUI>();
-                if (stageUI) newscore = stageUI.Score();
-                if (hiScore < newscore) hiScore = newscore;
-                // 削除
-                Destroy(ui);
-            }
+        switch (type)
+        { 
+            default:    return false;
+            case Type.Title:
+                GameObject ui = GameObject.Find("/UI");
+                if(ui) {
+                    // ハイスコア更新
+                    UpdateHiScore( ui );
+                    // UI強制削除
+                    Destroy(ui);
+                    ui = null;
+                }
+                // 参照を保存
+                GameObject adapter = GameObject.Find("/Adapter");
+                if (adapter)
+                {
+                    // Adapterも強制削除
+                    Destroy(adapter);
+                    adapter = null;
+                }
+                Application.LoadLevel(titleSceneName);
+                break;
+            case Type.Stage:
+                // TitleはDontDestory指定してないのでLoadLevelでOK
+                Application.LoadLevel(stageSceneName);
+                break;
         }
-
-        Application.LoadLevel(mainSceneName[index]);       // フィールドシーンロード
+        
         return true;
     }
 
-    // ロード終了時に
-    void OnLevelWasLoaded( int level )
+    private void UpdateHiScore( GameObject ui )
     {
-        Debug.Log("OnLevelWasLoaded : level=" + level + " - " + Application.loadedLevelName);
-        // 参照を保存
-        InitReference();
-        if (loaded)
-        {
-            if (ui == null)
-            {
-                // StageだったらStageUIを追加ロード
-                switch (currentType)
-                {
-                    default: break;
-                    case Type.Stage1:
-                    case Type.Stage2:
-                    case Type.Stage3:
-                        Application.LoadLevelAdditive(stageuiSceneName); break;
-                }
-            }
-            else {
-                // スコア以外をリセット
-                ui.BroadcastMessage("OnStageReset", SendMessageOptions.DontRequireReceiver);
-            }
-
-            // インターミッション
-            BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideOut);
-        }
-    }
-
-    void InitReference()
-    {
-        ui = GameObject.Find("/UI");
-        adapter = GameObject.Find("/Adapter");
-        if (adapter)
-        {
-            // adapterさえあればロードできたとみなす
-            loaded = true;
-        }
+        StageUI stageUI = ui.GetComponent<StageUI>();
+        int newScore = 0;
+        if (stageUI) newScore = stageUI.Score();
+        if (hiScore < newScore) hiScore = newScore;
     }
 
     // タイトルをロード
     void OnStartTitle()
     {
-        loaded = false;
-        //prevType = currentType;
-
         // タイトルを設定
-        currentType = Type.Title;
-        
+        type = Type.Title;
         // インターミッション開始
-        BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
+        BroadcastMessage("OnFadeIn", gameObject);
     }
 
     // 次のステージをロード
-    void OnNextStage( Type setType=Type.None )
+    void OnStartStage( )
     {
-        loaded = false;
-        //prevType = currentType;
-
-        // currentTypeを設定する
-        if (setType == Type.None)
-        {
-            int current = (int)currentType;
-            current++;
-            // ステージ数をオーバーしていた場合はTitleへ戻す
-            if (current >= mainSceneName.Length) currentType = Type.Title;
-            else currentType = (Type)(current);
-        }
-        else currentType = setType;
-        
+        // ステージを設定
+        type = Type.Stage;
         // インターミッション開始
-        BroadcastMessage("OnIntermissionStart", IntermissionEffector.Type.SlideIn);
+        BroadcastMessage("OnFadeIn", gameObject);
     }
 
     // インターミッションの終了受け取り
     void OnIntermissionEnd()
     {
-        if (loaded)
-        {
-            // ロード済みならゲームスタート
-            adapter.SendMessage("OnGameStart");   
-        }
-        else
-        {
-            // ロードできてないならロード開始
-            LoadScene(); 
-        }
+        // ロードできてないならロード開始
+        LoadScene(); 
     }
 }

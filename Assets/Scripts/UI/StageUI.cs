@@ -6,7 +6,8 @@ public class StageUI : MonoBehaviour {
 
 	void Awake()
 	{
-		// OnLoadでDestory対象からはずす
+		// LoadLevelでDestory対象からはずす
+        // Destoryの判断はSceneSelectorが行う
         DontDestroyOnLoad(gameObject);
 	}
 
@@ -14,7 +15,11 @@ public class StageUI : MonoBehaviour {
     public int Score()
     {
         GameObject scoreDisp = GameObject.Find("ScoreDisplay");
-        if (scoreDisp) return scoreDisp.GetComponent<ScoreDisplay>().Score();
+        if (scoreDisp)
+        {
+            ScoreDisplay disp = scoreDisp.GetComponent<ScoreDisplay>();
+            if (disp) return disp.Score();
+        }
         return 0;
     }
 }

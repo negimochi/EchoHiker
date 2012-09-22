@@ -10,10 +10,13 @@ public class DebugSceneChanger : MonoBehaviour
     [SerializeField]
     private string targetSceeneName = "Test_SceneLoad";
 
+    [SerializeField]
+    private bool dontDestory = true;
+
     void Awake()
     {
         // 自分のオブジェクトを再ロードしない
-        DontDestroyOnLoad(gameObject);
+        if(dontDestory)DontDestroyOnLoad(gameObject);
     }
 
     // Use this for initialization

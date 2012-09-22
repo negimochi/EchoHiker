@@ -9,12 +9,13 @@ public class CautionUpdater : MonoBehaviour
     [SerializeField] // debug
     private int instantiatedCount = 0;
 
-    private GameObject uiObj = null;
+    private GameObject ui = null;
     private GameObject maxCautionEnemy = null;
 
-    void Start()
+    void OnGameStart()
     {
-        uiObj = GameObject.Find("/UI");
+        // シーンを分けたので、念のためOnGameStartでつなげる
+        ui = GameObject.Find("/UI");
     }
 
     void OnInstantiatedChild(GameObject target)
@@ -31,7 +32,7 @@ public class CautionUpdater : MonoBehaviour
         if (target.Equals(maxCautionEnemy))
         {
             maxCautionEnemy = null;
-            uiObj.BroadcastMessage("OnUpdateCaution", 0, SendMessageOptions.DontRequireReceiver);
+            ui.BroadcastMessage("OnUpdateCaution", 0, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -55,7 +56,7 @@ public class CautionUpdater : MonoBehaviour
             maxValue = newValue;
         }
         // 最大値を表示用に通知
-        uiObj.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
+        ui.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 
     private int GetCaution(GameObject enemyObj)
