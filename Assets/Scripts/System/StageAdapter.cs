@@ -57,7 +57,11 @@ public class StageAdapter : MonoBehaviour {
         // FieldまでLoadできたらインターミッション開始
         Debug.Log("Field Loaded");
         field = GameObject.Find("/Field");
-        if (root) root.BroadcastMessage("OnFadeOut", gameObject);
+
+        // ソナーの位置合わせ等。SlideOutする前に設定しておきたいこと
+        if (ui) ui.BroadcastMessage("OnAwakeStage", (int)currentType);
+
+        if (root) root.BroadcastMessage("OnSlideOut", gameObject);
         else OnIntermissionEnd();
     }
 
@@ -94,7 +98,7 @@ public class StageAdapter : MonoBehaviour {
             // 次のStageに切り替え
             SetNextStage();
             // インターミッション開始
-            if (root) root.BroadcastMessage("OnFadeIn", gameObject);
+            if (root) root.BroadcastMessage("OnSlideIn", gameObject);
             else OnIntermissionEnd();
         }
         else
@@ -108,7 +112,7 @@ public class StageAdapter : MonoBehaviour {
     void OnFieldLoad( Type type )
     {
         SetNextStage(type);
-        if (root) root.BroadcastMessage("OnFadeIn", gameObject);
+        if (root) root.BroadcastMessage("OnSlideIn", gameObject);
         else OnIntermissionEnd();
     }
 
@@ -126,13 +130,10 @@ public class StageAdapter : MonoBehaviour {
     {
         if (currentType == Type.None) return false;
 
-        if (field)
-        {
-            // fieldは削除しておく
-            GameObject.Destroy(field);
-            // ステージが入れ替わるので、必要に応じて各UIをリセット
-            if (ui) ui.BroadcastMessage("OnStageReset", SendMessageOptions.DontRequireReceiver);
-        }
+        // fieldは削除しておく
+        if (field) GameObject.Destroy(field);
+        // UIをリセット
+        if (ui) ui.BroadcastMessage("OnStageReset", SendMessageOptions.DontRequireReceiver);
 
         string name = fieldSceneName[(int)currentType];
         Debug.Log("Load : " + name);

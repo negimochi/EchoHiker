@@ -6,6 +6,10 @@ public class StageEndText : MonoBehaviour {
     [SerializeField]
     private float backtitleDelay = 3.0f;
 
+    void Start()
+    {
+    }
+
     void OnGameClear()
     {
         guiText.text = "GAME CLEAR";

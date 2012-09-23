@@ -9,6 +9,7 @@ public class StageField : MonoBehaviour {
     void Awake()
     {
         Debug.Log("Stage Loaded");
+        // ロード完了の通知
         GameObject adapter = GameObject.Find("/Adapter");
         if (adapter) adapter.SendMessage("OnLoadedField");
         else Debug.Log("Adapter is not exist!!!");

@@ -28,7 +28,7 @@ public class SonarSwitcher : MonoBehaviour
 
 	void Start () 
     {
-        OnStageReset();
+        InitTexturePos();
     }
 
     void Update()
@@ -68,29 +68,37 @@ public class SonarSwitcher : MonoBehaviour
 
     void OnGameStart()
     {
-//        InitPosition();
+    }
+
+    void OnAwakeStage(int index)
+    { 
+        InitCameraPos();
     }
 
     void OnStageReset()
     {
-        InitPosition();
+//        InitCameraPos();
+        Debug.Log("OnStageReset");
         // パッシブソナーがデフォルト
         SetMode(SonarMode.PassiveSonar);
     }
 
-    private void InitPosition()
+    private void InitTexturePos()
     {
         float size = Screen.height * aspect;
 
         guiTexture.enabled = true;
         guiTexture.pixelInset = new Rect(offsetPixel, Screen.height - offsetPixel - size, size, size);
-
+    }
+    private void InitCameraPos()
+    {
         // カメラにテクスチャサイズを伝える
         Rect cameraRect = new Rect(guiTexture.pixelInset);
         cameraRect.x += cameraRayoutPixel;
         cameraRect.y += cameraRayoutPixel;
         cameraRect.width -= cameraRayoutPixel * 2;
         cameraRect.height -= cameraRayoutPixel * 2;
+
         GameObject cameraObj = GameObject.Find(tagetCamera);
         if (cameraObj)
         {

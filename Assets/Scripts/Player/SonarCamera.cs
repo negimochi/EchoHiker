@@ -61,6 +61,7 @@ public class SonarCamera : MonoBehaviour {
     // 表示位置調整
 	public void SetRect( Rect rect )
     {
+        Debug.Log("SetRect:" + rect);
         camera.pixelRect = new Rect(rect.x, rect.y, rect.width, rect.height);
 
         // カメラ表示領域をテクスチャに内接させる場合

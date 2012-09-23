@@ -35,7 +35,7 @@ public class SceneSelector : MonoBehaviour {
     private IEnumerator Wait(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        OnStartTitle();
+        LoadScene();
     }
 
     private bool LoadScene()

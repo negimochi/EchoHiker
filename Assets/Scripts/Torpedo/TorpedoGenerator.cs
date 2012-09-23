@@ -28,7 +28,7 @@ public class TorpedoGenerator : MonoBehaviour {
     void Start()
     {
         // 魚雷の配置先
-        parentObj = GameObject.Find("/Field/Torpedos");
+        parentObj = GameObject.Find("/Field/Torpedoes");
 //        sonarCameraObj = GameObject.Find("/Player/SonarCamera");
     }
 
