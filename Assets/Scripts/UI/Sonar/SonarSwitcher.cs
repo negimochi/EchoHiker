@@ -14,10 +14,10 @@ public class SonarSwitcher : MonoBehaviour
     private float aspect = 0.4f;    // 画面に対するサイズ比
     [SerializeField]
     private int cameraRayoutPixel = 8;  // 見栄え上、テクスチャサイズより少し内側のサイズでカメラ位置を決める
-    [SerializeField]
-    private string tagetCamera = "/Field/Player/SonarCamera";
+
     private GameObject currentObj = null;
-//    private SonarCamera sonarCamera = null;
+
+    private float radius = 0;
 
     public enum SonarMode {
         None,
@@ -99,12 +99,23 @@ public class SonarSwitcher : MonoBehaviour
         cameraRect.width -= cameraRayoutPixel * 2;
         cameraRect.height -= cameraRayoutPixel * 2;
 
-        GameObject cameraObj = GameObject.Find(tagetCamera);
+        GameObject cameraObj = GameObject.Find("/Field/Player/SonarCamera");
         if (cameraObj)
         {
-            SonarCamera sonarCamera = cameraObj.AddComponent<SonarCamera>();
+            SonarCamera sonarCamera = cameraObj.GetComponent<SonarCamera>();
             sonarCamera.SetRect(cameraRect);
+            radius = sonarCamera.Radius();
         }
+//        SetSize(activeObj);
+//        SetSize(passiveObj);
+    }
+
+    private void SetSize(GameObject obj)
+    {
+        ActiveSonar activeSonar = currentObj.GetComponent<ActiveSonar>();
+        if (activeSonar) activeSonar.SetMaxRadius(radius);
+        SonarEffect effecter = currentObj.GetComponent<SonarEffect>();
+        if (effecter) effecter.Init(guiTexture.pixelInset);
     }
 
     private void CreateSonar( GameObject obj ) 
@@ -112,7 +123,6 @@ public class SonarSwitcher : MonoBehaviour
         currentObj = Object.Instantiate(obj, Vector3.zero, Quaternion.identity) as GameObject;
         currentObj.transform.parent = transform;
 
-        SonarEffect effecter = currentObj.GetComponent<SonarEffect>();
-        effecter.Init(guiTexture.pixelInset);
+        SetSize(currentObj);
    }
 }

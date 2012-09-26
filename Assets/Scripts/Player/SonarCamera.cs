@@ -3,12 +3,19 @@ using System.Collections;
 
 public class SonarCamera : MonoBehaviour {
 
+    [SerializeField]
     private float radius = 0.0f;
 
-    void Start()
+    void Awake()
     {
         // カメラとCollider半径を揃えておく
         radius = camera.orthographicSize;
+        Debug.Log(Time.time + ": SonarCamera.Awake");
+    }
+
+    void Start()
+    {
+
         SphereCollider shereCollider = GetComponent<SphereCollider>();
         if (shereCollider)
         {
@@ -46,17 +53,23 @@ public class SonarCamera : MonoBehaviour {
 
     void OnInstantiatedSonarPoint(GameObject target)
     {
-        Debug.Log("OnInstantiatedSonarPoint:");
         // すでにソナー内にいるかチェックする
         Vector3 pos = new Vector3( transform.position.x, 0.0f, transform.position.z );
-        if (Vector3.Distance(pos, target.transform.position) <= radius)
+        float dist = Vector3.Distance(pos, target.transform.position);
+        Debug.Log("OnInstantiatedSonarPoint: dist=" + dist + ", radius=" + radius);
+        if (dist <= radius)
         {
-            target.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+            target.SendMessage("OnSonarInside");
         }
         else {
-            target.BroadcastMessage("OnSonarOutside", SendMessageOptions.DontRequireReceiver);
+            target.SendMessage("OnSonarOutside");
         }
     }
+
+    public float Radius() 
+    {
+        return radius;
+    } 
 
     // 表示位置調整
 	public void SetRect( Rect rect )

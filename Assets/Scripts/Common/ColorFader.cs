@@ -14,28 +14,32 @@ public class ColorFader : MonoBehaviour {
     private bool sonarHit = false;
     [SerializeField]
     private bool sonarInside = false;
-   
-    private float max;
-    private float currentTime;
+
+    private bool valid = false;
+    private bool wait = false;
+    private float max = 0.0f;
+    private float currentTime = 0.0f;
     private Color startColor;
-    private bool wait;
 
 	void Start () 
     {
-        wait = false;
         max = 1.0f - minAlpha;
-        currentTime = 0.0f;
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 
+        Enable();
+
         // 生成された段階で自分がソナー内にいるかチェック
-        GameObject sonarCameraObj = GameObject.Find("/Field/Player/SonarCamera");
-        if (sonarCameraObj) {
-            sonarCameraObj.SendMessage("OnInstantiatedSonarPoint", gameObject);
+        GameObject player = GameObject.Find("/Field/Player");
+        if (player)
+        {
+            player.BroadcastMessage("OnInstantiatedSonarPoint", gameObject);
         }
 	}
 
 	void Update () 
     {
+        if (!renderer.enabled) return;
+
         if (!wait)
         {
             float time = currentTime / duration;
@@ -57,7 +61,7 @@ public class ColorFader : MonoBehaviour {
     void OnHit()
     {
         // ヒットした瞬間でソナーから見えなくする
-        Debug.Log("OnHit" + gameObject.transform.parent.gameObject.name);
+        Debug.Log("OnHit:" + gameObject.transform.parent.gameObject.name);
         sonarHit = false;
         Enable();
     }
@@ -65,7 +69,7 @@ public class ColorFader : MonoBehaviour {
     void OnSonar()
     {
         // ソナーから見えることを許可する
-        Debug.Log("OnSonar" + gameObject.transform.parent.gameObject.name);
+        Debug.Log("OnSonar:" + gameObject.transform.parent.gameObject.name);
         sonarHit = true;
         Enable();
     }
@@ -88,7 +92,14 @@ public class ColorFader : MonoBehaviour {
 
     private void Enable()
     {
-        renderer.enabled = sonarInside & sonarHit;
+//        Debug.Log("ColorFader.Enable: sonarInside=" + sonarInside + ", sonarHit=" + sonarHit);
+        bool result = (sonarInside && sonarHit)?true:false;
+        renderer.enabled = result;
+        if (result)
+        {
+            wait = false;
+            currentTime = 0.0f;
+        }
     }
 
     private IEnumerator Delay(float waitTime)

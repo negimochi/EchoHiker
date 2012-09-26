@@ -23,13 +23,11 @@ public class TorpedoGenerator : MonoBehaviour {
 
     private bool valid = true;
     private GameObject parentObj = null;
-//    private GameObject sonarCameraObj = null;
 
     void Start()
     {
         // 魚雷の配置先
         parentObj = GameObject.Find("/Field/Torpedoes");
-//        sonarCameraObj = GameObject.Find("/Player/SonarCamera");
     }
 
     void Update()
@@ -64,8 +62,6 @@ public class TorpedoGenerator : MonoBehaviour {
         GameObject newObj = Object.Instantiate(target, vec, rot) as GameObject;
         // 親を設定
         newObj.transform.parent = parentObj.transform;
-        // 親に伝えておく
-        parentObj.SendMessage("OnInstantiatedChild", gameObject);
 
         // Owner設定
         TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
@@ -82,11 +78,12 @@ public class TorpedoGenerator : MonoBehaviour {
         else Debug.LogError("Not exists Note");
 
         // ソナーの設定
-        //sonarCameraObj.SendMessage("OnInstantiatedChild", newObj);
-        if (sonar) newObj.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
-        //ColorFader colorFader = newObj.GetComponentInChildren<ColorFader>();
-        //if (colorFader) colorFader.SetEnable(sonar);
-        //else Debug.LogError("Not exists ColorFader");
+        if (sonar)
+        {
+            newObj.BroadcastMessage("OnSonar");
+            parentObj.SendMessage("OnInstantiatedChild", gameObject);
+        }
+        else parentObj.SendMessage("OnInstantiatedChildAndSonar", gameObject);
 
 
         // クールタイム開始

@@ -3,14 +3,21 @@ using System.Collections;
 
 public class TorpedoManager : MonoBehaviour {
 
+
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
 
-    void OnInstantiatedChild(GameObject target)
+    void OnInstantiatedChildAndSonar(GameObject target)
     {
-        Debug.Log("TorpedManager.OnInstantiatedChild");
+        Debug.Log("TorpedManager.OnInstantiatedChildAndSonar-----------------------------------");
         childrenArray.Add(target);
         sonarArray.Add(target);
+    }
+
+    void OnInstantiatedChild(GameObject target)
+    {
+        Debug.Log("TorpedManager.OnInstantiatedChild-----------------------------------");
+        childrenArray.Add(target);
     }
 
     void OnDestroyChild(GameObject target)

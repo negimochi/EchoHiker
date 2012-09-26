@@ -3,12 +3,10 @@ using System.Collections;
 
 public class ActiveSonar : MonoBehaviour {
 
-//    [SerializeField]
-    private float maxRadius = 300.0f;
     [SerializeField]
     private float delayTime = 0.2f;
 
-//    private float currentTime = 0.0f;
+    private float maxRadius = 300.0f;
 
     private GameObject player = null;
     private RandomGenerator enemy = null;
@@ -19,6 +17,7 @@ public class ActiveSonar : MonoBehaviour {
 	void Start () 
     {
         effect = GetComponent<SonarEffect>();
+
         player = GameObject.Find("/Field/Player");
         GameObject enemyObj = GameObject.Find("/Field/Enemies");
         if (enemyObj) enemy = enemyObj.GetComponent<RandomGenerator>();
@@ -26,6 +25,7 @@ public class ActiveSonar : MonoBehaviour {
         if (itemObj) item = itemObj.GetComponent<RandomGenerator>();
         GameObject torpedoObj = GameObject.Find("/Field/Torpedoes");
         if (torpedoObj) torpedo = torpedoObj.GetComponent<TorpedoManager>();
+
         GameObject sonarCameraObj = GameObject.Find("/Field/Player/SonarCamera");
         if (sonarCameraObj) maxRadius = sonarCameraObj.GetComponent<SphereCollider>().radius;
 
@@ -51,7 +51,7 @@ public class ActiveSonar : MonoBehaviour {
         }
         if (torpedo)
         {
-            Debug.Log("SonarTorpedo:" + torpedo.SonarChildren().Count);
+            Debug.Log("Torpedo.SonarChildren: sonar=" + torpedo.SonarChildren().Count + ", count=" + torpedo.Children().Count);
             Search(torpedo.SonarChildren(), effectDist);
         }
 
@@ -75,5 +75,10 @@ public class ActiveSonar : MonoBehaviour {
             }
             else i++;
         }
+    }
+
+    public void SetMaxRadius( float radius )
+    {
+        maxRadius = radius;
     }
 }

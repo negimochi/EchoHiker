@@ -58,7 +58,7 @@ public class GenerateSwitcher : MonoBehaviour {
 
     void OnSwitchCheck( string key )
     {
-        if (currentTag.CompareTo(key) != 0)
+        if (currentTag.CompareTo(key) == 0)
         {
             if (type == Type.Switch) Switch();
         }

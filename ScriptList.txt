@@ -1,0 +1,168 @@
+スクリプトの構成
+@update	120913
+
+【ver.1.4】
+・ステージ制に移行（Sceneファイルを分割管理）しました
+・シーン構成
+　0 - Root		ルート。最初はここから開始
+　1 - Title		ゲームタイトル。ルートからLoadLevelされる
+　2 - Stage		各ステージの共通要素（UI）。ルートからLoadLevelされる
+　3 - Field1	Stage1のフィールド要素。Stageから適宜ロード
+　4 - Field2	Stage2のフィールド要素。Stageから適宜ロード
+　5 - Field3	Stage3のフィールド要素。Stageから適宜ロード
+・Hierarchyの基本構成
+　1. /Root		一番最初から存在するGameObject。ここからタイトルとメインゲームのロード切り替えをしている(DontDestory)
+　2. /Adapter	Titleシーン、Stageシーンに必ず含まれる。Rootと各シーン間をつなぐ役割
+　3. /Field		そのシーン内でのフィールドオブジェクト(Enemy,Item,Player,...)
+　4. /UI		UI要素。
+　
+
+Script
+-_Debug		// 現状のデバッグ用ディレクトリ。最終には含めない予定
+	-ColliderTest.cs	// Colliderテスト用（Secne/_Debug/Test_Moveシーンで使用）
+	+DebugGameStarter.cs	// テスト用
+	+DebugSceneChanger.cs	// テスト用
+	+DebugSonarGUI.cs	// ソナーオブジェクトに対するデバッグ用（現状は、強制ソナー表示用チェックボックス）
+	+MoveTest.cs		// テストコード（Secne/_Debug/Test_Moveシーンで使用）
+	+ValueTest.cs		// テストコード（Secne/_Debug/Test_Moveシーンで使用）
+
++Common		// いろんなところで共通で使用
+	+ClearCondition.cs		// クリア条件設定
+	+ColorFader.cs			// ソナーに映ってる点のフェード制御、表示・非表示
+	+GenerateParameter.cs	// オブジェクト生成用のパラメータ（パラメータの内容が変更になる可能性あり）
+	+GeneratePattern.cs		// 複数のGenerateParameterパラメータを時間推移で変更する（ここも変更かかると思います）
+	+HitEffector.cs			// ヒット時(OnHitメッセージ受け取り)で付随しているパーティクルを実行する
+	+Note.cs				// オブジェクトが発している音の制御
+	+RandomGenerator.cs		// 指定したオブジェクトのランダム生成
+	
++Enemy	// 敵に付随するスクリプト
+	+CautionUpdater.cs	// フィールド中にある全オブジェクトのCaution値のうち、最大値を一定間隔で更新する
+	+EnemyBehavior.cs		// 敵の前に進むスピード、旋回等の挙動記述
+	+EnemyCaution.cs		// 敵のCaution値管理
+	*EnemyEyeCollider.cs	// 敵の視界（SphereCollider）に関する制御。
+							// 当初は、ここでヒットした場合にCaution値を上げる処理を入れてた（今もそのまま）
+							// が、Caution値の扱いが変わるので、今後いじると想います
+	*EnemyInitParam.cs		// 生成時の設定パラメータ（現状未完）
+	+EnemyScore.cs			// 敵を倒した時のスコア管理（現状は、Caution値が小さいほど高得点）
+		
++Item	// アイテムに付随するスクリプト（アイテムの効果云々でスクリプト追加の可能性があります）
+	+ItemCollider.cs		// アイテムとプレイヤーがヒットしたとき、アイテム側から通知したい内容
+	+ItemInitParam.cs		// 生成時の設定パラメータ（現状未完）
+
++Player		// プレイヤー関係（HierarchyのPlayer以下）
+	+MarineSnow.cs			// プレイヤーのマリンスノーエフェクト調整
+	+PlayerCollider.cs		// プレイヤーが魚雷と接触した時、プレイヤー側で処理されたいことの記述
+	+PlayerController.cs	// プレイヤーの操作系（旋回、魚雷発射等）
+	+SonarCamera.cs		// ソナー対象オブジェクトがソナー表示範囲に入ったら表示、外に出たら非表示を促すイベント（Colliderによる判定）
+	
++Torpedo	// 魚雷に付随するスクリプト
+		+TorpedoBehavior.cs		// 魚雷の挙動。（前に進む、フィールド外で削除。オブジェクト破棄）
+		+TorpedoCollider.cs		// 魚雷の衝突処理（誰の魚雷が誰に当たったか。それに応じてメッセージ発行）
+		+TorpedoGenerator.cs	// 魚雷生成用スクリプト。プレイヤーも敵も同じスクリプト。
+		+TorpedoManager.cs		// 魚雷の数、インスタンス管理
+		+TorpedoModel.cs		// 魚雷のモデルに付随するスクリプト。実質、ヒット通知が来たらモデルを非表示にするだけ。
+		+TorpedoMoveEffect.cs	// 魚雷の尾についてるパーティクルに付随するスクリプト。実質、ヒット通知が来たらパーティクルを止めるだけ。
+		
+	
++System		// シーン切り替えとか
+	+DebugSceneSelector.cs	// シーンをロードするボタン(デバッグ用)。便利なので残しておいたほうがいいかも
+	+DebugStageAdapter.cs	// シーンをロードするボタン(デバッグ用)。便利なので残しておいたほうがいいかも
+	+GenerateSwitcher.cs	// ゲームの開始と終了通知用
+	+IntermissionEffector.cs	// シーン切り替えに使うエフェクト（上から下にスライドアウトするやつ）
+	+SceneSelector.cs		// シーンの選択(Title or Stage)
+	+StageAdapter.cs		// Stageシーンで使用するGameObject(/Adapter)
+	+StageField.cs			// GameObject(/Field)に使用
+	+TitleAdapter.cs		// Titleシーンで使用するGameObject(/Adapter)
+	
++UI		// UI関係
+	+Airgage
+		+Airgage.cs				// Airの上昇具合調整。DamegeLvがあがると上昇値があがるなど
+		+AirgageBubble.cs		// Airgageのバブルエフェクト設定（DamegeLvが上がると泡の量がふえる）
+		+AirgageMeter.cs		// Airgageメーター設定
+	+Sonar	// ソナー関係（ソナーはやること多いので・・・）
+		+ActiveSonar.cs		// アクティブソナーの実装。
+							// 直接距離を計算して表示する場合はイベント発行
+		*SonarDisplay.cs	// 現状何もしてない・・・
+		+SonarEffect.cs		// アクティブなら広がり、パッシブなら小さくなるテクスチャのエフェクト
+		+SonarSwitcher.cs	// アクティブソナーとパッシブソナーを入れ替え
+	+Caution.cs			// Cautionテキスト表示
+	+Controller.cs		// コントローラーのテクスチャ表示・回転制御
+	+DamageLvText.cs	// ダメージレベル、テキスト表示
+	+ScoreDisplay.cs	// スコアのテキスト表示
+	+StageEndText.cs.cs		// GameOverまたはGameClearのテキスト表示
+	+StageStartText.cs		// ステージ名とミッションの表示
+	+StageUI.cs			// Stageシーン用GameObject(/UI)
+	+TitleSwitcher.cs	// 【Click】と出てるやつ
+
+
+【ver.1.3.1】------------------------------------------------------------------------------------------------------
+・スクリプトの階層ごとに簡単にスクリプトの説明を書きました。
+・「+」でなく「*」になっているのは、少なくとも9月中に書き換え等が発生しそうな箇所です。
+
+Script
++_Debug		// 現状のデバッグ用ディレクトリ。最終には含めない予定
+	+ColliderTest.cs	// Colliderテスト用（Secne/_Debug/Test_Moveシーンで使用）
+	+DebugSonarGUI.cs	// ソナーオブジェクトに対するデバッグ用（現状は、強制ソナー表示用チェックボックス）
+	+MoveTest.cs		// テストコード（Secne/_Debug/Test_Moveシーンで使用）
+	+ValueTest.cs		// テストコード（Secne/_Debug/Test_Moveシーンで使用）
+
++Object		// プレイヤー以外のもの（HierarchyのObject以下）
+	+ColorFader.cs			// ソナーに映ってる点のフェード制御、表示・非表示
+	*GenerateParameter.cs	// オブジェクト生成用のパラメータ（パラメータの内容が変更になる可能性あり）
+	*GeneratePattern.cs		// 複数のGenerateParameterパラメータを時間推移で変更する（ここも変更かかると思います）
+	+HitEffector.cs			// ヒット時(OnHitメッセージ受け取り)で付随しているパーティクルを実行する
+	+Note.cs				// オブジェクトが発している音の制御
+	*ObjectManager.cs		// ver.1.3で敵→アイテムの交互に出現させるために無理やり書いたスクリプト。変更が入る予定です。
+	*RandomGenerator.cs		// 指定したオブジェクトのランダム生成
+	+Enemy	// 敵に付随するスクリプト
+		+EnemyBehavior.cs		// 敵の前に進むスピード、旋回等の挙動記述
+		+EnemyCaution.cs		// 敵のCaution値管理
+		*EnemyEyeCollider.cs	// 敵の視界（SphereCollider）に関する制御。
+								// 当初は、ここでヒットした場合にCaution値を上げる処理を入れてた（今もそのまま）
+								// が、Caution値の扱いが変わるので、今後いじると想います
+		+EnemyScore.cs			// 敵を倒した時のスコア管理（現状は、Caution値が小さいほど高得点）
+		
+	+Item	// アイテムに付随するスクリプト（アイテムの効果云々でスクリプト追加の可能性があります）
+		+ItemCollider.cs		// アイテムとプレイヤーがヒットしたとき、アイテム側から通知したい内容
+		
+	+Torpedo	// 魚雷に付随するスクリプト
+		+TorpedoBehavior.cs		// 魚雷の挙動。（前に進む、フィールド外で削除。オブジェクト破棄）
+		+TorpedoCollider.cs		// 魚雷の衝突処理（誰の魚雷が誰に当たったか。それに応じてメッセージ発行）
+		+TorpedoGenerator.cs	// 魚雷生成用スクリプト。プレイヤーも敵も同じスクリプト。
+		+TorpedoManager.cs		// 魚雷の数、インスタンス管理（一応、用意しているだけで、今のところ使っていない。最終的にこのスクリプト自体なくてもいいと思う）
+		+TorpedoModel.cs		// 魚雷のモデルに付随するスクリプト。実質、ヒット通知が来たらモデルを非表示にするだけ。
+		+TorpedoMoveEffect.cs	// 魚雷の尾についてるパーティクルに付随するスクリプト。実質、ヒット通知が来たらパーティクルを止めるだけ。
+		
+	
++Player		// プレイヤー関係（HierarchyのPlayer以下）
+	+MarineSnow.cs			// プレイヤーのマリンスノーエフェクト調整
+	+PlayerCollider.cs		// プレイヤーが魚雷と接触した時、プレイヤー側で処理されたいことの記述
+	+PlayerController.cs	// プレイヤーの操作系（旋回、魚雷発射等）
+	
++System		// シーン切り替えとか
+	+GameManager.cs				// ゲームの開始と終了通知用
+	+IntermissionEffector.cs	// シーン切り替えに使うエフェクト（上から下にスライドアウトするやつ）
+
++UI		// UI関係
+		// ・GameObjectの階層にしたがって便宜的にファイルを分けていることが多いので、ファイル数が多めになっています
+		// ・数が多い分だけ辿るのも大変なので、多くの場合は「外からHierarchyの/UIにBroadcast → 動作」の形態を取ることがほとんどです
+	+Sonar	// ソナー関係（ソナーはやること多いので・・・）
+		+ActiveSonar.cs		// アクティブソナーの実装。
+							// Collliderの半径を変える方法は取り逃す場合がほとんどだったので、直接距離を計算して表示する場合はイベント発行
+		+SonarCamera.cs		// ソナー対象オブジェクトがソナー表示範囲に入ったら表示、外に出たら非表示を促すイベント（Colliderによる判定）
+		*SonarDisplay.cs	// 現状何もしてない・・・ソナー系で何かテキスト表示することがあれば使おうと思っていたけど、なければそのまま削除で・・・
+		+SonarEffect.cs		// アクティブなら広がり、パッシブなら小さくなるテクスチャのエフェクト
+		+SonarSwitcher.cs	// アクティブソナーとパッシブソナーを入れ替え
+	+Airgage.cs				// Airの上昇具合調整。DamegeLvがあがると上昇値があがるなど
+	+AirgageBubble.cs		// Airgageのバブルエフェクト設定（DamegeLvが上がると泡の量がふえる）
+	+AirgageMeter.cs		// Airgageメーター設定
+	+Caution.cs			// Cautionテキスト表示
+	+CautionUpdater.cs	// フィールド中にある全オブジェクトのCaution値のうち、最大値を一定間隔で更新する（なので敵が1つだけだとほぼ無意味な感じですが・・・）
+	+Controller.cs		// コントローラーのテクスチャ表示・回転制御
+	+DamageLvText.cs	// ダメージレベル、テキスト表示
+	+GameOver.cs		// GameOverのテキスト表示
+	+ScoreDisplay.cs	// スコアのテキスト表示
+	+TitleMenu.cs		// タイトルメニュー（メニュー選択あるかも）
+	+TitleSwitcher.cs	// 【Click】となってるテキスト表示（タイトル、ゲームオーバー時に使用）
+	
+	

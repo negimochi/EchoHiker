@@ -83,8 +83,8 @@ public class RandomGenerator : MonoBehaviour {
         sonarArray.Remove(target);
         // 子供が減った通知
         SendMessage("OnDestroyChild", target, SendMessageOptions.DontRequireReceiver);
-        Destroy(target);
         if (field) field.SendMessage("OnSwitchCheck", target.tag);
+        Destroy(target);
     }
 
     // オブジェクト生成

@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour {
             // ドラッグ中
             if (Input.GetMouseButton(0))
             {
-                Debug.Log("MouseButton");
+//                Debug.Log("MouseButton");
                 // 回転
                 rot.Change(Input.GetAxis("Mouse X"));
                 // 加速
@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviour {
             // ドラッグ開始
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("MouseDown");
+//                Debug.Log("MouseDown");
                 rot.BrakeAttenuation();
             }
             // ドラッグ終了
