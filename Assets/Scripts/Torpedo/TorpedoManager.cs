@@ -25,6 +25,13 @@ public class TorpedoManager : MonoBehaviour {
         Debug.Log("TorpedManager.OnDestroyChild");
         childrenArray.Remove(target);
         sonarArray.Remove(target);
+
+        Destroy(target);
+    }
+
+    public void Generate( Vector3 pos )
+    {
+        ;
     }
 
     public int ChildrenNum()

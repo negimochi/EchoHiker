@@ -32,6 +32,7 @@ public class ColorFader : MonoBehaviour {
         GameObject player = GameObject.Find("/Field/Player");
         if (player)
         {
+            Debug.Log("ColorFader.OnInstantiatedSonarPoint");
             player.BroadcastMessage("OnInstantiatedSonarPoint", gameObject);
         }
 	}
