@@ -23,26 +23,33 @@ public class SonarCamera : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter(Collider other)
+//    void OnTriggerEnter(Collider other)
+//    {
+//        if (CheckObject(other.gameObject))
+//        {
+//           Debug.Log("SonarCamera.OnTriggerEnter");
+//            other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+//        }
+//    }
+
+    void OnTriggerStay(Collider other)
     {
         if (CheckObject(other.gameObject))
         {
-            Debug.Log("SonarCamera.OnTriggerEnter");
-            other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+            if (!other.gameObject.renderer.enabled)
+            {
+                Debug.Log("SonarCamera.OnTriggerEnter");
+                other.gameObject.SendMessage("OnSonarInside");
+            }
         }
     }
-
-    // 毎回みるのはちょっと・・・
-//    void OnTriggerStay(Collider other)
-//    {
-//    }
 
     void OnTriggerExit(Collider other)
     {
         if (CheckObject(other.gameObject))
         {
             Debug.Log("SonarCamera.OnTriggerExit");
-            other.gameObject.BroadcastMessage("OnSonarOutside", SendMessageOptions.DontRequireReceiver);
+            other.gameObject.SendMessage("OnSonarOutside");
         }
     }
 

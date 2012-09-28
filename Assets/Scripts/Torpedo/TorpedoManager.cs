@@ -29,9 +29,8 @@ public class TorpedoManager : MonoBehaviour {
         Destroy(target);
     }
 
-    public void Generate( Vector3 pos )
-    {
-        ;
+    public void Generate()
+    { 
     }
 
     public int ChildrenNum()

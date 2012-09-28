@@ -70,7 +70,7 @@ public class ActiveSonar : MonoBehaviour {
             if (effectDist > dist)
             {
                 // 指定距離以内だったらソナーがヒット
-                if (target) target.BroadcastMessage("OnSonar", SendMessageOptions.DontRequireReceiver);
+                if (target) target.BroadcastMessage("OnSonar");
                 array.RemoveAt(i);
             }
             else i++;
