@@ -67,10 +67,10 @@ public class ColorFader : MonoBehaviour {
         Enable();
     }
 
-    void OnSonar()
+    void OnActiveSonar()
     {
         // ソナーから見えることを許可する
-        Debug.Log("OnSonar:" + gameObject.transform.parent.gameObject.name);
+        Debug.Log("ActiveSonar:" + gameObject.transform.parent.gameObject.name);
         sonarHit = true;
         Enable();
     }
@@ -93,7 +93,7 @@ public class ColorFader : MonoBehaviour {
 
     private void Enable()
     {
-//        Debug.Log("ColorFader.Enable: sonarInside=" + sonarInside + ", sonarHit=" + sonarHit);
+        Debug.Log("ColorFader.Enable: sonarInside=" + sonarInside + ", sonarHit=" + sonarHit);
         bool result = (sonarInside && sonarHit)?true:false;
         renderer.enabled = result;
         if (result)

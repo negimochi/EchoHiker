@@ -5,6 +5,10 @@ public class StageEndText : MonoBehaviour {
 
     [SerializeField]
     private float backtitleDelay = 3.0f;
+    [SerializeField]
+    private string gameclearText = "STAGE CLEAR";
+    [SerializeField]
+    private string gameoverText = "GAME OVER";
 
     void Start()
     {
@@ -12,14 +16,14 @@ public class StageEndText : MonoBehaviour {
 
     void OnGameClear()
     {
-        guiText.text = "GAME CLEAR";
+        guiText.text = gameclearText;
         guiText.enabled = true;
         StartCoroutine("Wait", backtitleDelay);
     }
 
     void OnGameOver( )
     {
-        guiText.text = "GAME OVER";
+        guiText.text = gameoverText;
         guiText.enabled = true;
         StartCoroutine("Wait", backtitleDelay);
     }

@@ -5,6 +5,11 @@ public class SonarCamera : MonoBehaviour {
 
     [SerializeField]
     private float radius = 0.0f;
+    [SerializeField]
+    private string sonarOutsideTag = "Sonar";   // ソナーの外側にいるオブジェクト
+    [SerializeField]
+    private string sonarInsideTag = "SonarInside";    // ソナーの内側にいるオブジェクト
+
 
     void Awake()
     {
@@ -23,6 +28,7 @@ public class SonarCamera : MonoBehaviour {
         }
     }
 
+    // Enterではとりのがしが発生する場合がある
 //    void OnTriggerEnter(Collider other)
 //    {
 //        if (CheckObject(other.gameObject))
@@ -34,7 +40,7 @@ public class SonarCamera : MonoBehaviour {
 
     void OnTriggerStay(Collider other)
     {
-        if (CheckObject(other.gameObject))
+        if (Check_Outside2Inside(other.gameObject))
         {
             if (!other.gameObject.renderer.enabled)
             {
@@ -43,19 +49,33 @@ public class SonarCamera : MonoBehaviour {
             }
         }
     }
+    private bool Check_Outside2Inside(GameObject target)
+    {
+        // スクリプト内のフラグまでアクセスするのは面倒なのでタグで手を打つ
+        if (target.CompareTag(sonarOutsideTag)) {
+            target.tag = sonarInsideTag;    // タグを書き換える
+            return true;
+        }
+        return false;
+    }
+
 
     void OnTriggerExit(Collider other)
     {
-        if (CheckObject(other.gameObject))
+        if (Check_Inside2Outside(other.gameObject))
         {
             Debug.Log("SonarCamera.OnTriggerExit");
             other.gameObject.SendMessage("OnSonarOutside");
         }
     }
-
-    private bool CheckObject( GameObject target )
+    private bool Check_Inside2Outside(GameObject target)
     {
-        return (target.CompareTag("Sonar")) ? true : false;
+        if (target.CompareTag(sonarInsideTag))
+        {
+            target.tag = sonarOutsideTag;    // タグを書き換える
+            return true;
+        }
+        return false;
     }
 
     void OnInstantiatedSonarPoint(GameObject target)

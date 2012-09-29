@@ -49,9 +49,9 @@ public class EnemyCaution : MonoBehaviour {
 //        StartCount(false);
 //    }
 
-    void OnSonar()
+    void OnActiveSonar()
     {
-        Debug.Log("HitSonar");
+        Debug.Log("OnActiveSonar : EnemyCaution");
         // ソナーがヒットするたびに、Cautionが上昇
         cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
     }

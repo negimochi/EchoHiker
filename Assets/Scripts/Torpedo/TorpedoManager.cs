@@ -7,17 +7,10 @@ public class TorpedoManager : MonoBehaviour {
     private ArrayList childrenArray = new ArrayList();
     private ArrayList sonarArray = new ArrayList();
 
-    void OnInstantiatedChildAndSonar(GameObject target)
-    {
-        Debug.Log("TorpedManager.OnInstantiatedChildAndSonar-----------------------------------");
-        childrenArray.Add(target);
-        sonarArray.Add(target);
-    }
-
     void OnInstantiatedChild(GameObject target)
     {
-        Debug.Log("TorpedManager.OnInstantiatedChild-----------------------------------");
         childrenArray.Add(target);
+        sonarArray.Add(target);
     }
 
     void OnDestroyChild(GameObject target)
@@ -27,10 +20,6 @@ public class TorpedoManager : MonoBehaviour {
         sonarArray.Remove(target);
 
         Destroy(target);
-    }
-
-    public void Generate()
-    { 
     }
 
     public int ChildrenNum()

@@ -46,12 +46,12 @@ public class ActiveSonar : MonoBehaviour {
         }
         if (item)
         {
-            //Debug.Log("Item Search");
+            //Debug.Log("Item Search :" + item.SonarChildren().Count);
             Search(item.SonarChildren(), effectDist);
         }
         if (torpedo)
         {
-            Debug.Log("Torpedo.SonarChildren: sonar=" + torpedo.SonarChildren().Count + ", count=" + torpedo.Children().Count);
+            //Debug.Log(effectDist + " : Torpedo.SonarChildren: sonar=" + torpedo.SonarChildren().Count + ", count=" + torpedo.Children().Count);
             Search(torpedo.SonarChildren(), effectDist);
         }
 
@@ -60,17 +60,17 @@ public class ActiveSonar : MonoBehaviour {
 	
     void Search(ArrayList array, float effectDist) 
     {
-        //Debug.Log(array.Count);
         int i = 0;
         while (i < array.Count)
         {
             GameObject target = array[i] as GameObject;
-            float dist = 0.0f;
-            if ( target ) dist = Vector3.Distance(target.transform.position, player.transform.position);
-            if (effectDist > dist)
+            if (target == null) continue;
+            float dist = Vector3.Distance(target.transform.position, player.transform.position);
+            if (dist < effectDist)
             {
-                // 指定距離以内だったらソナーがヒット
-                if (target) target.BroadcastMessage("OnSonar");
+                // 指定距離以内だったらアクティブソナーがヒット
+                target.BroadcastMessage("OnActiveSonar");
+                // ソナー対象リストから外す
                 array.RemoveAt(i);
             }
             else i++;

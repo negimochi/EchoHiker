@@ -78,12 +78,11 @@ public class TorpedoGenerator : MonoBehaviour {
         else Debug.LogError("Not exists Note");
 
         // ソナーの設定
+        parentObj.SendMessage("OnInstantiatedChild", newObj); 
         if (sonar)
         {
-            newObj.BroadcastMessage("OnSonar");
-            parentObj.SendMessage("OnInstantiatedChild", gameObject);
+            newObj.BroadcastMessage("OnActiveSonar");
         }
-        else parentObj.SendMessage("OnInstantiatedChildAndSonar", gameObject);
 
 
         // クールタイム開始

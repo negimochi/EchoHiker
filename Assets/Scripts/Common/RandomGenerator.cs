@@ -121,6 +121,7 @@ public class RandomGenerator : MonoBehaviour {
         // 配列更新
         childrenArray.Add(newChild);
         sonarArray.Add(newChild);
+
         // 子供を増やした通知
         SendMessage("OnInstantiatedChild", newChild, SendMessageOptions.DontRequireReceiver);
 
