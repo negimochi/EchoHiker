@@ -15,7 +15,7 @@ public class TorpedoCollider : MonoBehaviour {
     [SerializeField]
     private float delayTime = 2.0f;
     [SerializeField]
-    private int damegeValue = 1;
+    private int damageValue = 1;
 
     [System.Serializable]
     public class Explosion
@@ -54,11 +54,11 @@ public class TorpedoCollider : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        CollisionCheck( collision.gameObject );
+        CheckCollision(collision.gameObject);
     }
     void OnCollisionStay(Collision collision)
     {
-        CollisionCheck( collision.gameObject );
+        CheckCollision(collision.gameObject);
     }
 
     private IEnumerator Delay()
@@ -69,7 +69,7 @@ public class TorpedoCollider : MonoBehaviour {
         Debug.Log("Wait EndCoroutine");
     }
 
-    private void CollisionCheck(GameObject target)
+    private void CheckCollision(GameObject target)
     {
         bool hit = false;
         hit |= CheckPlayer(target);
@@ -87,11 +87,10 @@ public class TorpedoCollider : MonoBehaviour {
 
     private bool CheckTorpedo(GameObject target)
     {
-        if (target.CompareTag("Torpedo"))
+        if (target.CompareTag(tag))
         {
+            // 自分と同じなら魚雷同士の衝突
             Debug.Log("CheckTorpedo");
-            // 相手の魚雷にヒット
-            //target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             return true;
         }
         return false;
@@ -108,7 +107,7 @@ public class TorpedoCollider : MonoBehaviour {
             // ヒット通知だけ流す
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // ダメージ通知
-            if (uiObj) uiObj.BroadcastMessage("OnDamage", damegeValue, SendMessageOptions.DontRequireReceiver);
+            if (uiObj) uiObj.BroadcastMessage("OnDamage", damageValue, SendMessageOptions.DontRequireReceiver);
             return true;
         }
         return false;
@@ -122,7 +121,7 @@ public class TorpedoCollider : MonoBehaviour {
             if (owner == OwnerType.Player)
             {
                 // 自分の魚雷が敵にヒットしたときだけ、敵の持っているスコアを加算する通知
-                target.SendMessage("OnGetScore", SendMessageOptions.DontRequireReceiver);
+                target.SendMessage("OnAddScore", SendMessageOptions.DontRequireReceiver);
             }
             else
             {
@@ -143,6 +142,6 @@ public class TorpedoCollider : MonoBehaviour {
     /// ダメージ量をセット。通常する必要なし
     /// </summary>
     /// <param name="value"></param>
-    public void SetDamageValue(int value) { damegeValue = value; }
+    public void SetDamageValue(int value) { damageValue = value; }
 
 }

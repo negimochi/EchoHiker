@@ -15,7 +15,6 @@ public class ColorFader : MonoBehaviour {
     [SerializeField]
     private bool sonarInside = false;
 
-    private bool valid = false;
     private bool wait = false;
     private float max = 0.0f;
     private float currentTime = 0.0f;

@@ -6,6 +6,9 @@ public class StageField : MonoBehaviour {
 
     // ロード終了時 LoadLevelAdditiveはOnLevelWasLoadedを呼ばないのでAwakeで処理
 //    void OnLevelWasLoaded(int level)
+    void Start()
+    { 
+    }
     void Awake()
     {
         Debug.Log("Stage Loaded");

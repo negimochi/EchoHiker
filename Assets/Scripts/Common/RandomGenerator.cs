@@ -9,6 +9,8 @@ public class RandomGenerator : MonoBehaviour {
     private GenerateParameter param = new GenerateParameter();
 
     private int counter = 0;
+
+    private bool clear = false;
     private bool limitCheck = false;
     private bool ready = false;
 
@@ -132,22 +134,14 @@ public class RandomGenerator : MonoBehaviour {
         }
     }
 
-    /*
-    // 手抜き収集
-    private void UpdateArray()
-    {
-        childrenArray = GameObject.FindGameObjectsWithTag(target.tag);
-        // OnUpdateArrayがあれば通知
-        SendMessage("OnUpdateArray", childrenArray, SendMessageOptions.DontRequireReceiver);
-    }
-    */
-
     public int ChildrenNum()
     {
         if (childrenArray != null) return childrenArray.Count;
         return 0;
     }
+
     public GameObject Target() { return target; }
+    public bool Clear() { return clear; }
 
     // 管理している子の参照
     public ArrayList Children() { return childrenArray; }

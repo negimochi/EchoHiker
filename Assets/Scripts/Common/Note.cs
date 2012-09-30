@@ -49,16 +49,9 @@ public class Note : MonoBehaviour {
         valid = false;
         // Stopと使うと音がぶつ切りになる場合があるため、音量をフェードアウトさせて対応
         //audio.Stop();
-
-        // 終了エフェクト開始
-//        if (particle)
-//        {
-//            particle.Play();
-//            Debug.Log("Particle Start");
-//        }
-        Debug.Log("OnHit");
         StartCoroutine("Fadeout", 1.0f);
     }
+
 
     /// <summary>
     /// フェードアウトコルーチン

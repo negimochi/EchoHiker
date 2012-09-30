@@ -16,14 +16,11 @@ public class TitleSwitcher : MonoBehaviour {
     private bool wait = true;
 
     private bool pushed = false;
-
-//   private GameObject intermission = null;
    
     void Start()
     {
         max = 1.0f - minAlpha;
         startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b);
-//        intermission = GameObject.Find("/UI/Intermission");
     }
 
     void Update()
@@ -39,7 +36,6 @@ public class TitleSwitcher : MonoBehaviour {
                 guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
                 // éûä‘çXêV
                 currentTime += Time.deltaTime;
-                //Debug.Log(guiText.material.color.a);
             }
             else
             {

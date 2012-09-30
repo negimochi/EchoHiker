@@ -22,7 +22,7 @@ public class ScoreDisplay : MonoBehaviour {
     /// [BroadcastMessage]スコア取得
     /// </summary>
     /// <param name="value">獲得したスコア</param>
-    void OnGetScore( int value )
+    void OnAddScore( int value )
     {
         score += value;
         guiText.text = score.ToString("D" + disitSize);

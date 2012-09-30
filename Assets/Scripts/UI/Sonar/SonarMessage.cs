@@ -17,13 +17,28 @@ public class SonarMessage : MonoBehaviour {
     [SerializeField]
     private string itemLost = "The item is lost...";
 
+    [SerializeField]
+    private float temetuTime = 2.0f;
+    [SerializeField]
+    private float displayTime = 2.0f;
+    [SerializeField]
+    private float fadeTime = 3.0f;
+
     void Start() 
     {
-        guiText.text = "";
+        guiText.enabled = false;
 	}
 
 
-    void OnDestory()
-    { 
+    void OnEndItemLifetime()
+    {
+        guiText.text = itemLost;
+        guiText.enabled = true;
+        StartCoroutine("Delay", displayTime);
+    }
+
+    private IEnumerator Delay(float delaytime)
+    {
+        yield return new WaitForSeconds(delaytime);
     }
 }

@@ -15,7 +15,7 @@ public class StageStartText : MonoBehaviour {
     private string[] missionText = new string[] { 
         "Kill the Enemy!", 
         "Get the Recovery Item!", 
-        "[]" 
+        "As long as" 
     };
 
     private float currentTime = 0.0f;

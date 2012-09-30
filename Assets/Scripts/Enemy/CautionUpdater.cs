@@ -36,7 +36,7 @@ public class CautionUpdater : MonoBehaviour
         if (target.Equals(maxCautionEnemy))
         {
             maxCautionEnemy = null;
-            ui.BroadcastMessage("OnUpdateCaution", 0, SendMessageOptions.DontRequireReceiver);
+            if(ui)ui.BroadcastMessage("OnUpdateCaution", 0, SendMessageOptions.DontRequireReceiver);
         }
     }
 
@@ -60,7 +60,7 @@ public class CautionUpdater : MonoBehaviour
             maxValue = newValue;
         }
         // 最大値を表示用に通知
-        ui.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
+        if(ui)ui.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 
     private int GetCaution(GameObject enemyObj)

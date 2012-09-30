@@ -8,7 +8,7 @@ public class GenerateSwitcher : MonoBehaviour {
         None = 0,
         OnlyOne,
         Switch,
-//        Random,
+        Random,
 //        All,
     };
     [SerializeField]
@@ -18,7 +18,7 @@ public class GenerateSwitcher : MonoBehaviour {
 
     public class TargetGenerator
     {
-        public bool clear = false;
+        public bool clearCondition = false;
         public RandomGenerator gen = null;
     };
 
@@ -33,13 +33,17 @@ public class GenerateSwitcher : MonoBehaviour {
 
     private void Init()
     {
-        GameObject enemyObj = GameObject.Find("Enemies");
-        GameObject itemObj = GameObject.Find("Items");
-        if (enemyObj) AddGenerator( enemyObj.GetComponent<RandomGenerator>() );
-        if (itemObj) AddGenerator( itemObj.GetComponent<RandomGenerator>() );
+//        GameObject enemyObj = GameObject.Find("Enemies");
+//        GameObject itemObj = GameObject.Find("Items");
+//        if (enemyObj) AddGenerator( enemyObj.GetComponents<RandomGenerator>() );
+//        if (itemObj) AddGenerator( itemObj.GetComponents<RandomGenerator>() );
+        RandomGenerator[] genArr = GetComponentsInChildren<RandomGenerator>();
+        foreach( RandomGenerator gen in genArr ){
+            AddGenerator(gen);
+        } 
     }
 
-    private void AddGenerator(  RandomGenerator generater )
+    private void AddGenerator( RandomGenerator generater )
     {
         Debug.Log("AddGenerator");
         if (generater == null) return;
@@ -50,7 +54,7 @@ public class GenerateSwitcher : MonoBehaviour {
         string tag = target.tag;
 
         TargetGenerator targetGenerator = new TargetGenerator();
-        targetGenerator.clear = false;
+        targetGenerator.clearCondition = false;
         targetGenerator.gen = generater;
         generators.Add(tag, targetGenerator);
     }
@@ -60,7 +64,12 @@ public class GenerateSwitcher : MonoBehaviour {
     {
         if (currentTag.CompareTo(key) == 0)
         {
-            if (type == Type.Switch) Switch();
+            switch (type)
+            {
+                case Type.Switch: Switch(); break;
+                //case Type.Random: SetRandom(); break;
+                default: break;
+            }
         }
     }
 
@@ -90,6 +99,10 @@ public class GenerateSwitcher : MonoBehaviour {
             }
         }
     }
+    //private void SetRandom()
+    //{
+    //    int index = Random.Range( 0, generators.Count );
+    //}
 
     void OnGameStart()
     {
@@ -106,21 +119,22 @@ public class GenerateSwitcher : MonoBehaviour {
     }
 
 
-    // クリア条件
+//    void OnCheckGameClear(string tag)
     void OnClearCondition(string tag)
     {
-        bool allclear = true;
+        // クリア条件
+        bool allClear = true;
         foreach (string key in generators.Keys) 
         {
             // 条件を達成していたタグのTargetObjectをtrueにする
 
             TargetGenerator target = generators[key] as TargetGenerator;
-            if (tag.CompareTo(key) == 0) target.clear = true;
+            if (tag.CompareTo(key) == 0) target.clearCondition = true;
             // 全部クリアできてるかチェック
-            allclear &= target.clear;
+            allClear &= target.clearCondition;
         }
 
-        if (allclear) {
+        if (allClear) {
             // ゲーム終了、次のステージへ
             GameObject adapter = GameObject.Find("/Adapter");
             adapter.SendMessage("OnGameEnd", true);

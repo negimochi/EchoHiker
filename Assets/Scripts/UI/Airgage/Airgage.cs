@@ -78,13 +78,12 @@ public class Airgage : MonoBehaviour {
     {
         // ダメージレベル加算
         damageLv += value;
-        if (damageLv >= airUpdateTime.Length) damageLv = airUpdateTime.Length - 1;
+        damageLv = Mathf.Clamp(damageLv, 0, airUpdateTime.Length-1);
         // 表示用のオブジェクトに伝える
-        //damageLvObj.SendMessage("OnDisplayDamageLv", damageLv);
-        BroadcastMessage("OnDisplayDamageLv", damageLv, SendMessageOptions.DontRequireReceiver);
+        BroadcastMessage("OnDisplayDamageLv", damageLv);
     }
 
-    void OnInflate(int value )
+    void OnAddAir(int value )
     {
         air += value;
         if (airMax < air) air = airMax;

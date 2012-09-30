@@ -7,7 +7,7 @@ public class PlayerCollider : MonoBehaviour {
     private float speedDown = 2.0f;
 
     [SerializeField]
-    private string tag = "Torpedo";
+    private string damageObjTag = "Torpedo";
 
     private PlayerController controller;
     private bool valid = true;
@@ -40,9 +40,9 @@ public class PlayerCollider : MonoBehaviour {
     private void CollisionCheck(GameObject target)
     {
         if (!valid) return;
-        if (target.CompareTag(tag))
+        // 若干スピードを落とす微調整(あまりスピードがありすぎるとexplosionがきかない)
+        if (target.CompareTag(damageObjTag))
         {
-            Debug.Log("Speed Down");
             controller.AddSpeed( -speedDown );
         }
     }
