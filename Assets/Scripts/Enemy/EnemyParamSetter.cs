@@ -8,7 +8,7 @@ public class EnemyParamSetter : MonoBehaviour
     [SerializeField]
     private EnemyParameter toParam = new EnemyParameter();
     [SerializeField]
-    private float duration;
+    private float duration = 120.0f;
 
     private float timeStamp = 0.0f;
 
@@ -20,8 +20,15 @@ public class EnemyParamSetter : MonoBehaviour
     void OnInstantiatedChild(GameObject target)
     {
         // 生成されたオブジェクトに対して設定
-        EnemyParameter param = new EnemyParameter();
         float t = Time.timeSinceLevelLoad - timeStamp;
-        //target.SendMessage("OnStartTimer", param);
+        Debug.Log("EnemyParamSetter" + t);
+
+        EnemyParameter param = new EnemyParameter();
+        param.scoreMax = (int)Mathf.Lerp(fromParam.scoreMax, toParam.scoreMax, t);
+        param.scoreMin = (int)Mathf.Lerp(fromParam.scoreMin, toParam.scoreMin, t);
+        param.cautionUpdateWaitMax = Mathf.Lerp(fromParam.cautionUpdateWaitMax, toParam.cautionUpdateWaitMax, t);
+        param.cautionUpdateWaitMin = Mathf.Lerp(fromParam.cautionUpdateWaitMin, toParam.cautionUpdateWaitMin, t);
+        param.sonarHitAddCaution = (int)Mathf.Lerp(fromParam.sonarHitAddCaution, toParam.sonarHitAddCaution, t);
+        target.SendMessage("OnStartCautionTimer", param);
     }
 }

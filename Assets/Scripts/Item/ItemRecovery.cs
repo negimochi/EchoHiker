@@ -12,9 +12,11 @@ public class ItemRecovery : MonoBehaviour
     {
     }
 
-    void OnStartTimer(ItemParameter param_)
+    void OnStartLifeTimer(ItemParameter param_)
     {
-        param =  param_;
+        Debug.Log("OnStartLifeTimer");
+        param = param_;
+        //param = new ItemParameter( param_ );
         // タイムスタンプをとっておく。
         timeStamp = Time.timeSinceLevelLoad;
         StartCoroutine("WaitLifeTimeEnd");
@@ -35,6 +37,7 @@ public class ItemRecovery : MonoBehaviour
 
     private void Disappear()
     {
+        Debug.Log("Disappear");
         // 寿命が来たので自分で自分をDestoryする
         GameObject ui = GameObject.Find("/UI");
         // UIにメッセージ通知
@@ -49,6 +52,8 @@ public class ItemRecovery : MonoBehaviour
         GameObject ui = GameObject.Find("/UI");
         if (ui)
         {
+            ui.BroadcastMessage("OnEndItemFound", SendMessageOptions.DontRequireReceiver);
+
             // UIに通知
             float t = Time.timeSinceLevelLoad - timeStamp;
             

@@ -8,7 +8,7 @@ public class ItemParamSetter: MonoBehaviour
     [SerializeField]
     private ItemParameter toParam = new ItemParameter();
     [SerializeField]
-    private float duration;
+    private float duration = 120.0f;
 
     private float timeStamp = 0.0f;
 
@@ -21,13 +21,15 @@ public class ItemParamSetter: MonoBehaviour
     {
         // 生成されたオブジェクトに対して設定
         float t = Time.timeSinceLevelLoad - timeStamp;
+        Debug.Log("ItemParamSetter" + t);
+
         ItemParameter param = new ItemParameter();
         param.scoreMax = (int)Mathf.Lerp(fromParam.scoreMax, toParam.scoreMax, t);
         param.scoreMin = (int)Mathf.Lerp(fromParam.scoreMin, toParam.scoreMin, t);
         param.recoveryMax = (int)Mathf.Lerp(fromParam.recoveryMax, toParam.recoveryMax, t);
         param.recoveryMin = (int)Mathf.Lerp(fromParam.recoveryMin, toParam.recoveryMin, t);
         param.lifeTime = Mathf.Lerp(fromParam.lifeTime, toParam.lifeTime, t);
-        target.SendMessage("OnStartTimer", param);
+        target.SendMessage("OnStartLifeTimer", param);
     }
 
 }

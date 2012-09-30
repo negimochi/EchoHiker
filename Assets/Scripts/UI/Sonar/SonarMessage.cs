@@ -4,41 +4,60 @@ using System.Collections;
 public class SonarMessage : MonoBehaviour {
 
     [SerializeField]
-    private string enemyCreated = "The enemy is destroyed!";
+    private string enemyDestroyed = "The enemy is destroyed!";
     [SerializeField]
-    private string enemyCaution = "The enemy is destroyed!";
-    [SerializeField]
-    private string enemyHit = "The enemy is destroyed!";
-
-    [SerializeField]
-    private string itemCleated = "The item is lost...";
-    [SerializeField]
-    private string itemHit = "The item is lost...";
+    private string itemFound = "You found the item!";
     [SerializeField]
     private string itemLost = "The item is lost...";
 
     [SerializeField]
-    private float temetuTime = 2.0f;
+    private float flashTime = 2.0f;
     [SerializeField]
-    private float displayTime = 2.0f;
-    [SerializeField]
-    private float fadeTime = 3.0f;
+    private int num = 6;
+
+    private int count = 0;
 
     void Start() 
     {
         guiText.enabled = false;
-	}
+        guiText.text = "";
+   }
 
+
+    void OnEndEnemyDestroyed()
+    {
+        guiText.text = enemyDestroyed;
+        StartFlash();
+    }
+
+    void OnEndItemFound()
+    {
+        guiText.text = itemFound;
+        StartFlash();
+    }
 
     void OnEndItemLifetime()
     {
         guiText.text = itemLost;
-        guiText.enabled = true;
-        StartCoroutine("Delay", displayTime);
+        StartFlash();
     }
+
+    private void StartFlash()
+    {
+        count = 0;
+        guiText.enabled = true;
+        StartCoroutine("Delay", flashTime);
+    }
+
 
     private IEnumerator Delay(float delaytime)
     {
         yield return new WaitForSeconds(delaytime);
+        guiText.enabled = !guiText.enabled;
+        count ++;
+        if (count > num)
+        {
+            StartCoroutine("Delay", flashTime);
+        }
     }
 }

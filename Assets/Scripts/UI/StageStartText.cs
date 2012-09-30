@@ -4,7 +4,7 @@ using System.Collections;
 public class StageStartText : MonoBehaviour {
 
     [SerializeField]
-    private float waitTime = 1.0f;
+    private float waitTime = 2.0f;
     [SerializeField]
     private float fadeTime = 3.0f;
     [SerializeField]
@@ -15,11 +15,9 @@ public class StageStartText : MonoBehaviour {
     private string[] missionText = new string[] { 
         "Kill the Enemy!", 
         "Get the Recovery Item!", 
-        "As long as" 
+        "Stay alive as long as possible!" 
     };
 
-    private float currentTime = 0.0f;
-    private bool wait = false;
     private GUIText missionGUIText = null;
     private Color startColor;
 
@@ -30,29 +28,9 @@ public class StageStartText : MonoBehaviour {
         startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b, guiText.material.color.a);
     }
 
-    void Update()
-    {
-        if (!guiText.enabled) return;
-
-        if (!wait)
-        {
-            float timeRate = currentTime / fadeTime;
-            float alpha = Mathf.Lerp(1.0f, 0.0f, timeRate);
-            guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-            missionGUIText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-            currentTime += Time.deltaTime;
-
-            if (timeRate >= 1.0f)
-            {
-                wait = true;
-                guiText.enabled = false;
-                missionGUIText.enabled = false;
-            }
-        }
-    }
-
     void OnAwakeStage(int index)
     {
+        // ゲームスタート前に文字を準備しておく
         if (index >= startText.Length) return;
         guiText.text = startText[index];
         guiText.enabled = true;
@@ -60,20 +38,37 @@ public class StageStartText : MonoBehaviour {
         missionGUIText.text = missionText[index];
         missionGUIText.enabled = true;
         missionGUIText.material.color = new Color(startColor.r, startColor.g, startColor.b, startColor.a);
-        wait = true;
     }
 
     void OnGameStart()
     {
-        currentTime = 0.0f;
-        //wait = false;
+        enabled = true;
         StartCoroutine("Delay");
+    }
+
+    // 念のため非表示
+    void OnGameClear()
+    {
+        StopAllCoroutines();
+        OnEndTextFade();
+    }
+    // 念のため非表示
+    void OnGameOver()
+    {
+        StopAllCoroutines();
+        OnEndTextFade();
+    }
+
+    void OnEndTextFade()
+    {
+        enabled = false;
     }
 
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(waitTime);
-        wait = false;
+        // TextFader
+        BroadcastMessage("OnFadeOut", fadeTime);
     }
 
 }

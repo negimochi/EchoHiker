@@ -4,7 +4,7 @@ using System.Collections;
 public class TextFader : MonoBehaviour {
 
     [SerializeField]
-    private float waitTime = 0.2f;
+    private float waitTime = 0.05f;
 
     private float duration = 0.0f;
     private float fromValue = 0.0f;

@@ -10,4 +10,15 @@ public class ItemParameter
 
     public float lifeTime = 60.0f;  // 出現時間(この時間を過ぎると自動消失)
 
+    public ItemParameter() { }
+    public ItemParameter(ItemParameter param_)
+    {
+        scoreMax = param_.scoreMax;
+        scoreMin = param_.scoreMin;  
+        recoveryMax = param_.recoveryMax;   
+        recoveryMin = param_.recoveryMin;
+        lifeTime = param_.lifeTime;  
+
+    }
+
 }

@@ -4,35 +4,30 @@ using System.Collections;
 public class EnemyCaution : MonoBehaviour {
 
     [SerializeField]
-    public float waitTimeMax = 0.40f;
-    [SerializeField]
-    public float waitTimeMin = 0.01f;
-    [SerializeField]
-    private int step = 1;
-    [SerializeField]
-    private int sonarHit = 10;
+    private EnemyParameter param;
 
 //    [SerializeField]    // Debug閲覧用
     private int cautionValue = 0;
 
-    public float waitTime   = 1.0f;
+    private int step = 1;
     private int currentStep = 1;
+    private float waitTime = 1.0f;
 
-
+    private bool valid = false;
     private bool counting = false;
     private CautionUpdater updater = null;
 
 	void Start () 
     {
-        waitTime = waitTimeMax;
         GameObject managerObj = GameObject.Find("/Field/Enemies");
         if (managerObj) updater = managerObj.GetComponent<CautionUpdater>();
 	}
 
     void OnStayPlayer( float distRate )
     {
+        if (!valid) return;
         // 距離が近いほど早くCautionが上昇する
-        waitTime = Mathf.Lerp(waitTimeMin, waitTimeMax, distRate);
+        waitTime = Mathf.Lerp(param.cautionUpdateWaitMin, param.cautionUpdateWaitMax, distRate);
 
         // カウントしてない場合は開始
         if (counting) return;
@@ -40,20 +35,37 @@ public class EnemyCaution : MonoBehaviour {
         StartCount(true);
     }
 
-// ルール変更に伴いコメントアウト。
-//    void OnExitPlayer( )
-//    {
-//        // Cautionの値が減少する
-//        waitTime = waitTimeMin;
-//        currentStep = -step;
-//        StartCount(false);
-//    }
+    void OnStartCautionTimer(EnemyParameter param_)
+    {
+        valid = true;
+        param = param_;
+        waitTime = param.cautionUpdateWaitMax;
+    }
+
+
+    void OnAddScore()
+    {
+        if (!valid) return;
+
+        // スコア値を送る
+        GameObject ui = GameObject.Find("/UI");
+        if (ui)
+        {
+            ui.BroadcastMessage("OnEndEnemyDestroyed", SendMessageOptions.DontRequireReceiver);
+            // 見つかっていないほうが点数が高いように設定
+            float time = 1.0f - Mathf.InverseLerp(0, 100, cautionValue);
+            int scoreValue = (int)Mathf.Lerp(param.scoreMin, param.scoreMax, time);
+            ui.BroadcastMessage("OnAddScore", scoreValue);
+        }
+        // 自分にヒット判定
+        BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+    }
 
     void OnActiveSonar()
     {
         Debug.Log("OnActiveSonar : EnemyCaution");
         // ソナーがヒットするたびに、Cautionが上昇
-        cautionValue = Mathf.Clamp(cautionValue + sonarHit, 0, 100);
+        cautionValue = Mathf.Clamp(cautionValue + param.sonarHitAddCaution, 0, 100);
     }
 
     public void SetCountUp( float setWaitTime )
@@ -61,7 +73,7 @@ public class EnemyCaution : MonoBehaviour {
         waitTime = setWaitTime;
         StartCount(true);
     }
-    public void SetCountDown(float setWaitTime)
+    public void SetCountDown( float setWaitTime )
     {
         waitTime = setWaitTime;
         StartCount(false);

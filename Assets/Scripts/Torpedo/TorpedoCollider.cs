@@ -38,11 +38,11 @@ public class TorpedoCollider : MonoBehaviour {
     [SerializeField]
     Explosion explosion; 
 
-    private GameObject uiObj = null;
+    private GameObject ui = null;
 
 	void Start () 
     {
-        uiObj = GameObject.Find("/UI");
+        ui = GameObject.Find("/UI");
 
         SphereCollider sphereCollider = GetComponent<SphereCollider>();
         if (sphereCollider) explosion.SetRadius( sphereCollider.radius );
@@ -107,7 +107,7 @@ public class TorpedoCollider : MonoBehaviour {
             // ヒット通知だけ流す
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // ダメージ通知
-            if (uiObj) uiObj.BroadcastMessage("OnDamage", damageValue, SendMessageOptions.DontRequireReceiver);
+            if (ui) ui.BroadcastMessage("OnDamage", damageValue, SendMessageOptions.DontRequireReceiver);
             return true;
         }
         return false;

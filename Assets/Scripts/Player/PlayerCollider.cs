@@ -8,6 +8,8 @@ public class PlayerCollider : MonoBehaviour {
 
     [SerializeField]
     private string damageObjTag = "Torpedo";
+    [SerializeField]
+    private string terrainTag = "Terrain";
 
     private PlayerController controller;
     private bool valid = true;
@@ -30,20 +32,35 @@ public class PlayerCollider : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        CollisionCheck(collision.gameObject);
+        if (valid) CheckDamageCollision(collision.gameObject);
+        else CheckTerrainCollision(collision.gameObject);
     }
     void OnCollisionStay(Collision collision)
     {
-        CollisionCheck(collision.gameObject);
+        if (valid) CheckDamageCollision(collision.gameObject);
     }
 
-    private void CollisionCheck(GameObject target)
+    private void CheckDamageCollision(GameObject target)
     {
-        if (!valid) return;
         // 若干スピードを落とす微調整(あまりスピードがありすぎるとexplosionがきかない)
         if (target.CompareTag(damageObjTag))
         {
             controller.AddSpeed( -speedDown );
         }
+    }
+
+    private void CheckTerrainCollision(GameObject target)
+    {
+        if (target.CompareTag(terrainTag))
+        {
+            PlayAudioAtOnce();
+        }
+    }
+
+    private void PlayAudioAtOnce()
+    {
+        if (!audio) return;
+        if (audio.isPlaying) return;
+        audio.Play();
     }
 }
