@@ -7,6 +7,10 @@ public class RandomGenerator : MonoBehaviour {
     private GameObject target;  // 生成対象
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
+    [SerializeField]
+    private bool relative = false;
+    [SerializeField]
+    private Rect runningArea = new Rect(-700.0f, -700.0f, 1400.0f, 1400.0f);
 
     private int counter = 0;
 
@@ -18,6 +22,7 @@ public class RandomGenerator : MonoBehaviour {
     private ArrayList sonarArray = new ArrayList();
 
     private GameObject field = null;
+    private GameObject player = null;
    
     void Start()
     {
@@ -30,6 +35,7 @@ public class RandomGenerator : MonoBehaviour {
         }
 
         field = GameObject.Find("/Field");
+        player = GameObject.Find("/Field/Player");
     }
 
     void Update()
@@ -93,7 +99,15 @@ public class RandomGenerator : MonoBehaviour {
     public void Generate()
     {
         Rect rect = param.posXZ;
-        Vector3 pos = new Vector3(rect.xMin, 0, rect.yMin);
+        float offsetX = 0.0f;
+        float offsetZ = 0.0f;
+        if (relative)
+        {
+            offsetX = player.transform.position.x;
+            offsetZ = player.transform.position.z;
+        }
+
+        Vector3 pos = new Vector3(rect.xMin + offsetX, 0, rect.yMin + offsetZ);
         if (param.fill)
         {
             // posRange内にランダムに位置を決める
@@ -113,6 +127,10 @@ public class RandomGenerator : MonoBehaviour {
                 pos.z += rect.height * Random.value;
             }
         }
+
+        // 範囲外だったらClampして補正
+        pos.x = Mathf.Clamp(pos.x, runningArea.xMin, runningArea.xMax);
+        pos.z = Mathf.Clamp(pos.z, runningArea.yMin, runningArea.yMax);
 
         // インスタンス生成
         GameObject newChild = Object.Instantiate(target, pos, Quaternion.identity) as GameObject;

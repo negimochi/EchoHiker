@@ -18,7 +18,7 @@ public class ItemRecovery : MonoBehaviour
         param = param_;
         //param = new ItemParameter( param_ );
         // タイムスタンプをとっておく。
-        timeStamp = Time.timeSinceLevelLoad;
+        timeStamp = Time.time;
         StartCoroutine("WaitLifeTimeEnd");
     }
 
@@ -55,14 +55,14 @@ public class ItemRecovery : MonoBehaviour
             ui.BroadcastMessage("OnEndItemFound", SendMessageOptions.DontRequireReceiver);
 
             // UIに通知
-            float t = Time.timeSinceLevelLoad - timeStamp;
+            float t = (Time.time - timeStamp) / param.lifeTime;
             
             int score = (int)Mathf.Lerp(param.scoreMax, param.scoreMin, t);
-            Debug.Log("Item-Score:" + score);
+            Debug.Log(t + ":ItemScore=" + score);
             ui.BroadcastMessage("OnAddScore",  score );
 
             int recoveryValue = (int)Mathf.Lerp(param.recoveryMax, param.recoveryMin, t);
-            Debug.Log("Item-Air:" + recoveryValue);
+            Debug.Log(t + ":ItemAir=" + recoveryValue);
             ui.BroadcastMessage("OnAddAir", recoveryValue);
         }
         // ヒット後の自分の処理

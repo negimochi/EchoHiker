@@ -35,7 +35,7 @@ public class EnemyCaution : MonoBehaviour {
         StartCount(true);
     }
 
-    void OnStartCautionTimer(EnemyParameter param_)
+    void OnStartCaution(EnemyParameter param_)
     {
         valid = true;
         param = param_;

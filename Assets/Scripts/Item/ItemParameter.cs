@@ -10,6 +10,7 @@ public class ItemParameter
 
     public float lifeTime = 60.0f;  // 出現時間(この時間を過ぎると自動消失)
 
+
     public ItemParameter() { }
     public ItemParameter(ItemParameter param_)
     {

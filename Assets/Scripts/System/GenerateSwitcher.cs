@@ -114,8 +114,17 @@ public class GenerateSwitcher : MonoBehaviour {
 
     void OnGameOver()
     {
-        // ゲームオーバー時
+        Suspend();
+    }
+    void OnGameClear()
+    {
+        Suspend();
+    }
+
+    private void Suspend()
+    {
         valid = false;
+        current.gen.SendMessage("OnGeneratorSuspend");
     }
 
 

@@ -5,6 +5,8 @@ public class TextFader : MonoBehaviour {
 
     [SerializeField]
     private float waitTime = 0.05f;
+    [SerializeField]
+    private float fadeTime = 3.0f;
 
     private float duration = 0.0f;
     private float fromValue = 0.0f;
@@ -16,14 +18,14 @@ public class TextFader : MonoBehaviour {
         if (guiText) baseColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b, guiText.material.color.a);
 	}
 
-    void OnFadeOut( float fadeTime )
+    void OnTextFadeOut(  )
     {
         if (!guiText) return;
         fromValue = baseColor.a;
         toValue   = 0.0f;
         StartCoroutine("Fade", fadeTime);
     }
-    void OnFadeIn( float fadeTime )
+    void OnTextFadeIn(  )
     {
         if (!guiText) return;
         fromValue = 0.0f;

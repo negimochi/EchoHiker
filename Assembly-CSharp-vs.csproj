@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Common\HitEffector.cs" />
      <Compile Include="Assets\Scripts\Common\Note.cs" />
      <Compile Include="Assets\Scripts\Common\RandomGenerator.cs" />
+     <Compile Include="Assets\Scripts\Common\TextBlinker.cs" />
      <Compile Include="Assets\Scripts\Common\TextFader.cs" />
      <Compile Include="Assets\Scripts\Enemy\CautionUpdater.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyBehavior.cs" />
@@ -60,7 +61,6 @@
      <Compile Include="Assets\Scripts\Enemy\EnemyParamSetter.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyParameter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemCollider.cs" />
-     <Compile Include="Assets\Scripts\Item\ItemInitParam.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParamSetter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParameter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemRecovery.cs" />
@@ -91,7 +91,6 @@
      <Compile Include="Assets\Scripts\UI\DamageLvText.cs" />
      <Compile Include="Assets\Scripts\UI\ScoreDisplay.cs" />
      <Compile Include="Assets\Scripts\UI\Sonar\ActiveSonar.cs" />
-     <Compile Include="Assets\Scripts\UI\Sonar\SonarDisplay.cs" />
      <Compile Include="Assets\Scripts\UI\Sonar\SonarEffect.cs" />
      <Compile Include="Assets\Scripts\UI\Sonar\SonarMessage.cs" />
      <Compile Include="Assets\Scripts\UI\Sonar\SonarSwitcher.cs" />

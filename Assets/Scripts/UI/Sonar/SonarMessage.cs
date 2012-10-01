@@ -8,56 +8,35 @@ public class SonarMessage : MonoBehaviour {
     [SerializeField]
     private string itemFound = "You found the item!";
     [SerializeField]
-    private string itemLost = "The item is lost...";
-
-    [SerializeField]
-    private float flashTime = 2.0f;
-    [SerializeField]
-    private int num = 6;
-
-    private int count = 0;
+    private string itemLost = "The item was lost...";
 
     void Start() 
     {
-        guiText.enabled = false;
         guiText.text = "";
-   }
+        guiText.enabled = false;
+    }
 
 
     void OnEndEnemyDestroyed()
     {
         guiText.text = enemyDestroyed;
-        StartFlash();
+        SendMessage("OnStartTextBlink");
     }
 
     void OnEndItemFound()
     {
         guiText.text = itemFound;
-        StartFlash();
+        SendMessage("OnStartTextBlink");
     }
 
     void OnEndItemLifetime()
     {
         guiText.text = itemLost;
-        StartFlash();
+        SendMessage("OnStartTextBlink");
     }
 
-    private void StartFlash()
+    void OnEndTextBlink()
     {
-        count = 0;
-        guiText.enabled = true;
-        StartCoroutine("Delay", flashTime);
-    }
-
-
-    private IEnumerator Delay(float delaytime)
-    {
-        yield return new WaitForSeconds(delaytime);
-        guiText.enabled = !guiText.enabled;
-        count ++;
-        if (count > num)
-        {
-            StartCoroutine("Delay", flashTime);
-        }
+        guiText.enabled = false;
     }
 }

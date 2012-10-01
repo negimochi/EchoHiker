@@ -4,9 +4,7 @@ using System.Collections;
 public class StageStartText : MonoBehaviour {
 
     [SerializeField]
-    private float waitTime = 2.0f;
-    [SerializeField]
-    private float fadeTime = 3.0f;
+    private float delayTime = 2.0f;
     [SerializeField]
     private string[] startText = new string[] { 
         "Stage 1", "Stage 2", "Final Stage" 
@@ -66,9 +64,9 @@ public class StageStartText : MonoBehaviour {
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(delayTime);
         // TextFader
-        BroadcastMessage("OnFadeOut", fadeTime);
+        BroadcastMessage("OnTextFadeOut");
     }
 
 }

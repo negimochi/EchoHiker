@@ -8,7 +8,7 @@ public class ItemParamSetter: MonoBehaviour
     [SerializeField]
     private ItemParameter toParam = new ItemParameter();
     [SerializeField]
-    private float duration = 120.0f;
+    private float duration = 240.0f;
 
     private float timeStamp = 0.0f;
 
@@ -20,8 +20,8 @@ public class ItemParamSetter: MonoBehaviour
     void OnInstantiatedChild(GameObject target)
     {
         // 生成されたオブジェクトに対して設定
-        float t = Time.timeSinceLevelLoad - timeStamp;
-        Debug.Log("ItemParamSetter" + t);
+        float t = (Time.timeSinceLevelLoad - timeStamp) / duration;
+        Debug.Log("ItemParamSetter:" + t);
 
         ItemParameter param = new ItemParameter();
         param.scoreMax = (int)Mathf.Lerp(fromParam.scoreMax, toParam.scoreMax, t);
