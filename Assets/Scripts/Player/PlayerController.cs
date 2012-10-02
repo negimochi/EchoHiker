@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour {
         private float step = 0.5f;
 
         public float current = 1.0f;
-
         /// <summary>
         /// スピード変更
         /// </summary>
@@ -210,4 +209,5 @@ public class PlayerController : MonoBehaviour {
     {
         speed.Change( value );
     }
+
 }

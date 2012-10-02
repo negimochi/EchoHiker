@@ -58,9 +58,12 @@
      <Compile Include="Assets\Scripts\Enemy\EnemyBehavior.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyCaution.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyEyeCollider.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyInitParam.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyParamSetter.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyParameter.cs" />
+     <Compile Include="Assets\Scripts\Enemy\EnemyScore.cs" />
      <Compile Include="Assets\Scripts\Item\ItemCollider.cs" />
+     <Compile Include="Assets\Scripts\Item\ItemInitParam.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParamSetter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParameter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemRecovery.cs" />

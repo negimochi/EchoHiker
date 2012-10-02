@@ -16,7 +16,6 @@ public class ItemRecovery : MonoBehaviour
     {
         Debug.Log("OnStartLifeTimer");
         param = param_;
-        //param = new ItemParameter( param_ );
         // タイムスタンプをとっておく。
         timeStamp = Time.time;
         StartCoroutine("WaitLifeTimeEnd");

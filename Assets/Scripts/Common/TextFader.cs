@@ -8,7 +8,6 @@ public class TextFader : MonoBehaviour {
     [SerializeField]
     private float fadeTime = 3.0f;
 
-    private float duration = 0.0f;
     private float fromValue = 0.0f;
     private float toValue   = 1.0f;
     private Color baseColor;

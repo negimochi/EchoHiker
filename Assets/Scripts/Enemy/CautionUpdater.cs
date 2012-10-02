@@ -3,8 +3,8 @@ using System.Collections;
 
 public class CautionUpdater : MonoBehaviour
 {
-    [SerializeField]
-    private float maxWaitTime = 1.0f;
+//    [SerializeField]
+//    private float maxWaitTime = 1.0f;
 
     [SerializeField] // debug
     private int instantiatedCount = 0;
@@ -25,8 +25,11 @@ public class CautionUpdater : MonoBehaviour
     void OnInstantiatedChild(GameObject target)
     {
         instantiatedCount++;
-        EnemyCaution enemyCaution = target.GetComponent<EnemyCaution>();
-        enemyCaution.SetCountUp(maxWaitTime / (float)instantiatedCount);
+        //EnemyCaution enemyCaution = target.GetComponent<EnemyCaution>();
+        //float waitTime = 0.0f;
+        //if (instantiatedCount>0) waitTime = maxWaitTime / (float)instantiatedCount;
+        //enemyCaution.SetCountUp(waitTime);
+
         // 通常ゼロになっているはずだが、念のためUpdate
         DisplayValue(target, GetCaution(target));
     }

@@ -6,9 +6,7 @@ public class SonarCamera : MonoBehaviour {
     [SerializeField]
     private float radius = 0.0f;
     [SerializeField]
-    private string sonarOutsideTag = "Sonar";   // ソナーの外側にいるオブジェクト
-    [SerializeField]
-    private string sonarInsideTag = "SonarInside";    // ソナーの内側にいるオブジェクト
+    private string sonarTag = "Sonar";   // ソナーの外側にいるオブジェクト
 
 
     void Awake()
@@ -34,13 +32,14 @@ public class SonarCamera : MonoBehaviour {
 //        if (CheckObject(other.gameObject))
 //        {
 //           Debug.Log("SonarCamera.OnTriggerEnter");
-//            other.gameObject.BroadcastMessage("OnSonarInside", SendMessageOptions.DontRequireReceiver);
+//            other.gameObject.BroadcastMessage("OnSonarInside");
 //        }
 //    }
 
+    // Stayで代用する
     void OnTriggerStay(Collider other)
     {
-        if (Check_Outside2Inside(other.gameObject))
+        if (CheckSonarTag(other.gameObject))
         {
             if (!other.gameObject.renderer.enabled)
             {
@@ -49,33 +48,19 @@ public class SonarCamera : MonoBehaviour {
             }
         }
     }
-    private bool Check_Outside2Inside(GameObject target)
-    {
-        // スクリプト内のフラグまでアクセスするのは面倒なのでタグで手を打つ
-        if (target.CompareTag(sonarOutsideTag)) {
-            target.tag = sonarInsideTag;    // タグを書き換える
-            return true;
-        }
-        return false;
-    }
-
 
     void OnTriggerExit(Collider other)
     {
-        if (Check_Inside2Outside(other.gameObject))
+        if (CheckSonarTag(other.gameObject))
         {
             Debug.Log("SonarCamera.OnTriggerExit");
             other.gameObject.SendMessage("OnSonarOutside");
         }
     }
-    private bool Check_Inside2Outside(GameObject target)
+
+    private bool CheckSonarTag(GameObject target)
     {
-        if (target.CompareTag(sonarInsideTag))
-        {
-            target.tag = sonarOutsideTag;    // タグを書き換える
-            return true;
-        }
-        return false;
+        return (target.CompareTag(sonarTag)) ? true : false;
     }
 
     void OnInstantiatedSonarPoint(GameObject target)

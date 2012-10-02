@@ -12,34 +12,63 @@ public class EnemyCaution : MonoBehaviour {
     private int step = 1;
     private int currentStep = 1;
     private float waitTime = 1.0f;
+//    private float  = 1.0f;
 
     private bool valid = false;
     private bool counting = false;
     private CautionUpdater updater = null;
+    private PlayerController controller = null;
 
 	void Start () 
     {
         GameObject managerObj = GameObject.Find("/Field/Enemies");
         if (managerObj) updater = managerObj.GetComponent<CautionUpdater>();
+        GameObject player = GameObject.Find("/Field/Player");
+        if (player) controller = player.GetComponent<PlayerController>();
 	}
+
+//    void Update()
+//    {
+//        if (!valid) return;
+//        if (controller)
+//        {
+//            float rate = controller.GetSpeedRate();
+//            if (rate)
+//            {
+//                waitTime = Mathf.Lerp(0.0f, waitTime, rate);
+//            }
+//            else
+//            {
+//                waitTime = Mathf.Lerp(0.0f, waitTime, rate);
+//            }
+//        }
+//    }
 
     void OnStayPlayer( float distRate )
     {
         if (!valid) return;
-        // 距離が近いほど早くCautionが上昇する
+        // Playerとの距離が近いほど早くCautionが上昇しやすくなる
         waitTime = Mathf.Lerp(param.cautionUpdateWaitMin, param.cautionUpdateWaitMax, distRate);
-
         // カウントしてない場合は開始
-        if (counting) return;
-        counting = true;
-        StartCount(true);
+        if (!counting)
+        {
+            counting = true;
+            StartCount(true);
+        }
     }
 
-    void OnStartCaution(EnemyParameter param_)
+    void OnExitPlayer()
     {
+        if (!valid) return;
+    }
+
+    void OnStartCautionCount(EnemyParameter param_)
+    {
+        Debug.Log("OnStartCautionCount");
         valid = true;
         param = param_;
         waitTime = param.cautionUpdateWaitMax;
+        StartCount(true);
     }
 
 

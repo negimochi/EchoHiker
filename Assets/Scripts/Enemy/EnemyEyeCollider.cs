@@ -4,7 +4,9 @@ using System.Collections;
 public class EnemyEyeCollider : MonoBehaviour {
 
     [SerializeField]
-    public float insideRadius = 100.0f;
+    private string targetTag = "Player";
+    [SerializeField]
+    private float insideRadius = 200.0f; // Ç±ÇÍà»è„ãﬂÇ√ÇØÇ»Ç¢ãóó£
 
     private float outsideRadius;
     private GameObject parentObj = null;
@@ -21,18 +23,18 @@ public class EnemyEyeCollider : MonoBehaviour {
 
     void OnTriggerStay(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player")) return;
+        if (!other.gameObject.CompareTag(targetTag)) return;
         float t = GetDistanceRate(other.gameObject);
         parentObj.SendMessage("OnStayPlayer", t, SendMessageOptions.DontRequireReceiver);
     }
     void OnTriggerExit(Collider other)
     {
-        if (!other.gameObject.CompareTag("Player")) return;
+        if (!other.gameObject.CompareTag(targetTag)) return;
         Debug.Log("TrigExit:" + Time.time);
         parentObj.SendMessage("OnExitPlayer", SendMessageOptions.DontRequireReceiver);
     }
 
-    float GetDistanceRate(GameObject target)
+    private float GetDistanceRate(GameObject target)
     {
         float dist = Vector3.Distance(transform.position, target.transform.position);
         return Mathf.InverseLerp(insideRadius, outsideRadius, dist);

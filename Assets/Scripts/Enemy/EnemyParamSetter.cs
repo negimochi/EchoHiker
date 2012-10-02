@@ -8,7 +8,7 @@ public class EnemyParamSetter : MonoBehaviour
     [SerializeField]
     private EnemyParameter toParam = new EnemyParameter();
     [SerializeField]
-    private float duration = 120.0f;
+    private float duration = 240.0f;
 
     private float timeStamp = 0.0f;
 
@@ -29,6 +29,8 @@ public class EnemyParamSetter : MonoBehaviour
         param.cautionUpdateWaitMax = Mathf.Lerp(fromParam.cautionUpdateWaitMax, toParam.cautionUpdateWaitMax, t);
         param.cautionUpdateWaitMin = Mathf.Lerp(fromParam.cautionUpdateWaitMin, toParam.cautionUpdateWaitMin, t);
         param.sonarHitAddCaution = (int)Mathf.Lerp(fromParam.sonarHitAddCaution, toParam.sonarHitAddCaution, t);
-        target.SendMessage("OnStartCaution", param);
+
+        // 生成時からカウンタをはじめる
+        target.SendMessage("OnStartCautionCount", param);
     }
 }
