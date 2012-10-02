@@ -58,12 +58,9 @@
      <Compile Include="Assets\Scripts\Enemy\EnemyBehavior.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyCaution.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyEyeCollider.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyInitParam.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyParamSetter.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyParameter.cs" />
-     <Compile Include="Assets\Scripts\Enemy\EnemyScore.cs" />
      <Compile Include="Assets\Scripts\Item\ItemCollider.cs" />
-     <Compile Include="Assets\Scripts\Item\ItemInitParam.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParamSetter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemParameter.cs" />
      <Compile Include="Assets\Scripts\Item\ItemRecovery.cs" />
@@ -101,13 +98,6 @@
      <Compile Include="Assets\Scripts\UI\StageStartText.cs" />
      <Compile Include="Assets\Scripts\UI\StageUI.cs" />
      <Compile Include="Assets\Scripts\UI\TitleSwitcher.cs" />
-     <Compile Include="Assets\Scripts\_Debug\ColliderTest.cs" />
-     <Compile Include="Assets\Scripts\_Debug\DebugCounterGUI.cs" />
-     <Compile Include="Assets\Scripts\_Debug\DebugGameStarter.cs" />
-     <Compile Include="Assets\Scripts\_Debug\DebugSceneChanger.cs" />
-     <Compile Include="Assets\Scripts\_Debug\DebugSonarGUI.cs" />
-     <Compile Include="Assets\Scripts\_Debug\MoveTest.cs" />
-     <Compile Include="Assets\Scripts\_Debug\ValueTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,77 +4,95 @@ using System.Collections;
 public class EnemyCaution : MonoBehaviour {
 
     [SerializeField]
-    private EnemyParameter param;
+    private float waitForce = 0.02f;
 
-//    [SerializeField]    // Debug閲覧用
+    [SerializeField]
+    private int step = 1;
+
+    [SerializeField]   // Debug閲覧用
+    private EnemyParameter param = null;
+    
+    [SerializeField]    // Debug閲覧用
     private int cautionValue = 0;
 
-    private int step = 1;
     private int currentStep = 1;
-    private float waitTime = 1.0f;
-//    private float  = 1.0f;
 
-    private bool valid = false;
+    [SerializeField]    // Debug閲覧用
+    private float waitTime = 1.0f;
+
+    private float count = 0.0f;
+
     private bool counting = false;
+    private bool emergency = false;
+    private bool countup = true;
     private CautionUpdater updater = null;
     private PlayerController controller = null;
 
 	void Start () 
     {
-        GameObject managerObj = GameObject.Find("/Field/Enemies");
-        if (managerObj) updater = managerObj.GetComponent<CautionUpdater>();
+        GameObject enemy = GameObject.Find("/Field/Enemies");
+        if (enemy) updater = enemy.GetComponent<CautionUpdater>();
         GameObject player = GameObject.Find("/Field/Player");
         if (player) controller = player.GetComponent<PlayerController>();
 	}
 
-//    void Update()
-//    {
-//        if (!valid) return;
-//        if (controller)
-//        {
-//            float rate = controller.GetSpeedRate();
-//            if (rate)
-//            {
-//                waitTime = Mathf.Lerp(0.0f, waitTime, rate);
-//            }
-//            else
-//            {
-//                waitTime = Mathf.Lerp(0.0f, waitTime, rate);
-//            }
-//        }
-//    }
+    void Update()
+    {
+        if (param == null || !counting) return;
+
+        count += Time.deltaTime;
+        if (count >= waitTime) {
+            count = 0.0f;
+            counting = UpdateCaution();
+        }
+    }
 
     void OnStayPlayer( float distRate )
     {
-        if (!valid) return;
-        // Playerとの距離が近いほど早くCautionが上昇しやすくなる
-        waitTime = Mathf.Lerp(param.cautionUpdateWaitMin, param.cautionUpdateWaitMax, distRate);
-        // カウントしてない場合は開始
-        if (!counting)
+        if (param==null) return;
+
+        if (countup)
         {
-            counting = true;
+            // Playerとの距離が近いほど、Caution値は上昇しやすい
+            if (!emergency)
+            {
+                waitTime = Mathf.Lerp(param.cautionWaitMin, param.cautionWaitMax, distRate);
+                // Playerの速度が遅いほど、Caution値が上昇しづらい
+                float speedRate = controller.SpeedRate();
+                // 通常はwaitTimeをLerpさせる
+                float sneakingRate = (1.0f - speedRate) * param.sneaking;
+                waitTime = Mathf.Lerp(waitTime, param.cautionWaitLimit, sneakingRate);
+            }
+        }
+        else 
+        {
+            // カウントダウンしてる場合はアップに切り替え
             StartCount(true);
         }
     }
 
+      // 離れた時に何かするならここ
     void OnExitPlayer()
     {
-        if (!valid) return;
+        if (param == null || counting) return;
+        // カウントしてないで離れる
+        waitTime = waitForce;
+        emergency = true;
+        StartCount(false);
     }
 
     void OnStartCautionCount(EnemyParameter param_)
     {
+        // パラメータセットと、カウンタ開始
         Debug.Log("OnStartCautionCount");
-        valid = true;
         param = param_;
-        waitTime = param.cautionUpdateWaitMax;
+        waitTime = param.cautionWaitMax;
         StartCount(true);
     }
 
-
     void OnAddScore()
     {
-        if (!valid) return;
+        if (param == null) return;
 
         // スコア値を送る
         GameObject ui = GameObject.Find("/UI");
@@ -92,35 +110,23 @@ public class EnemyCaution : MonoBehaviour {
 
     void OnActiveSonar()
     {
-        Debug.Log("OnActiveSonar : EnemyCaution");
+        if (param == null) return;
+        Debug.Log("EnemyCaution.OnActiveSonar");
         // ソナーがヒットするたびに、Cautionが上昇
         cautionValue = Mathf.Clamp(cautionValue + param.sonarHitAddCaution, 0, 100);
+        updater.DisplayValue(gameObject, cautionValue);
     }
 
-    public void SetCountUp( float setWaitTime )
+    private void StartCount(bool countup_)
     {
-        waitTime = setWaitTime;
-        StartCount(true);
-    }
-    public void SetCountDown( float setWaitTime )
-    {
-        waitTime = setWaitTime;
-        StartCount(false);
+        count = 0;
+        counting = true;
+        countup = countup_;
+        currentStep = (countup) ? step : (-step);
     }
 
-    void StartCount(bool isCountup )
+    private bool UpdateCaution()
     {
-        currentStep = (isCountup) ? step : (-step);
-        // カウント中はCaution状態
-        SendMessage("OnCaution", SendMessageOptions.DontRequireReceiver);
-        // カウンター開始
-        StartCoroutine("Counter");
-    }
-
-    private IEnumerator Counter()
-    {
-        yield return new WaitForSeconds(waitTime);
-
         cautionValue = Mathf.Clamp(cautionValue + currentStep, 0, 100);
         // 表示更新
         updater.DisplayValue(gameObject, cautionValue);
@@ -128,18 +134,27 @@ public class EnemyCaution : MonoBehaviour {
         if (cautionValue >= 100)
         {
             // Playerを発見 
-            //counting = false;
-            SendMessage("OnEmergency", SendMessageOptions.DontRequireReceiver);
+            SendMessage("OnEmergency");
+            return false;
         }
         else if (cautionValue <= 0)
         {
             // Playerを見失う
-            counting = false;
-            SendMessage("OnUsual", SendMessageOptions.DontRequireReceiver);
+            SendMessage("OnUsual");
+            emergency = false;
+            StartCount(true);   // カウントしなおし
         }
-        else
+
+        return true;
+    }
+
+    void OnEmergency()
+    {
+        emergency = true;
+        if (cautionValue < 100)
         {
-            StartCoroutine("Counter");
+            // まだcuation値が満たされていない場合
+            waitTime = waitForce;
         }
     }
 

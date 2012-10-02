@@ -16,7 +16,11 @@ public class TitleAdapter : MonoBehaviour {
         root = GameObject.Find("/Root");
         ui = GameObject.Find("/UI");
 
-        if (root) root.BroadcastMessage("OnFadeOut", gameObject);
+        if (root)
+        {
+            SetHighScore();
+            root.BroadcastMessage("OnFadeOut", gameObject);
+        }
         else OnIntermissionEnd();
     }
 
@@ -32,5 +36,13 @@ public class TitleAdapter : MonoBehaviour {
     {
         // Stageをはじめる
         if (root) root.SendMessage("OnStartStage");
+    }
+
+    private void SetHighScore()
+    {
+        int highScore = 0;
+        SceneSelector selecter = root.GetComponent<SceneSelector>();
+        if (selecter) highScore = selecter.HighScore();
+        ui.BroadcastMessage("OnAddScore", highScore);
     }
 }

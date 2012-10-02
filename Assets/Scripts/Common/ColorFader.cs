@@ -25,8 +25,6 @@ public class ColorFader : MonoBehaviour {
         max = 1.0f - minAlpha;
         startColor = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, renderer.material.color.a);
 
-        Enable();
-
         // 生成された段階で自分がソナー内にいるかチェック
         GameObject player = GameObject.Find("/Field/Player");
         if (player)
@@ -61,7 +59,7 @@ public class ColorFader : MonoBehaviour {
     void OnHit()
     {
         // ヒットした瞬間でソナーから見えなくする
-        Debug.Log("OnHit:" + gameObject.transform.parent.gameObject.name);
+        Debug.Log(gameObject.transform.parent.gameObject.name + " -> OnHit");
         sonarHit = false;
         Enable();
     }
@@ -69,7 +67,7 @@ public class ColorFader : MonoBehaviour {
     void OnActiveSonar()
     {
         // ソナーから見えることを許可する
-        Debug.Log("ActiveSonar:" + gameObject.transform.parent.gameObject.name);
+        Debug.Log(gameObject.transform.parent.gameObject.name + " -> ActiveSonar");
         sonarHit = true;
         Enable();
     }
@@ -77,7 +75,7 @@ public class ColorFader : MonoBehaviour {
     void OnSonarInside()
     {
         // ソナー表示領域の内側
-        Debug.Log("SonarInside:" + gameObject.transform.parent.gameObject.name);
+        Debug.Log(gameObject.transform.parent.gameObject.name + " -> SonarInside");
         sonarInside = true;
         Enable();
     }
@@ -85,14 +83,14 @@ public class ColorFader : MonoBehaviour {
     void OnSonarOutside()
     {
         // ソナー表示領域の外側
-        Debug.Log("SonarOutside:" + gameObject.transform.parent.gameObject.name);
+        Debug.Log(gameObject.transform.parent.gameObject.name + " -> SonarOutside");
         sonarInside = false;
         Enable();
     }
 
     private void Enable()
     {
-        Debug.Log("ColorFader.Enable: sonarInside=" + sonarInside + ", sonarHit=" + sonarHit);
+        Debug.Log(gameObject.transform.parent.gameObject.name + ": sonarInside=" + sonarInside + ", sonarHit=" + sonarHit);
         bool result = (sonarInside && sonarHit)?true:false;
         renderer.enabled = result;
         if (result)
@@ -109,4 +107,7 @@ public class ColorFader : MonoBehaviour {
         currentTime = 0.0f;
     }
 
+    public bool SonarInside() {
+        return sonarInside;
+    }
 }

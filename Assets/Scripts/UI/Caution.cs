@@ -35,7 +35,7 @@ public class Caution : MonoBehaviour {
 
     void OnStageReset()
     {
-        cautionValue = 0;
+        OnUpdateCaution(0);
     }
 
     void OnUpdateCaution(int value)

@@ -36,7 +36,7 @@ public class TorpedoCollider : MonoBehaviour {
         public void SetRadius(float value) { radius = value; }
     };
     [SerializeField]
-    Explosion explosion; 
+    Explosion explosion = new Explosion(); 
 
     private GameObject ui = null;
 
@@ -51,6 +51,15 @@ public class TorpedoCollider : MonoBehaviour {
         collider.enabled = false;
         StartCoroutine("Delay");
 	}
+
+    void OnGameOver()
+    {
+        collider.enabled = false;
+    }
+    void OnGameClear()
+    {
+        collider.enabled = false;
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -87,7 +96,7 @@ public class TorpedoCollider : MonoBehaviour {
 
     private bool CheckTorpedo(GameObject target)
     {
-        if (target.CompareTag(tag))
+        if (target.CompareTag("Torpedo"))
         {
             // 自分と同じなら魚雷同士の衝突
             Debug.Log("CheckTorpedo");

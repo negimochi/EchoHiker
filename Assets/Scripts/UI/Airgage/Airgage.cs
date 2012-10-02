@@ -78,9 +78,7 @@ public class Airgage : MonoBehaviour {
     {
         // ダメージレベル加算
         damageLv += value;
-        damageLv = Mathf.Clamp(damageLv, 0, airUpdateTime.Length-1);
-        // 表示用のオブジェクトに伝える
-        BroadcastMessage("OnDisplayDamageLv", damageLv);
+        UpdateDamageLv();
     }
 
     void OnAddAir(int value )
@@ -93,6 +91,8 @@ public class Airgage : MonoBehaviour {
     {
         air = airMax;
         damageLv = 0;
+        UpdateAirgage();
+        UpdateDamageLv();
         gameover = false;
     }
 
@@ -108,8 +108,7 @@ public class Airgage : MonoBehaviour {
             gameover = true;
         }
         // メーターに値を伝える
-        float threshold = Mathf.InverseLerp(0, airMax, air);
-        meterObj.SendMessage("OnDisplayAirgage", threshold);
+        UpdateAirgage();
 
         if (gameover)
         {
@@ -117,6 +116,17 @@ public class Airgage : MonoBehaviour {
             GameObject adapter = GameObject.Find("/Adapter");
             adapter.SendMessage("OnGameEnd", false);
         }
+    }
+
+    private void UpdateDamageLv()
+    {
+        damageLv = Mathf.Clamp(damageLv, 0, airUpdateTime.Length - 1);
+        BroadcastMessage("OnDisplayDamageLv", damageLv);
+    }
+    private void UpdateAirgage()
+    {
+        float threshold = Mathf.InverseLerp(0, airMax, air);
+        meterObj.SendMessage("OnDisplayAirgage", threshold);
     }
 
     public float Air() { return air; }

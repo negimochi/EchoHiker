@@ -4,7 +4,7 @@ using System.Collections;
 public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]
-    private GameObject target;  // 生成対象
+    private GameObject target = null;  // 生成対象
     [SerializeField]
     private GenerateParameter param = new GenerateParameter();
     [SerializeField]

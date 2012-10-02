@@ -55,7 +55,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     };
     [SerializeField]
-    private SpeedValue speed;
+    private SpeedValue speed = new SpeedValue();
 
     /// <summary>
     /// 回転調整
@@ -130,7 +130,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     };
     [SerializeField]
-    private RotationValue rot;
+    private RotationValue rot = new RotationValue();
 
     [SerializeField]
     private Rect runningArea;   // 移動範囲
@@ -155,8 +155,8 @@ public class EnemyBehavior : MonoBehaviour
 
     private bool autoAttack = false;
     private float currentAttackTime;
-    private TorpedoGenerator torpedo;
-    private GameObject player;
+    private TorpedoGenerator torpedo = null;
+    private GameObject player = null;
 
 
     void Start()
@@ -321,21 +321,31 @@ public class EnemyBehavior : MonoBehaviour
     /// </summary>
     private void MoveForward()
     {
-        if (mode == Mode.Emergency)
-        {
-            // Playerとの距離を保とうとする
-            float dist = Vector3.Distance(transform.position, player.transform.position);
-            //Debug.Log("dist="+dist);
-            if (dist <= attackDistance)
-            {
-                speed.GoBackward();
-            }
-            else {
-                speed.GoFroward();
-            }
-        }
+        CheckPlayer();
+
         Vector3 deltaVec = speed.Value * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + deltaVec * Time.deltaTime);
     }
 
+    private void CheckPlayer()
+    {
+        if (player == null) return;
+
+        float dist = Vector3.Distance(transform.position, player.transform.position);
+        switch (mode)
+        {
+            case Mode.Emergency:
+                if (dist <= attackDistance) speed.GoBackward();
+                else speed.GoFroward();
+                break;
+            case Mode.Usual:
+                // プレイヤーに気づく
+                if (dist <= attackDistance)
+                {
+                    SendMessage("OnEmergency");
+                }
+                break;
+            default: break;
+        }
+    }
 }

@@ -3,9 +3,6 @@ using System.Collections;
 
 public class CautionUpdater : MonoBehaviour
 {
-//    [SerializeField]
-//    private float maxWaitTime = 1.0f;
-
     [SerializeField] // debug
     private int instantiatedCount = 0;
 
@@ -31,7 +28,7 @@ public class CautionUpdater : MonoBehaviour
         //enemyCaution.SetCountUp(waitTime);
 
         // 通常ゼロになっているはずだが、念のためUpdate
-        DisplayValue(target, GetCaution(target));
+        DisplayValue(target, GetCautionValue(target));
     }
 
     void OnDestroyChild(GameObject target)
@@ -50,7 +47,7 @@ public class CautionUpdater : MonoBehaviour
         if (!updateEnemy.Equals(maxCautionEnemy))
         {
             // 同一でないなら現状のMax値を持つ敵の現在の値と比較
-            maxValue = GetCaution(maxCautionEnemy);
+            maxValue = GetCautionValue(maxCautionEnemy);
             if (newValue > maxValue)
             {
                 maxValue = newValue;
@@ -66,7 +63,7 @@ public class CautionUpdater : MonoBehaviour
         if(ui)ui.BroadcastMessage("OnUpdateCaution", maxValue, SendMessageOptions.DontRequireReceiver);
     }
 
-    private int GetCaution(GameObject enemyObj)
+    private int GetCautionValue(GameObject enemyObj)
     {
         if(enemyObj == null ) return 0;
         EnemyCaution enemyCauiton = enemyObj.GetComponent<EnemyCaution>();

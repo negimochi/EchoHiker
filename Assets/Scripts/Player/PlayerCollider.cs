@@ -6,13 +6,9 @@ public class PlayerCollider : MonoBehaviour {
     [SerializeField]
     private float speedDown = 2.0f;
 
-    [SerializeField]
-    private string damageObjTag = "Torpedo";
-    [SerializeField]
-    private string terrainTag = "Terrain";
 
     private PlayerController controller;
-    private bool valid = true;
+    private bool damage = true;
 
 	// Use this for initialization
 	void Start () 
@@ -23,27 +19,27 @@ public class PlayerCollider : MonoBehaviour {
 
     void OnGameOver()
     {
-        valid = false;
+        damage = false;
     }
     void OnGameClear()
     {
-        valid = false;
+        damage = false;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (valid) CheckDamageCollision(collision.gameObject);
+        if (damage) CheckDamageCollision(collision.gameObject);
         else CheckTerrainCollision(collision.gameObject);
     }
     void OnCollisionStay(Collision collision)
     {
-        if (valid) CheckDamageCollision(collision.gameObject);
+        if (damage) CheckDamageCollision(collision.gameObject);
     }
 
     private void CheckDamageCollision(GameObject target)
     {
         // 若干スピードを落とす微調整(あまりスピードがありすぎるとexplosionがきかない)
-        if (target.CompareTag(damageObjTag))
+        if (target.CompareTag("Torpedo"))
         {
             controller.AddSpeed( -speedDown );
         }
@@ -51,7 +47,8 @@ public class PlayerCollider : MonoBehaviour {
 
     private void CheckTerrainCollision(GameObject target)
     {
-        if (target.CompareTag(terrainTag))
+        // テラインに接触したら沈んだ音を再生
+        if (target.CompareTag("Terrain"))
         {
             PlayAudioAtOnce();
         }

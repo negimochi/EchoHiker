@@ -4,7 +4,7 @@ using System.Collections;
 public class Controller : MonoBehaviour {
 
     [SerializeField]
-    private Texture guiCompass;
+    private Texture guiCompass = null;
     [SerializeField]
     private float aspect = 0.5f;
 

@@ -20,16 +20,17 @@ public class EnemyParamSetter : MonoBehaviour
     void OnInstantiatedChild(GameObject target)
     {
         // 生成されたオブジェクトに対して設定
-        float t = (Time.timeSinceLevelLoad - timeStamp) / duration;
+        float t = 0;
+        if(duration > 0) t = (Time.timeSinceLevelLoad - timeStamp) / duration;
         Debug.Log("EnemyParamSetter" + t);
 
         EnemyParameter param = new EnemyParameter();
         param.scoreMax = (int)Mathf.Lerp(fromParam.scoreMax, toParam.scoreMax, t);
         param.scoreMin = (int)Mathf.Lerp(fromParam.scoreMin, toParam.scoreMin, t);
-        param.cautionUpdateWaitMax = Mathf.Lerp(fromParam.cautionUpdateWaitMax, toParam.cautionUpdateWaitMax, t);
-        param.cautionUpdateWaitMin = Mathf.Lerp(fromParam.cautionUpdateWaitMin, toParam.cautionUpdateWaitMin, t);
+        param.cautionWaitMax = Mathf.Lerp(fromParam.cautionWaitMax, toParam.cautionWaitMax, t);
+        param.cautionWaitMin = Mathf.Lerp(fromParam.cautionWaitMin, toParam.cautionWaitMin, t);
         param.sonarHitAddCaution = (int)Mathf.Lerp(fromParam.sonarHitAddCaution, toParam.sonarHitAddCaution, t);
-
+        param.sneaking = Mathf.Lerp(fromParam.sneaking, toParam.sneaking, t);
         // 生成時からカウンタをはじめる
         target.SendMessage("OnStartCautionCount", param);
     }

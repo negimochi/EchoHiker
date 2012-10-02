@@ -26,7 +26,7 @@ public class ScoreDisplay : MonoBehaviour {
     {
         score += value;
         guiText.text = score.ToString("D" + disitSize);
-        SendMessage("OnStartTextBlink");
+        SendMessage("OnStartTextBlink", SendMessageOptions.DontRequireReceiver);
     }
 
     void OnEndTextBlink()

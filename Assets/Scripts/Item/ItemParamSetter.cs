@@ -20,7 +20,8 @@ public class ItemParamSetter: MonoBehaviour
     void OnInstantiatedChild(GameObject target)
     {
         // 生成されたオブジェクトに対して設定
-        float t = (Time.timeSinceLevelLoad - timeStamp) / duration;
+        float t = 0;
+        if (duration > 0) t = (Time.timeSinceLevelLoad - timeStamp) / duration;
         Debug.Log("ItemParamSetter:" + t);
 
         ItemParameter param = new ItemParameter();
@@ -29,6 +30,7 @@ public class ItemParamSetter: MonoBehaviour
         param.recoveryMax = (int)Mathf.Lerp(fromParam.recoveryMax, toParam.recoveryMax, t);
         param.recoveryMin = (int)Mathf.Lerp(fromParam.recoveryMin, toParam.recoveryMin, t);
         param.lifeTime = Mathf.Lerp(fromParam.lifeTime, toParam.lifeTime, t);
+
         target.SendMessage("OnStartLifeTimer", param);
     }
 

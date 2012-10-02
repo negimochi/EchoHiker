@@ -4,8 +4,6 @@ using System.Collections;
 public class ItemCollider : MonoBehaviour
 {
     [SerializeField]
-    private string playerTag = "Player";
-    [SerializeField]
     private bool valid = true;  // 念のためフラグ管理しておく
 
     void Start()
@@ -30,7 +28,7 @@ public class ItemCollider : MonoBehaviour
     void CheckTrigger( GameObject target )
     {
         if (! valid) return;
-        if (! target.CompareTag(playerTag)) return;
+        if (!target.CompareTag("Player")) return;
         // Colliderを切る
         collider.enabled = false;
         valid = false;

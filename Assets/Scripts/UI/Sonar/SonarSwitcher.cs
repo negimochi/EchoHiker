@@ -5,9 +5,9 @@ public class SonarSwitcher : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject activeObj;
+    private GameObject activeObj = null;
     [SerializeField]
-    private GameObject passiveObj;
+    private GameObject passiveObj = null;
     [SerializeField]
     private int offsetPixel = 10;   // 左端からの位置オフセット
     [SerializeField]

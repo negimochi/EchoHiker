@@ -19,7 +19,7 @@ public class SceneSelector : MonoBehaviour {
     private bool playOnAwake = true;    // 即時スタートするか（Release時はOnにすること）
 
     [SerializeField]    // debug
-    private int hiScore = 0;        // ハイスコアの記録
+    private int highScore = 0;        // ハイスコアの記録
 
 	void Awake()
 	{
@@ -76,7 +76,7 @@ public class SceneSelector : MonoBehaviour {
         StageUI stageUI = ui.GetComponent<StageUI>();
         int newScore = 0;
         if (stageUI) newScore = stageUI.Score();
-        if (hiScore < newScore) hiScore = newScore;
+        if (highScore < newScore) highScore = newScore;
     }
 
     // タイトルをロード
@@ -102,5 +102,10 @@ public class SceneSelector : MonoBehaviour {
     {
         // ロードできてないならロード開始
         LoadScene(); 
+    }
+
+    public int HighScore()
+    {
+        return highScore;
     }
 }

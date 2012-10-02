@@ -4,9 +4,9 @@ using System.Collections;
 public class TorpedoGenerator : MonoBehaviour {
 
     [SerializeField]
-    private GameObject target;
+    private GameObject target = null;
     [SerializeField]
-    private Vector3 pos;            // 最初の生成位置
+    private Vector3 pos = new Vector3();            // 最初の生成位置
     [SerializeField]
     private float coolTime = 3.0f;  // クールタイム
     [SerializeField]

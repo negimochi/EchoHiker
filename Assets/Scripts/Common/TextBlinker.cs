@@ -3,7 +3,8 @@ using System.Collections;
 
 public class TextBlinker : MonoBehaviour
 {
-
+    [SerializeField]
+    private bool valid = true;
     [SerializeField]
     private float blinkTime = 0.8f;
     [SerializeField]
@@ -19,7 +20,7 @@ public class TextBlinker : MonoBehaviour
 
     void OnStartTextBlink()
     {
-        if (!guiText) return;
+        if (!guiText || !valid) return;
         count = 0;
         guiText.enabled = true;
         StartCoroutine("Delay", blinkTime);

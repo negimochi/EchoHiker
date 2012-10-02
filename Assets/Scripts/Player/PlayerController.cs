@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
         public float Rate() { return Mathf.InverseLerp(0.0f, max, current); }
     };
     [SerializeField]
-    private SpeedValue speed;
+    private SpeedValue speed = new SpeedValue();
 
     [System.Serializable]
     public class RotationValue
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour {
         public void Stop() { current = Vector3.zero; }
     };
     [SerializeField]
-    private RotationValue rot;
+    private RotationValue rot = new RotationValue();
 
     private Quaternion deltaRot;
 
@@ -208,6 +208,10 @@ public class PlayerController : MonoBehaviour {
     public void AddSpeed(float value) 
     {
         speed.Change( value );
+    }
+    public float SpeedRate()
+    {
+        return speed.Rate();
     }
 
 }

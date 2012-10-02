@@ -25,18 +25,12 @@ public class GenerateSwitcher : MonoBehaviour {
     private TargetGenerator current = null;
     private Hashtable generators = new Hashtable();
 
-    private bool valid = true;
-
 	void Start () 
     {
     }
 
     private void Init()
     {
-//        GameObject enemyObj = GameObject.Find("Enemies");
-//        GameObject itemObj = GameObject.Find("Items");
-//        if (enemyObj) AddGenerator( enemyObj.GetComponents<RandomGenerator>() );
-//        if (itemObj) AddGenerator( itemObj.GetComponents<RandomGenerator>() );
         RandomGenerator[] genArr = GetComponentsInChildren<RandomGenerator>();
         foreach( RandomGenerator gen in genArr ){
             AddGenerator(gen);
@@ -108,7 +102,6 @@ public class GenerateSwitcher : MonoBehaviour {
     {
         // ゲーム開始時
         Init();
-        valid = true;
         Run();
     }
 
@@ -123,12 +116,10 @@ public class GenerateSwitcher : MonoBehaviour {
 
     private void Suspend()
     {
-        valid = false;
         current.gen.SendMessage("OnGeneratorSuspend");
     }
 
 
-//    void OnCheckGameClear(string tag)
     void OnClearCondition(string tag)
     {
         // クリア条件
@@ -136,7 +127,6 @@ public class GenerateSwitcher : MonoBehaviour {
         foreach (string key in generators.Keys) 
         {
             // 条件を達成していたタグのTargetObjectをtrueにする
-
             TargetGenerator target = generators[key] as TargetGenerator;
             if (tag.CompareTo(key) == 0) target.clearCondition = true;
             // 全部クリアできてるかチェック
@@ -147,7 +137,6 @@ public class GenerateSwitcher : MonoBehaviour {
             // ゲーム終了、次のステージへ
             GameObject adapter = GameObject.Find("/Adapter");
             adapter.SendMessage("OnGameEnd", true);
-            valid = false;
         }
     }
 }

@@ -5,9 +5,6 @@ public class SonarCamera : MonoBehaviour {
 
     [SerializeField]
     private float radius = 0.0f;
-    [SerializeField]
-    private string sonarTag = "Sonar";   // ソナーの外側にいるオブジェクト
-
 
     void Awake()
     {
@@ -39,28 +36,42 @@ public class SonarCamera : MonoBehaviour {
     // Stayで代用する
     void OnTriggerStay(Collider other)
     {
-        if (CheckSonarTag(other.gameObject))
+        GameObject target = other.gameObject;
+        if (CheckOutsideSonar(target))
         {
-            if (!other.gameObject.renderer.enabled)
-            {
-                Debug.Log("SonarCamera.OnTriggerEnter");
-                other.gameObject.SendMessage("OnSonarInside");
-            }
+            Debug.Log("SonarCamera.OnTriggerEnter");
+            target.SendMessage("OnSonarInside");
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (CheckSonarTag(other.gameObject))
+        GameObject target = other.gameObject;
+        if (CheckInsideSonar(target))
         {
             Debug.Log("SonarCamera.OnTriggerExit");
-            other.gameObject.SendMessage("OnSonarOutside");
+            target.SendMessage("OnSonarOutside");
         }
     }
 
-    private bool CheckSonarTag(GameObject target)
+    private bool CheckInsideSonar(GameObject target)
     {
-        return (target.CompareTag(sonarTag)) ? true : false;
+        if (!target.CompareTag("Sonar")) return false;
+
+        Debug.Log("CheckInsideSonar[" + target.transform.parent.gameObject.name + "]");
+        ColorFader fader = target.GetComponent<ColorFader>();
+        if (fader) return fader.SonarInside();
+        return false;
+    }
+
+    private bool CheckOutsideSonar(GameObject target)
+    {
+        if (!target.CompareTag("Sonar")) return false;
+
+        Debug.Log("CheckOutsideSonar[" + target.transform.parent.gameObject.name + "]");
+        ColorFader fader = target.GetComponent<ColorFader>();
+        if (fader) return (!fader.SonarInside());
+        return false;
     }
 
     void OnInstantiatedSonarPoint(GameObject target)
@@ -68,7 +79,7 @@ public class SonarCamera : MonoBehaviour {
         // すでにソナー内にいるかチェックする
         Vector3 pos = new Vector3( transform.position.x, 0.0f, transform.position.z );
         float dist = Vector3.Distance(pos, target.transform.position);
-        Debug.Log("OnInstantiatedSonarPoint: dist=" + dist + ", radius=" + radius);
+        Debug.Log("OnInstantiatedSonarPoint[" + target.transform.parent.gameObject.name + "]: dist=" + dist + ", radius=" + radius);
         if (dist <= radius)
         {
             target.SendMessage("OnSonarInside");
