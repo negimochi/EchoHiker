@@ -22,7 +22,7 @@ public class EnemyParamSetter : MonoBehaviour
         // 生成されたオブジェクトに対して設定
         float t = 0;
         if(duration > 0) t = (Time.timeSinceLevelLoad - timeStamp) / duration;
-        Debug.Log("EnemyParamSetter" + t);
+//        Debug.Log("EnemyParamSetter: t=" + t);
 
         EnemyParameter param = new EnemyParameter();
         param.scoreMax = (int)Mathf.Lerp(fromParam.scoreMax, toParam.scoreMax, t);

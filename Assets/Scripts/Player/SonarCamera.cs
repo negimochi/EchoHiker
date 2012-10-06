@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SonarCamera : MonoBehaviour {
 
-    [SerializeField]
+//    [SerializeField]
     private float radius = 0.0f;
 
     void Awake()
@@ -24,61 +24,50 @@ public class SonarCamera : MonoBehaviour {
     }
 
     // Enterではとりのがしが発生する場合がある
-//    void OnTriggerEnter(Collider other)
-//    {
-//        if (CheckObject(other.gameObject))
-//        {
-//           Debug.Log("SonarCamera.OnTriggerEnter");
-//            other.gameObject.BroadcastMessage("OnSonarInside");
-//        }
-//    }
+    void OnTriggerEnter(Collider other)
+    {
+//        Debug.Log("OnTriggerStay:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarPoint_Enter(other.gameObject);
+    }
 
     // Stayで代用する
     void OnTriggerStay(Collider other)
     {
-        GameObject target = other.gameObject;
-        if (CheckOutsideSonar(target))
-        {
-            Debug.Log("SonarCamera.OnTriggerEnter");
-            target.SendMessage("OnSonarInside");
-        }
+//        Debug.Log("OnTriggerStay:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarPoint_Enter(other.gameObject);
     }
 
     void OnTriggerExit(Collider other)
     {
-        GameObject target = other.gameObject;
-        if (CheckInsideSonar(target))
-        {
-            Debug.Log("SonarCamera.OnTriggerExit");
-            target.SendMessage("OnSonarOutside");
-        }
+//        Debug.Log("OnTriggerStay:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarPoint_Exit(other.gameObject);
     }
 
-    private bool CheckInsideSonar(GameObject target)
+    private void CheckSonarPoint_Enter(GameObject target)
     {
-        if (!target.CompareTag("Sonar")) return false;
-
-        Debug.Log("CheckInsideSonar[" + target.transform.parent.gameObject.name + "]");
+        if (!target.CompareTag("Sonar")) return;
         ColorFader fader = target.GetComponent<ColorFader>();
-        if (fader) return fader.SonarInside();
-        return false;
+        if (fader==null) return;
+        if (fader.SonarInside()) return;
+        Debug.Log("CheckSonarPoint");
+        target.BroadcastMessage("OnSonarInside");
     }
 
-    private bool CheckOutsideSonar(GameObject target)
+    private void CheckSonarPoint_Exit(GameObject target)
     {
-        if (!target.CompareTag("Sonar")) return false;
-
-        Debug.Log("CheckOutsideSonar[" + target.transform.parent.gameObject.name + "]");
-        ColorFader fader = target.GetComponent<ColorFader>();
-        if (fader) return (!fader.SonarInside());
-        return false;
+        if (!target.CompareTag("Sonar")) return ;
+//        ColorFader fader = target.GetComponent<ColorFader>();
+//        if (fader) return fader.SonarInside();
+        Debug.Log("CheckSonarPoint_TriggerExit");
+        target.SendMessage("OnSonarOutside");
     }
 
     void OnInstantiatedSonarPoint(GameObject target)
     {
         // すでにソナー内にいるかチェックする
-        Vector3 pos = new Vector3( transform.position.x, 0.0f, transform.position.z );
-        float dist = Vector3.Distance(pos, target.transform.position);
+        Vector3 pos = new Vector3(transform.position.x, 0.0f, transform.position.z);
+        Vector3 target_pos = new Vector3( target.transform.position.x, 0.0f, target.transform.position.z );
+        float dist = Vector3.Distance(pos, target_pos);
         Debug.Log("OnInstantiatedSonarPoint[" + target.transform.parent.gameObject.name + "]: dist=" + dist + ", radius=" + radius);
         if (dist <= radius)
         {

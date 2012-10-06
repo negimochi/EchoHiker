@@ -16,16 +16,24 @@ public class ItemCollider : MonoBehaviour
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
     }
 
-    void OnTriggerEnter(Collider other)
+//    void OnTriggerEnter(Collider other)
+//    {
+//        CheckPlayer( other.gameObject );
+//    }
+//    void OnTriggerStay(Collider other)
+//    {
+//        CheckPlayer(other.gameObject);
+//    }
+    void OnCollisionEnter(Collision collision)
     {
-        CheckTrigger( other.gameObject );
+        CheckPlayer(collision.gameObject);
     }
-    void OnTriggerStay(Collider other)
+    void OnCollisionStay(Collision collider)
     {
-        CheckTrigger( other.gameObject );
+        CheckPlayer(collider.gameObject);
     }
-    
-    void CheckTrigger( GameObject target )
+
+    void CheckPlayer(GameObject target)
     {
         if (! valid) return;
         if (!target.CompareTag("Player")) return;

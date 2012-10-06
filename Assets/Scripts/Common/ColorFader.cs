@@ -29,7 +29,6 @@ public class ColorFader : MonoBehaviour {
         GameObject player = GameObject.Find("/Field/Player");
         if (player)
         {
-            Debug.Log("ColorFader.OnInstantiatedSonarPoint");
             player.BroadcastMessage("OnInstantiatedSonarPoint", gameObject);
         }
 	}
@@ -55,6 +54,41 @@ public class ColorFader : MonoBehaviour {
             }
         }
 	}
+    
+    void OnTriggerEnter(Collider other)
+    {
+//        Debug.Log("OnTriggerEnter:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarCamera_Enter(other.gameObject);
+    }
+    void OnTriggerStay(Collider other)  // Enterで抜けが発生する可能性があるので、Stayでもみておく
+    {
+//        Debug.Log("OnTriggerStay:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarCamera_Enter(other.gameObject);
+    }
+    void OnTriggerExit(Collider other)
+    {
+//        Debug.Log("OnTriggerExit:" + other.gameObject.tag + ", " + other.gameObject.name);
+        CheckSonarCamera_Exit(other.gameObject);
+    }
+
+    void CheckSonarCamera_Enter(GameObject target)
+    {
+        if (sonarInside) return;
+        if (!target.CompareTag("SonarCamera")) return;
+
+        Debug.Log("CheckSonarCamera_Enter");
+        OnSonarInside();
+    }
+
+    void CheckSonarCamera_Exit(GameObject target)
+    {
+        if (!sonarInside) return;
+        if (!target.CompareTag("SonarCamera")) return;
+
+        Debug.Log("CheckSonarCamera_Exit");
+        OnSonarOutside();
+    }
+
 
     void OnHit()
     {

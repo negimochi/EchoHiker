@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
         public Vector3 current = Vector3.zero;
         private float attenuationStart;
         private float attenuationTime = 0.0f;
-        private float currentRot;
+        private float currentRot;               // 現在の減衰率（attenuationRot/slowdownRot)
 
         [SerializeField]
         private float max = 30.0f;
@@ -45,9 +45,9 @@ public class PlayerController : MonoBehaviour {
         [SerializeField]
         private float margin = 0.01f;
         [SerializeField]
-        private float attenuationRot = 0.2f;
+        private float attenuationRot = 0.2f;    // 『ボタンを押していない』ときの減衰率
         [SerializeField]
-        private float slowdownRot    = 0.4f;
+        private float slowdownRot = 0.4f;       // 『ボタンは押しているが、マウスは動いていない』ときの減衰率
 
         public void Init()
         {
@@ -59,7 +59,8 @@ public class PlayerController : MonoBehaviour {
         /// </summary>
         public void Change(float value)
         {
-            // 操作性を向上させるために若干マージンを設ける
+            // マウスの動きが小さいときは更新しない
+            // （マウスを動かし続けないと旋回を止めてしまうようにするため）
             if (-margin < value && value < margin) return;
 
             // 回転量のブレンド
@@ -209,6 +210,7 @@ public class PlayerController : MonoBehaviour {
     {
         speed.Change( value );
     }
+
     public float SpeedRate()
     {
         return speed.Rate();

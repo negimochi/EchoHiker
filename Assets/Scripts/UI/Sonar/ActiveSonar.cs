@@ -41,17 +41,17 @@ public class ActiveSonar : MonoBehaviour {
         //Debug.Log("ActiveSonar="+effectDist + ":" + Time.time);
         if (enemy)
         {
-            //Debug.Log("Enemy Search :" + enemy.SonarChildren().Count);
+            //Debug.Log(effectDist + "- Enemy Search :" + enemy.SonarChildren().Count);
             Search(enemy.SonarChildren(), effectDist);
         }
         if (item)
         {
-            //Debug.Log("Item Search :" + item.SonarChildren().Count);
+            //Debug.Log(effectDist + "- Item Search :" + item.SonarChildren().Count);
             Search(item.SonarChildren(), effectDist);
         }
         if (torpedo)
         {
-            //Debug.Log(effectDist + " : Torpedo.SonarChildren: sonar=" + torpedo.SonarChildren().Count + ", count=" + torpedo.Children().Count);
+            //Debug.Log(effectDist + "- Torpedo Search :" + torpedo.SonarChildren().Count);
             Search(torpedo.SonarChildren(), effectDist);
         }
 
@@ -60,6 +60,8 @@ public class ActiveSonar : MonoBehaviour {
 	
     void Search(ArrayList array, float effectDist) 
     {
+        if (array == null) return;
+
         int i = 0;
         while (i < array.Count)
         {
