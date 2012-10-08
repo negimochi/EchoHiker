@@ -79,11 +79,14 @@ public class TorpedoManager : MonoBehaviour {
             Vector3 pos = target.transform.position;
             if (rect.Contains(new Vector2(pos.x, pos.z)))
             {
-                childrenArray.RemoveAt(i);
-                sonarArray.RemoveAt(i);
+                i++;
+            }
+            else
+            {
+                childrenArray.RemoveAt(i);  // 対象を削除
+                sonarArray.Remove(target);  // もしsonarにも残ってたら削除
                 Destroy(target);
             }
-            else i++;
         }
 
         // 次のDelay
