@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Stageシーン用Adapter。各StageごとのFieldのローダ的役割。
+/// ゲームのスタートと終了は必ずここを通り、シーン切替時にRootに終了を伝える
+/// </summary>
 public class StageAdapter : MonoBehaviour {
 
     public enum Type

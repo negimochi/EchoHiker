@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ステージの各Fieldが共通でもつスクリプト
+/// </summary>
 public class StageField : MonoBehaviour {
 
 

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 常に最新の最大値Cautionを表示するためのスクリプト
+/// </summary>
 public class CautionUpdater : MonoBehaviour
 {
     [SerializeField] // debug

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 生成物の変更。現状、RandomGeneratorによって生成されるものしか考慮していない
+/// </summary>
 public class GenerateSwitcher : MonoBehaviour {
 
     enum Type

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// シーンを切り替える
+/// </summary>
 public class SceneSelector : MonoBehaviour {
 
     public enum Type {

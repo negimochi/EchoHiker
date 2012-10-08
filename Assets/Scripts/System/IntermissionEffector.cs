@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// インターミッション。フェードイン・アウト、スライドイン・アウトの4種実装
+/// </summary>
 public class IntermissionEffector : MonoBehaviour {
 
     public enum Type

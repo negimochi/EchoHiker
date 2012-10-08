@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ヒットエフェクト専用。
+/// OnHitが伝わったときに、パーティクルとサウンドを再生する。
+/// </summary>
 public class HitEffector : MonoBehaviour {
 
     // ヒット時の挙動管理と終了タイミング

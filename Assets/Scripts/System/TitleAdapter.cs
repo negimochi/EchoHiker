@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Titleシーン用Adapter。
+/// Rootにシーン終了を伝える。
+/// </summary>
 public class TitleAdapter : MonoBehaviour {
 
     private GameObject root = null;

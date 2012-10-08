@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Stageシーン用
+/// </summary>
 public class StageUI : MonoBehaviour {
 
 

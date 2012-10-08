@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ソナーポイントのフェード。
+/// 表示・非表示のフラグ管理
+/// </summary>
 public class ColorFader : MonoBehaviour {
 
     [SerializeField]

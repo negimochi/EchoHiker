@@ -66,7 +66,12 @@ public class ActiveSonar : MonoBehaviour {
         while (i < array.Count)
         {
             GameObject target = array[i] as GameObject;
-            if (target == null) continue;
+            if (target == null)
+            {
+                i++;
+                continue;
+            }
+
             float dist = Vector3.Distance(target.transform.position, player.transform.position);
             if (dist < effectDist)
             {

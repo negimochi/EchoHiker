@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 魚雷の生成
+/// </summary>
 public class TorpedoGenerator : MonoBehaviour {
 
     [SerializeField]
@@ -63,20 +66,18 @@ public class TorpedoGenerator : MonoBehaviour {
         // 親を設定
         newObj.transform.parent = parentObj.transform;
 
-        // Owner設定
+        // オーナー設定
         TorpedoCollider torpedoCollider = newObj.GetComponent<TorpedoCollider>();
         if (torpedoCollider) torpedoCollider.SetOwner(type);
         else Debug.LogError("Not exists TorpedoCollider");
-
+        // スピードセット
         TorpedoBehavior torpedoBehavior = newObj.GetComponent<TorpedoBehavior>();
         if (torpedoBehavior) torpedoBehavior.SetSpeed(speed);
         else Debug.LogError("Not exists TorpedoBehavior");
-
         // 音の設定
         Note note = newObj.GetComponentInChildren<Note>();
         if (note) note.SetEnable(sound);
         else Debug.LogError("Not exists Note");
-
         // ソナーの設定
         parentObj.SendMessage("OnInstantiatedChild", newObj); 
         if (sonar)

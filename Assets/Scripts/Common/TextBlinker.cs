@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// テキストの点滅
+/// </summary>
 public class TextBlinker : MonoBehaviour
 {
     [SerializeField]
@@ -16,10 +19,9 @@ public class TextBlinker : MonoBehaviour
     {
     }
 
-
-
     void OnStartTextBlink()
     {
+        // Blinkをスタートさせるメッセージ
         if (!guiText || !valid) return;
         count = 0;
         guiText.enabled = true;

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// テキストのフェード
+/// </summary>
 public class TextFader : MonoBehaviour {
 
     [SerializeField]
@@ -19,6 +22,7 @@ public class TextFader : MonoBehaviour {
 
     void OnTextFadeOut(  )
     {
+        // フェードアウトをスタートさせるメッセージ
         if (!guiText) return;
         fromValue = baseColor.a;
         toValue   = 0.0f;
@@ -26,6 +30,7 @@ public class TextFader : MonoBehaviour {
     }
     void OnTextFadeIn(  )
     {
+        // フェードインをスタートさせるメッセージ
         if (!guiText) return;
         fromValue = 0.0f;
         toValue   = baseColor.a;

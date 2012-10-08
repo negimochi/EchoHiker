@@ -9,8 +9,8 @@ public class TorpedoBehavior : MonoBehaviour {
     [SerializeField]
     private float speed = 1.0f;
 
-    [SerializeField]
-    private Rect runningArea;   // 有効範囲（ワールド座標）
+//    [SerializeField]
+//    private Rect runningArea;   // 有効範囲（ワールド座標）
 
 	void Start () 
     {
@@ -19,16 +19,15 @@ public class TorpedoBehavior : MonoBehaviour {
 	
 	void Update () 
     {
-        if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
-        {
-            // 可動範囲を超えたら削除
-            OnDestroyObject();
-        }
-        else
-        {
-            // 通常は前に進む
-            MoveForward();
-        }
+        // 通常は前に進む
+        MoveForward();
+
+
+//        if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
+//        {
+//            // 可動範囲を超えたら削除
+//            OnDestroyObject();
+//        }
 	}
 
     private void MoveForward()
@@ -37,11 +36,11 @@ public class TorpedoBehavior : MonoBehaviour {
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
     }
 
-    void OnDestroyObject()
-    {
-        Debug.Log("TorpedoBehaviour.OnDestroy");
-        Destroy(gameObject);
-    }
+//    void OnDestroyObject()
+//    {
+//        Debug.Log("TorpedoBehaviour.OnDestroy");
+//        Destroy(gameObject);
+//    }
 
     public void SetSpeed( float speed_ ) { speed = speed_; }
 

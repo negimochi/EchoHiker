@@ -1,17 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 定期的に音を鳴らす。
+/// ヒット後はフェードアウト処理。
+/// ヒットエフェクトの終了を確認してからオブジェクト破棄を親に伝える
+/// </summary>
 public class Note : MonoBehaviour {
     [SerializeField]
-    private float interval = 1.0f;
+    private float interval = 1.0f;  // 音を鳴らす感覚
     [SerializeField]
-    private float offset = 0.0f;
+    private float offset = 0.0f;    // 最初のなるタイミングのズレ
     [SerializeField]
-    private bool valid   = true;
-
-    private float counter = 0.0f;
+    private bool valid   = true;    // trueで有効
 
     private HitEffector hitEffector = null;
+    private float counter = 0.0f;
 
 	void Start () 
     {

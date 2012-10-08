@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ユーザクリック後、Adapterにシーン終了を伝える
+/// </summary>
 public class TitleSwitcher : MonoBehaviour {
 
     [SerializeField]
