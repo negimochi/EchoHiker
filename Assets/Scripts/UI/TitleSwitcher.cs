@@ -15,7 +15,8 @@ public class TitleSwitcher : MonoBehaviour {
 
     private float max;
     private float currentTime = 0.0f;
-    private Color startColor;
+    [SerializeField]
+    private Color startColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     private bool wait = true;
 
     private bool pushed = false;
@@ -23,7 +24,7 @@ public class TitleSwitcher : MonoBehaviour {
     void Start()
     {
         max = 1.0f - minAlpha;
-        startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b);
+        //startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b, guiText.material.color.a);
     }
 
     void Update()
