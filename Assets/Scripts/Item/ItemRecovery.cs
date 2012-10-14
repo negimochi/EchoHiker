@@ -42,7 +42,7 @@ public class ItemRecovery : MonoBehaviour
         // UIにメッセージ通知
         if(ui) ui.BroadcastMessage("OnEndItemLifetime", SendMessageOptions.DontRequireReceiver);
         // 強制削除
-        BroadcastMessage("OnHit");
+        BroadcastMessage("OnDestroyObject");
     }
 
     void OnRecovery()
