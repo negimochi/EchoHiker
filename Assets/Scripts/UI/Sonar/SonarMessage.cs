@@ -29,7 +29,7 @@ public class SonarMessage : MonoBehaviour {
         SendMessage("OnStartTextBlink");
     }
 
-    void OnEndItemLifetime()
+    void OnEndItemLost()
     {
         guiText.text = itemLost;
         SendMessage("OnStartTextBlink");

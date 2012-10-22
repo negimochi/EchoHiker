@@ -42,7 +42,9 @@ public class ItemRecovery : MonoBehaviour
         // UIにメッセージ通知
         if(ui) ui.BroadcastMessage("OnEndItemLifetime", SendMessageOptions.DontRequireReceiver);
         // 強制削除
-        BroadcastMessage("OnDestroyObject");
+        BroadcastMessage("OnInvalidEffect"); // ヒットエフェクトだけ無効化
+        BroadcastMessage("OnHit");
+        //BroadcastMessage("OnDestroyObject");
     }
 
     void OnRecovery()
@@ -51,7 +53,7 @@ public class ItemRecovery : MonoBehaviour
         GameObject ui = GameObject.Find("/UI");
         if (ui)
         {
-            ui.BroadcastMessage("OnEndItemFound", SendMessageOptions.DontRequireReceiver);
+            ui.BroadcastMessage("OnEndItemLost", SendMessageOptions.DontRequireReceiver);
 
             // UIに通知
             float t = (Time.time - timeStamp) / param.lifeTime;

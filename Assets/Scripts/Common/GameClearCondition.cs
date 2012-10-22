@@ -31,4 +31,6 @@ public class GameClearCondition : MonoBehaviour
             if(field) field.SendMessage("OnClearCondition", target.tag);
         }
     }
+
+   /// void On
 }

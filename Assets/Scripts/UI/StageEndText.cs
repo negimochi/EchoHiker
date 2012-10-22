@@ -16,16 +16,15 @@ public class StageEndText : MonoBehaviour {
 
     void OnGameClear()
     {
+        
         guiText.text = gameclearText;
-        guiText.enabled = true;
-        StartCoroutine("Wait", backtitleDelay);
+        StartCoroutine("Wait");
     }
 
     void OnGameOver( )
     {
         guiText.text = gameoverText;
-        guiText.enabled = true;
-        StartCoroutine("Wait", backtitleDelay);
+        StartCoroutine("Wait");
     }
 
     void OnStageReset()
@@ -33,11 +32,10 @@ public class StageEndText : MonoBehaviour {
         guiText.enabled = false;
     }
     
-    private IEnumerator Wait(float waitTime)
+    private IEnumerator Wait()
     {
-        yield return new WaitForSeconds(waitTime);
-
-        BroadcastMessage("OnStartSwitcher", SendMessageOptions.DontRequireReceiver);
+        yield return new WaitForSeconds(backtitleDelay);
+        BroadcastMessage("OnStartSwitcher");
     }
 
 }

@@ -7,7 +7,7 @@ using System.Collections;
 public class TorpedoManager : MonoBehaviour {
 
     [SerializeField]
-    private bool runningAreaCheck = true;
+    private bool check = true;
     [SerializeField]
     private Rect runningArea = new Rect(-950, -950, 1900, 1900);   // 有効範囲（ワールド座標）
     [SerializeField]
@@ -23,7 +23,7 @@ public class TorpedoManager : MonoBehaviour {
     void Start()
     {
         // スタートしておく
-        if (runningAreaCheck) StartCoroutine("CheckDelay");
+        if (check) StartCoroutine("CheckDelay");
     }
 
     void OnInstantiatedChild(GameObject target)

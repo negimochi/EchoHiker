@@ -7,46 +7,21 @@ using System.Collections;
 public class TitleSwitcher : MonoBehaviour {
 
     [SerializeField]
-    private float fadeTime = 3.0f;
-    [SerializeField]
-    private float delay = 0.2f;
-    [SerializeField]
-    private float minAlpha = 0.0f;
-
-    private float max;
-    private float currentTime = 0.0f;
-    [SerializeField]
-    private Color startColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-    private bool wait = true;
+    private float waitTime = 3.0f;
 
     private bool pushed = false;
+    private bool fade = false;
    
     void Start()
     {
-        max = 1.0f - minAlpha;
-        //startColor = new Color(guiText.material.color.r, guiText.material.color.g, guiText.material.color.b, guiText.material.color.a);
+        guiText.enabled = false;
+        Color basecolor = guiText.material.color;
+        guiText.material.color = new Color(basecolor.r, basecolor.g, basecolor.b, 0.0f);
     }
 
     void Update()
     {
         if (!guiText.enabled) return;
-
-        if (!wait)
-        {
-            float time = currentTime / fadeTime;
-            if (time <= (2.0f * max))
-            {
-                float alpha = minAlpha + Mathf.PingPong(time, max);
-                guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-                // 時間更新
-                currentTime += Time.deltaTime;
-            }
-            else
-            {
-                wait = true;
-                StartCoroutine("Delay", delay);
-            }
-        }
 
         if ( !pushed && Input.GetMouseButtonDown(0))
         {
@@ -56,33 +31,38 @@ public class TitleSwitcher : MonoBehaviour {
             GameObject adapter = GameObject.Find("/Adapter");
             if (adapter) adapter.SendMessage("OnSceneEnd");
             else Debug.Log("adapter is not exist...");
-            //intermission.SendMessage("OnIntermissionStart", true);
         }
 	}
 
-    private void StartFade()
+    // フェード終了時に呼ばれる
+    void OnEndTextFade()
     {
-        guiText.enabled = true;
-        guiText.material.color = new Color(startColor.r, startColor.g, startColor.b, 0.0f);
-        wait = false;
+        if (!guiText.enabled) return;
+        StartCoroutine("Delay");
     }
 
-    private IEnumerator Delay(float waitTime)
+    private IEnumerator Delay()
     {
         yield return new WaitForSeconds(waitTime);
-        wait = false;
-        currentTime = 0.0f;
+        // FadeInとFadeOutを切り替えて実行
+        fade = !fade;
+        if (fade) SendMessage("OnTextFadeIn");
+        else SendMessage("OnTextFadeOut");
     }
 
     void OnStartSwitcher()
     {
-        StartFade();
+        Debug.Log("OnStartSwitcher");
+        guiText.enabled = true;
+        fade = true;
+        SendMessage("OnTextFadeIn");
     }
 
     void OnStageReset()
     {
         guiText.enabled = false;
-        wait = true;
+        Color basecolor = guiText.material.color;
+        guiText.material.color = new Color(basecolor.r, basecolor.g, basecolor.b, 0.0f);
         pushed = false;
     }
 }

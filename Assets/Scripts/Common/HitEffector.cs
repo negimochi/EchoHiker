@@ -7,12 +7,30 @@ using System.Collections;
 /// </summary>
 public class HitEffector : MonoBehaviour {
 
+//    [SerializeField]
+    private bool valid = true;
+
+    void Start()
+    { 
+    }
+
+    // 無効なら事前に呼んでおく
+    void OnInvalidEffect()
+    {
+        Debug.Log("HitEffector.OnInvalid");
+        valid = false;
+    }
+
     // ヒット時の挙動管理と終了タイミング
     void OnHit()
     {
         Debug.Log("HitEffector.OnHit");
-        if (particleSystem) particleSystem.Play();
-        if (audio) audio.Play();
+        if (valid)
+        {
+            if (particleSystem) particleSystem.Play();
+            if (audio) audio.Play();
+        }
+        else Debug.Log("HitEffector.OnHit: Invalid");
     }
 
     public bool IsFinished()

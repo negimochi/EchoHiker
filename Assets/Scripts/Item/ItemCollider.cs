@@ -16,14 +16,6 @@ public class ItemCollider : MonoBehaviour
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
     }
 
-//    void OnTriggerEnter(Collider other)
-//    {
-//        CheckPlayer( other.gameObject );
-//    }
-//    void OnTriggerStay(Collider other)
-//    {
-//        CheckPlayer(other.gameObject);
-//    }
     void OnCollisionEnter(Collision collision)
     {
         CheckPlayer(collision.gameObject);

@@ -1,1 +1,2 @@
 C:\Unity_Projects\EchoHiker\EchoHiker\EchoHiker\obj\Debug\ResolveAssemblyReference.cache
+C:\Unity\3dsound_submarine_ver.1.7\obj\Debug\ResolveAssemblyReference.cache
