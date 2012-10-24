@@ -59,11 +59,12 @@ public class GenerateSwitcher : MonoBehaviour {
 
     void OnSwitchCheck( string key )
     {
-        if (currentTag.CompareTo(key) == 0)
+        if (currentTag.Equals(key))
         {
             switch (type)
             {
                 case Type.Switch: Switch(); break;
+                // パターンを変えたい場合は追加
                 //case Type.Random: SetRandom(); break;
                 default: break;
             }
@@ -81,45 +82,50 @@ public class GenerateSwitcher : MonoBehaviour {
         current.gen.SendMessage("OnGeneratorStart");
     }
 
+    /// <summary>
+    /// スイッチする
+    /// </summary>
     private void Switch()
     {
         if (generators.Count == 0) return;
 
-        current.gen.SendMessage("OnGeneratorSuspend");
+        Suspend();
+        //current.gen.SendMessage("OnGeneratorSuspend");
 
         foreach( string key in generators.Keys )
         {
-            if (currentTag.CompareTo(key) != 0) {
+            if (currentTag.Equals(key) )
+            {
                 currentTag = key;
                 Run();
                 return;
             }
         }
     }
-    //private void SetRandom()
-    //{
-    //    int index = Random.Range( 0, generators.Count );
-    //}
 
+    // 中断
+    private void Suspend()
+    {
+        if (current == null) return;
+        current.gen.SendMessage("OnGeneratorSuspend");
+    }
+
+
+    // ゲーム開始通知
     void OnGameStart()
     {
-        // ゲーム開始時
         Init();
         Run();
     }
-
+    // ゲームオーバー通知
     void OnGameOver()
     {
         Suspend();
     }
+    // ゲームクリア通知
     void OnGameClear()
     {
         Suspend();
-    }
-
-    private void Suspend()
-    {
-        current.gen.SendMessage("OnGeneratorSuspend");
     }
 
 

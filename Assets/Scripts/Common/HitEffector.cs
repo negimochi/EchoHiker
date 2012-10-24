@@ -7,7 +7,7 @@ using System.Collections;
 /// </summary>
 public class HitEffector : MonoBehaviour {
 
-//    [SerializeField]
+    [SerializeField]
     private bool valid = true;
 
     void Start()
@@ -27,8 +27,16 @@ public class HitEffector : MonoBehaviour {
         Debug.Log("HitEffector.OnHit");
         if (valid)
         {
-            if (particleSystem) particleSystem.Play();
-            if (audio) audio.Play();
+            if (particleSystem)
+            {
+                Debug.Log("HitEffector => particle.Play");
+                particleSystem.Play();
+            }
+            if (audio)
+            {
+                Debug.Log("HitEffector => audio.Play");
+                audio.Play();
+            }
         }
         else Debug.Log("HitEffector.OnHit: Invalid");
     }

@@ -19,9 +19,9 @@ public class TextBlinker : MonoBehaviour
     {
     }
 
+    // 点滅スタート
     void OnStartTextBlink()
     {
-        // Blinkをスタートさせるメッセージ
         if (!guiText || !valid) return;
         count = 0;
         guiText.enabled = true;
@@ -40,6 +40,7 @@ public class TextBlinker : MonoBehaviour
         }
         else
         {
+            // 終了通知
             SendMessage("OnEndTextBlink", SendMessageOptions.DontRequireReceiver);
         }
     }

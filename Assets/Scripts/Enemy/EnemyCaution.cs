@@ -98,11 +98,18 @@ public class EnemyCaution : MonoBehaviour {
         GameObject ui = GameObject.Find("/UI");
         if (ui)
         {
-            ui.BroadcastMessage("OnEndEnemyDestroyed", SendMessageOptions.DontRequireReceiver);
-            // 見つかっていないほうが点数が高いように設定
+            // オブジェクトのヒット
+            ui.BroadcastMessage("OnHitObject", tag, SendMessageOptions.DontRequireReceiver);
+            // 得点追加
             float time = 1.0f - Mathf.InverseLerp(0, 100, cautionValue);
             int scoreValue = (int)Mathf.Lerp(param.scoreMin, param.scoreMax, time);
             ui.BroadcastMessage("OnAddScore", scoreValue);
+        }
+        GameObject parent = gameObject.transform.parent.gameObject;
+        if (parent)
+        {
+            // 親にもヒット通知
+            parent.SendMessage("OnHitObject", tag, SendMessageOptions.DontRequireReceiver);
         }
         // 自分にヒット判定
         BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);

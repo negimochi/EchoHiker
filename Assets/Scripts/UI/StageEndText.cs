@@ -14,19 +14,19 @@ public class StageEndText : MonoBehaviour {
     {
     }
 
+    // ゲームクリア通知
     void OnGameClear()
     {
-        
         guiText.text = gameclearText;
         StartCoroutine("Wait");
     }
-
-    void OnGameOver( )
+    // ゲームオーバー通知
+    void OnGameOver()
     {
         guiText.text = gameoverText;
         StartCoroutine("Wait");
     }
-
+    // ステージリセット
     void OnStageReset()
     {
         guiText.enabled = false;
@@ -35,6 +35,7 @@ public class StageEndText : MonoBehaviour {
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(backtitleDelay);
+        guiText.enabled = true;
         BroadcastMessage("OnStartSwitcher");
     }
 

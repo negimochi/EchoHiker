@@ -41,6 +41,23 @@ public class TitleSwitcher : MonoBehaviour {
         StartCoroutine("Delay");
     }
 
+    // スイッチのスタート
+    void OnStartSwitcher()
+    {
+        Debug.Log("OnStartSwitcher");
+        guiText.enabled = true;
+        fade = true;
+        SendMessage("OnTextFadeIn");
+    }
+    // ステージリセット
+    void OnStageReset()
+    {
+        guiText.enabled = false;
+        Color basecolor = guiText.material.color;
+        guiText.material.color = new Color(basecolor.r, basecolor.g, basecolor.b, 0.0f);
+        pushed = false;
+    }
+
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(waitTime);
@@ -50,19 +67,4 @@ public class TitleSwitcher : MonoBehaviour {
         else SendMessage("OnTextFadeOut");
     }
 
-    void OnStartSwitcher()
-    {
-        Debug.Log("OnStartSwitcher");
-        guiText.enabled = true;
-        fade = true;
-        SendMessage("OnTextFadeIn");
-    }
-
-    void OnStageReset()
-    {
-        guiText.enabled = false;
-        Color basecolor = guiText.material.color;
-        guiText.material.color = new Color(basecolor.r, basecolor.g, basecolor.b, 0.0f);
-        pushed = false;
-    }
 }

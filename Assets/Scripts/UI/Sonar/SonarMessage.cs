@@ -16,24 +16,32 @@ public class SonarMessage : MonoBehaviour {
         guiText.enabled = false;
     }
 
-
-    void OnEndEnemyDestroyed()
+    /// <summary>
+    /// オブジェクトのヒット
+    /// </summary>
+    /// <param name="tag"></param>
+    void OnHitObject( string tag )
     {
-        guiText.text = enemyDestroyed;
+        if (tag.Equals("Enemy")) guiText.text = enemyDestroyed;
+        else if (tag.Equals("Item")) guiText.text = itemFound;
+        // 点滅開始
         SendMessage("OnStartTextBlink");
     }
 
-    void OnEndItemFound()
+    /// <summary>
+    /// オブジェクトのロスト
+    /// </summary>
+    /// <param name="tag"></param>
+    void OnLostObject( string tag )
     {
-        guiText.text = itemFound;
+        if (tag.Equals("Item"))
+        {
+            guiText.text = itemLost;
+        }
+        // 点滅開始
         SendMessage("OnStartTextBlink");
     }
 
-    void OnEndItemLost()
-    {
-        guiText.text = itemLost;
-        SendMessage("OnStartTextBlink");
-    }
 
     void OnEndTextBlink()
     {

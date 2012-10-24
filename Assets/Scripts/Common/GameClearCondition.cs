@@ -4,9 +4,11 @@ using System.Collections;
 public class GameClearCondition : MonoBehaviour
 {
     [SerializeField]
-    private bool valid = true;
+    private bool valid = false;
     [SerializeField]
-    private int destoryNorma = 1;
+    private int destoryNorma = 0;
+    [SerializeField]
+    private int hitNorma = 0;
 
     private GameObject field = null;
 
@@ -18,19 +20,38 @@ public class GameClearCondition : MonoBehaviour
 
     void OnInstantiatedChild(GameObject target)
     {
-        // 生成したときに条件があればここ
+        // 生成したタイミング
+        // 1つでも生成されば許可
     }
 
     void OnDestroyObject(GameObject target)
     {
         if (!valid) return;
-        // 消えたときに条件
+        if (destoryNorma == 0) return;
+
+        // 破棄されたタイミング
         destoryNorma--;
-        if (destoryNorma <= 0)
-        {
-            if(field) field.SendMessage("OnClearCondition", target.tag);
-        }
+        if (destoryNorma <= 0) Clear(target.tag);
     }
 
-   /// void On
+    void OnHitObject(string tag)
+    {
+        if (!valid) return;
+        if (hitNorma == 0) return;
+
+        // ヒットしたタイミング
+        hitNorma--;
+        if (hitNorma <= 0) Clear(tag);
+    }
+
+    void OnLostObject(string tag)
+    {
+        // ロストしたタイミング
+    }
+
+    private void Clear( string tag )
+    {
+        if (field) field.SendMessage("OnClearCondition", tag);
+        valid = false;
+    }
 }

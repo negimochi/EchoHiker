@@ -112,7 +112,6 @@ public class TorpedoCollider : MonoBehaviour {
             Debug.Log("CheckPlayer");
             // 衝撃を与える
             explosion.Add( target.rigidbody, transform.position );
-
             // ヒット通知だけ流す
             target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
             // ダメージ通知
