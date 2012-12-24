@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// アイテムによる回復量の設定。
+/// </summary>
 public class ItemRecovery : MonoBehaviour
 {
     [SerializeField]
@@ -54,10 +57,12 @@ public class ItemRecovery : MonoBehaviour
 
         // 強制削除
         BroadcastMessage("OnInvalidEffect"); // ヒットエフェクトだけ無効化
-        BroadcastMessage("OnHit");
+        BroadcastMessage("OnHit");  // ヒット通知
     }
 
-    // プレイヤーに取得された
+    /// <summary>
+    /// プレイヤーに取得されたら回復
+    /// </summary>
     void OnRecovery()
     {
         GameObject ui = GameObject.Find("/UI");
@@ -76,14 +81,16 @@ public class ItemRecovery : MonoBehaviour
             Debug.Log(t + ":ItemAir=" + recoveryValue);
             ui.BroadcastMessage("OnAddAir", recoveryValue);
         }
+
         GameObject parent = gameObject.transform.parent.gameObject;
         if (parent)
         {
             // 親にもヒット通知
             parent.SendMessage("OnHitObject", tag, SendMessageOptions.DontRequireReceiver);
         }
+
         // ヒット後の自分の処理
-        BroadcastMessage("OnHit");
+        BroadcastMessage("OnHit");  // ヒット通知
     }
 
 }

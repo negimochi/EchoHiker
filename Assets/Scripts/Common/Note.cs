@@ -84,6 +84,6 @@ public class Note : MonoBehaviour {
             }
         }
         // 削除メッセージを要求
-        transform.parent.gameObject.SendMessage("OnDestroyObject", SendMessageOptions.DontRequireReceiver);
+        transform.parent.gameObject.SendMessage("OnDestroyLicense");
     }
 }

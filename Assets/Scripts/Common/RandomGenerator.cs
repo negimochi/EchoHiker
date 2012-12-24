@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ランダムな位置にインスタンスを生成
+/// </summary>
 public class RandomGenerator : MonoBehaviour {
 
     [SerializeField]

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// スコア表示
+/// </summary>
 public class ScoreDisplay : MonoBehaviour {
 
     [SerializeField]

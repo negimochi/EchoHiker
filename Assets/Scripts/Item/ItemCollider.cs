@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// アイテムの衝突
+/// </summary>
 public class ItemCollider : MonoBehaviour
 {
     [SerializeField]
@@ -10,10 +13,14 @@ public class ItemCollider : MonoBehaviour
     {
     }
 
-    void OnDestroyObject()
+    /// <summary>
+    /// Noteからの削除許可
+    /// </summary>
+//    void OnDestroyObject()
+    void OnDestroyLicense()
     {
         // 親から消してもらう
-        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
+        transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject);
     }
 
     void OnCollisionEnter(Collision collision)

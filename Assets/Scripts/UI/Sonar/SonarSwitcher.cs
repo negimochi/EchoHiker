@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// アクティブソナーとパッシブソナーの切り替え
+/// </summary>
 public class SonarSwitcher : MonoBehaviour
 {
 

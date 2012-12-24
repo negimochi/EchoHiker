@@ -24,7 +24,8 @@ public class HitEffector : MonoBehaviour {
     // ヒット時の挙動管理と終了タイミング
     void OnHit()
     {
-        Debug.Log("HitEffector.OnHit");
+
+        Debug.Log("HitEffector.OnHit:" + transform.parent.gameObject.transform.parent.tag);
         if (valid)
         {
             if (particleSystem)

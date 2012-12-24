@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Airgage下のダメージレベル表示
+/// </summary>
 public class DamageLvText : MonoBehaviour {
 
     [SerializeField]

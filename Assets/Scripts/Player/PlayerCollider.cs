@@ -1,16 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// プレイヤーの衝突
+/// </summary>
 public class PlayerCollider : MonoBehaviour {
 
     [SerializeField]
     private float speedDown = 2.0f;
 
-
     private PlayerController controller;
     private bool damage = true;
 
-	// Use this for initialization
 	void Start () 
     {
         // コントローラー

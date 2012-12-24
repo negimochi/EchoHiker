@@ -191,7 +191,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// 外部から
+    /// ゲームオーバー時
     /// </summary>
     void OnGameOver()
     {
@@ -199,7 +199,9 @@ public class EnemyBehavior : MonoBehaviour
         rot.Stop();
         valid = false;
     }
-
+    /// <summary>
+    /// 攻撃がヒットした時
+    /// </summary>
     void OnHit()
     {
         //Debug.Log("EnemyBehaviour.OnHit:" + name);
@@ -209,13 +211,14 @@ public class EnemyBehavior : MonoBehaviour
         // 念のため
         StopAllCoroutines();
     }
-
-    void OnDestroyObject()
+    /// <summary>
+    /// Noteから削除許可をうける
+    /// </summary>
+    void OnDestroyLicense()
     {
         //Debug.Log("EnemyBehaviour.OnDestroyObject:" + name);
         // 親に伝えておく。親から消してもらう
         transform.parent.gameObject.SendMessage("OnDestroyObject", gameObject, SendMessageOptions.DontRequireReceiver);
-        //Destroy(gameObject);
     }
 
     /// <summary>

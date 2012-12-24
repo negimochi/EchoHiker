@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// デバッグ用。
+/// </summary>
 public class DebugStageAdapter : MonoBehaviour
 {
     [SerializeField]

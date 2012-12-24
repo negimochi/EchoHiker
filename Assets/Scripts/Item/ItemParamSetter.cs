@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// アイテムパラメータの変動
+/// </summary>
 public class ItemParamSetter: MonoBehaviour
 {
     [SerializeField]

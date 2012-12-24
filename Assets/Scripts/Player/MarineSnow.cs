@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// マリンスノーのエフェクトに対する設定
+/// </summary>
 public class MarineSnow : MonoBehaviour {
 
     [SerializeField]

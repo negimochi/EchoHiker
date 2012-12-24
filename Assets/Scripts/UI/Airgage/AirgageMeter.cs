@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 空気残量の表示メーター。Cutoutのシェーダ利用。
+/// </summary>
 public class AirgageMeter : MonoBehaviour {
 
     /// <summary>

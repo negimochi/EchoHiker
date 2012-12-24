@@ -26,12 +26,19 @@ public class TorpedoManager : MonoBehaviour {
         if (check) StartCoroutine("CheckDelay");
     }
 
+    /// <summary>
+    /// インスタンス生成タイミング
+    /// </summary>
+    /// <param name="target">生成されたインスタンス</param>
     void OnInstantiatedChild(GameObject target)
     {
         childrenArray.Add(target);
         sonarArray.Add(target);
     }
-
+    /// <summary>
+    /// インスタンス削除タイミング
+    /// </summary>
+    /// <param name="target">削除対象</param>
     void OnDestroyChild(GameObject target)
     {
         // リストに入っていれば削除しておく
@@ -42,16 +49,25 @@ public class TorpedoManager : MonoBehaviour {
         Destroy(target);
     }
 
+    /// <summary>
+    /// ゲームオーバー時
+    /// </summary>
     void OnGameOver()
     {
         StopAllCoroutines();
     }
+    /// <summary>
+    /// ゲームクリア時
+    /// </summary>
     void OnGameClear()
     {
         StopAllCoroutines();
     }
 
-
+    /// <summary>
+    /// 魚雷が有効領域外に出ていないか定期的にチェックする
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator CheckDelay()
     {
         yield return new WaitForSeconds(delayTime);

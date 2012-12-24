@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ソナーの下に出てくるメッセージ
+/// </summary>
 public class SonarMessage : MonoBehaviour {
 
     [SerializeField]

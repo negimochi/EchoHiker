@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ソナーが外から内、内から外に広がるエフェクト
+/// </summary>
 public class SonarEffect : MonoBehaviour
 {
     [SerializeField]

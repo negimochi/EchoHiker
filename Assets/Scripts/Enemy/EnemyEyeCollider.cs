@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// “G‚ÌŽ‹ŠE
+/// </summary>
 public class EnemyEyeCollider : MonoBehaviour {
 
     [SerializeField]

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// クリア条件
+/// </summary>
 public class GameClearCondition : MonoBehaviour
 {
     [SerializeField]
@@ -18,22 +21,33 @@ public class GameClearCondition : MonoBehaviour
         field = GameObject.Find("/Field");
     }
 
+    /// <summary>
+    /// 生成したタイミング
+    /// </summary>
+    /// <param name="target"></param>
     void OnInstantiatedChild(GameObject target)
     {
-        // 生成したタイミング
         // 1つでも生成されば許可
     }
 
+    /// <summary>
+    /// 破棄されるタイミング
+    /// </summary>
+    /// <param name="target"></param>
     void OnDestroyObject(GameObject target)
     {
         if (!valid) return;
         if (destoryNorma == 0) return;
 
-        // 破棄されたタイミング
+        // 
         destoryNorma--;
         if (destoryNorma <= 0) Clear(target.tag);
     }
 
+    /// <summary>
+    /// ヒットタイミング
+    /// </summary>
+    /// <param name="tag"></param>
     void OnHitObject(string tag)
     {
         if (!valid) return;
@@ -44,9 +58,12 @@ public class GameClearCondition : MonoBehaviour
         if (hitNorma <= 0) Clear(tag);
     }
 
+    /// <summary>
+    /// ロストしたタイミング
+    /// </summary>
+    /// <param name="tag"></param>
     void OnLostObject(string tag)
     {
-        // ロストしたタイミング
     }
 
     private void Clear( string tag )

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 残りの空気の残量表示
+/// </summary>
 public class Airgage : MonoBehaviour {
 
     [SerializeField]

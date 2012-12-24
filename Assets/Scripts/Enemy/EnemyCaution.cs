@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 滴によるCaution値の設定。
+/// </summary>
 public class EnemyCaution : MonoBehaviour {
 
     [SerializeField]
@@ -112,7 +115,7 @@ public class EnemyCaution : MonoBehaviour {
             parent.SendMessage("OnHitObject", tag, SendMessageOptions.DontRequireReceiver);
         }
         // 自分にヒット判定
-        BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+        BroadcastMessage("OnHit");
     }
 
     void OnActiveSonar()

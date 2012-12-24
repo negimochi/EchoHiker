@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 敵のパラメータ
+/// </summary>
 [System.Serializable]
 public class EnemyParameter 
 {

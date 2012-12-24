@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 生成時のパラメータ
+/// </summary>
 [System.Serializable]
 public class GenerateParameter 
 {

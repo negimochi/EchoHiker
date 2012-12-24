@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Fieldのデバッグ用
+/// </summary>
 public class DebugField : MonoBehaviour
 {
     [SerializeField]

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// アクティブソナー
+/// </summary>
 public class ActiveSonar : MonoBehaviour {
 
     [SerializeField]

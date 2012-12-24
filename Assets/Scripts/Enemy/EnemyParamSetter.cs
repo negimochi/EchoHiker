@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 敵パラメータの変動
+/// </summary>
 public class EnemyParamSetter : MonoBehaviour
 {
     [SerializeField]

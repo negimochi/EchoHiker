@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ステージの始まりで表示するテキスト
+/// </summary>
 public class StageStartText : MonoBehaviour {
 
     [SerializeField]

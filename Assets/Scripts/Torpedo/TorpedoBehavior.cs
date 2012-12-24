@@ -9,8 +9,7 @@ public class TorpedoBehavior : MonoBehaviour {
     [SerializeField]
     private float speed = 1.0f;
 
-//    [SerializeField]
-//    private Rect runningArea;   // 有効範囲（ワールド座標）
+    private bool stop = false;
 
 	void Start () 
     {
@@ -21,26 +20,32 @@ public class TorpedoBehavior : MonoBehaviour {
     {
         // 通常は前に進む
         MoveForward();
-
-
-//        if (!runningArea.Contains(new Vector2(transform.position.x, transform.position.z)))
-//        {
-//            // 可動範囲を超えたら削除
-//            OnDestroyObject();
-//        }
 	}
+
+    /// <summary>
+    /// Noteから削除許可をうける
+    /// </summary>
+    void OnDestroyLicense()
+    {
+        // 親に伝える。親から削除してもらう
+        transform.parent.SendMessage("OnDestroyChild", gameObject);
+    }
+    /// <summary>
+    /// ヒット通知
+    /// </summary>
+    void OnHit()
+    {
+        speed = 0.0f;
+        stop = true;
+    }
 
     private void MoveForward()
     {
+        if (stop) return;
         Vector3 vec = speed * transform.forward.normalized;
         rigidbody.MovePosition(rigidbody.position + vec * Time.deltaTime);
     }
 
-//    void OnDestroyObject()
-//    {
-//        Debug.Log("TorpedoBehaviour.OnDestroy");
-//        Destroy(gameObject);
-//    }
 
     public void SetSpeed( float speed_ ) { speed = speed_; }
 

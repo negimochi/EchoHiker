@@ -1,4 +1,6 @@
-﻿
+﻿/// <summary>
+/// アイテムのパラメータ
+/// </summary>
 [System.Serializable]
 public class ItemParameter 
 {

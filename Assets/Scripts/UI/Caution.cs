@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Caution値
+/// </summary>
 public class Caution : MonoBehaviour {
 
     [SerializeField]

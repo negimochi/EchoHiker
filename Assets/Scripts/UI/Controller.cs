@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// コントローラー
+/// </summary>
 public class Controller : MonoBehaviour {
 
     [SerializeField]

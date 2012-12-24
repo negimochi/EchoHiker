@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// ステージ終わりの切り替わりで表示するテキスト
+/// </summary>
 public class StageEndText : MonoBehaviour {
 
     [SerializeField]

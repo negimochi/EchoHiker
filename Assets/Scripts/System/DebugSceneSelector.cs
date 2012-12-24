@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// デバッグ用。SceneSelectorをボタンでトリガーする
+/// </summary>
 public class DebugSceneSelector : MonoBehaviour
 {
     [SerializeField]

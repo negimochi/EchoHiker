@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 生成パターン
+/// </summary>
 public class GeneratePattern : MonoBehaviour {
 
     // 発生時間

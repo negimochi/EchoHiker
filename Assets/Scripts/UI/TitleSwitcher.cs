@@ -34,14 +34,18 @@ public class TitleSwitcher : MonoBehaviour {
         }
 	}
 
-    // フェード終了時に呼ばれる
+    /// <summary>
+    /// フェード終了時に呼ばれる
+    /// </summary>
     void OnEndTextFade()
     {
         if (!guiText.enabled) return;
         StartCoroutine("Delay");
     }
 
-    // スイッチのスタート
+    /// <summary>
+    /// スイッチのスタート
+    /// </summary>
     void OnStartSwitcher()
     {
         Debug.Log("OnStartSwitcher");
@@ -49,7 +53,9 @@ public class TitleSwitcher : MonoBehaviour {
         fade = true;
         SendMessage("OnTextFadeIn");
     }
-    // ステージリセット
+    /// <summary>
+    /// ステージリセット
+    /// </summary>
     void OnStageReset()
     {
         guiText.enabled = false;

@@ -52,15 +52,22 @@ public class TorpedoCollider : MonoBehaviour {
         StartCoroutine("Delay");
 	}
 
+    /// <summary>
+    /// ゲームオーバー時
+    /// </summary>
     void OnGameOver()
     {
         collider.enabled = false;
     }
+    /// <summary>
+    /// ゲームクリア時
+    /// </summary>
     void OnGameClear()
     {
         collider.enabled = false;
     }
 
+    // Enterだけでは取り逃す可能性があるので、StayでもCollision判定する
     void OnCollisionEnter(Collision collision)
     {
         CheckCollision(collision.gameObject);
@@ -85,15 +92,17 @@ public class TorpedoCollider : MonoBehaviour {
         hit |= CheckEnemy(target);
         hit |= CheckTorpedo(target);
         if( hit ) {
-            // ヒット後の自分の処理
-            BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+            // いずれかがヒットした場合、ヒット後の自分の処理
+            BroadcastMessage("OnHit");
             // Collider無効化
             collider.enabled = false;
-            // 親に伝えておく
-            transform.parent.SendMessage("OnDestroyChild", gameObject);
         }
     }
-
+    /// <summary>
+    /// 魚雷通しの衝突
+    /// </summary>
+    /// <param name="target">チェック対象</param>
+    /// <returns></returns>
     private bool CheckTorpedo(GameObject target)
     {
         if (target.CompareTag("Torpedo"))
@@ -104,7 +113,11 @@ public class TorpedoCollider : MonoBehaviour {
         }
         return false;
     }
-
+    /// <summary>
+    /// プレイヤーとの衝突
+    /// </summary>
+    /// <param name="target">チェック対象</param>
+    /// <returns></returns>
     private bool CheckPlayer(GameObject target)
     {
         if (target.CompareTag("Player"))
@@ -113,14 +126,18 @@ public class TorpedoCollider : MonoBehaviour {
             // 衝撃を与える
             explosion.Add( target.rigidbody, transform.position );
             // ヒット通知だけ流す
-            target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+            target.BroadcastMessage("OnHit");
             // ダメージ通知
             if (ui) ui.BroadcastMessage("OnDamage", damageValue, SendMessageOptions.DontRequireReceiver);
             return true;
         }
         return false;
     }
-
+    /// <summary>
+    /// 敵との衝突
+    /// </summary>
+    /// <param name="target">チェック対象</param>
+    /// <returns></returns>
     private bool CheckEnemy(GameObject target)
     {
         if (target.CompareTag("Enemy"))
@@ -134,7 +151,7 @@ public class TorpedoCollider : MonoBehaviour {
             else
             {
                 // 敵にヒット通知だけ流す
-                target.BroadcastMessage("OnHit", SendMessageOptions.DontRequireReceiver);
+                target.BroadcastMessage("OnHit");
             }
             return true;
         }

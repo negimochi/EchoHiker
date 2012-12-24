@@ -11,7 +11,7 @@ public class GenerateSwitcher : MonoBehaviour {
         None = 0,
         OnlyOne,
         Switch,
-        Random,
+//        Random,
 //        All,
     };
     [SerializeField]
