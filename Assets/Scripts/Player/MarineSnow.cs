@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒ}ƒŠƒ“ƒXƒm[‚ÌƒGƒtƒFƒNƒg‚É‘Î‚·‚éİ’è
+/// ãƒãƒªãƒ³ã‚¹ãƒãƒ¼ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã«å¯¾ã™ã‚‹è¨­å®š
 /// </summary>
 public class MarineSnow : MonoBehaviour {
 

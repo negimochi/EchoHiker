@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// デバッグ用。SceneSelectorをボタンでトリガーする
+/// 繝�繝舌ャ繧ｰ逕ｨ縲４ceneSelector繧偵�懊ち繝ｳ縺ｧ繝医Μ繧ｬ繝ｼ縺吶ｋ
 /// </summary>
 public class DebugSceneSelector : MonoBehaviour
 {

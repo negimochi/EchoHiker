@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒ†[ƒUƒNƒŠƒbƒNŒãAAdapter‚ÉƒV[ƒ“I—¹‚ğ“`‚¦‚é
+/// ãƒ¦ãƒ¼ã‚¶ã‚¯ãƒªãƒƒã‚¯å¾Œã€Adapterã«ã‚·ãƒ¼ãƒ³çµ‚äº†ã‚’ä¼ãˆã‚‹
 /// </summary>
 public class TitleSwitcher : MonoBehaviour {
 
@@ -27,7 +27,7 @@ public class TitleSwitcher : MonoBehaviour {
         {
             pushed = true;
             audio.Play();
-            // ƒV[ƒ“I—¹‚ğ“`‚¦‚é
+            // ã‚·ãƒ¼ãƒ³çµ‚äº†ã‚’ä¼ãˆã‚‹
             GameObject adapter = GameObject.Find("/Adapter");
             if (adapter) adapter.SendMessage("OnSceneEnd");
             else Debug.Log("adapter is not exist...");
@@ -35,7 +35,7 @@ public class TitleSwitcher : MonoBehaviour {
 	}
 
     /// <summary>
-    /// ƒtƒF[ƒhI—¹‚ÉŒÄ‚Î‚ê‚é
+    /// ãƒ•ã‚§ãƒ¼ãƒ‰çµ‚äº†æ™‚ã«å‘¼ã°ã‚Œã‚‹
     /// </summary>
     void OnEndTextFade()
     {
@@ -44,7 +44,7 @@ public class TitleSwitcher : MonoBehaviour {
     }
 
     /// <summary>
-    /// ƒXƒCƒbƒ`‚ÌƒXƒ^[ƒg
+    /// ã‚¹ã‚¤ãƒƒãƒã®ã‚¹ã‚¿ãƒ¼ãƒˆ
     /// </summary>
     void OnStartSwitcher()
     {
@@ -54,7 +54,7 @@ public class TitleSwitcher : MonoBehaviour {
         SendMessage("OnTextFadeIn");
     }
     /// <summary>
-    /// ƒXƒe[ƒWƒŠƒZƒbƒg
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ãƒªã‚»ãƒƒãƒˆ
     /// </summary>
     void OnStageReset()
     {
@@ -67,7 +67,7 @@ public class TitleSwitcher : MonoBehaviour {
     private IEnumerator Delay()
     {
         yield return new WaitForSeconds(waitTime);
-        // FadeIn‚ÆFadeOut‚ğØ‚è‘Ö‚¦‚ÄÀs
+        // FadeInã¨FadeOutã‚’åˆ‡ã‚Šæ›¿ãˆã¦å®Ÿè¡Œ
         fade = !fade;
         if (fade) SendMessage("OnTextFadeIn");
         else SendMessage("OnTextFadeOut");

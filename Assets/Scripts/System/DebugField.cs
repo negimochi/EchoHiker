@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// Fieldのデバッグ用
+/// Field縺ｮ繝�繝舌ャ繧ｰ逕ｨ
 /// </summary>
 public class DebugField : MonoBehaviour
 {

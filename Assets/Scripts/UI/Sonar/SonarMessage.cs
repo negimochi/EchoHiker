@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒ\ƒi[‚Ì‰º‚Éo‚Ä‚­‚éƒƒbƒZ[ƒW
+/// ã‚½ãƒŠãƒ¼ã®ä¸‹ã«å‡ºã¦ãã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 /// </summary>
 public class SonarMessage : MonoBehaviour {
 
@@ -20,19 +20,19 @@ public class SonarMessage : MonoBehaviour {
     }
 
     /// <summary>
-    /// ƒIƒuƒWƒFƒNƒg‚Ìƒqƒbƒg
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ’ãƒƒãƒˆ
     /// </summary>
     /// <param name="tag"></param>
     void OnHitObject( string tag )
     {
         if (tag.Equals("Enemy")) guiText.text = enemyDestroyed;
         else if (tag.Equals("Item")) guiText.text = itemFound;
-        // “_–ÅŠJn
+        // ç‚¹æ»…é–‹å§‹
         SendMessage("OnStartTextBlink");
     }
 
     /// <summary>
-    /// ƒIƒuƒWƒFƒNƒg‚ÌƒƒXƒg
+    /// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ­ã‚¹ãƒˆ
     /// </summary>
     /// <param name="tag"></param>
     void OnLostObject( string tag )
@@ -41,7 +41,7 @@ public class SonarMessage : MonoBehaviour {
         {
             guiText.text = itemLost;
         }
-        // “_–ÅŠJn
+        // ç‚¹æ»…é–‹å§‹
         SendMessage("OnStartTextBlink");
     }
 

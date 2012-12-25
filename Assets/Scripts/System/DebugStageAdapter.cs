@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒfƒoƒbƒO—pB
+/// ãƒ‡ãƒãƒƒã‚°ç”¨ã€‚
 /// </summary>
 public class DebugStageAdapter : MonoBehaviour
 {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// ƒqƒbƒg‚Éƒ‚ƒfƒ‹‚ğÁ‚·‚¾‚¯
+/// ãƒ’ãƒƒãƒˆæ™‚ã«ãƒ¢ãƒ‡ãƒ«ã‚’æ¶ˆã™ã ã‘
 /// </summary>
 public class TorpedoModel : MonoBehaviour {
 

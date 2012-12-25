@@ -1,4 +1,4 @@
-﻿/// <summary>
+/// <summary>
 /// アイテムのパラメータ
 /// </summary>
 [System.Serializable]

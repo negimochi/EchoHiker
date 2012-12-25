@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ‹ó‹Cc—Ê‚Ì–A‚ªo‚Ä‚éƒGƒtƒFƒNƒg
+/// ç©ºæ°—æ®‹é‡ã®æ³¡ãŒå‡ºã¦ã‚‹ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 /// </summary>
 public class AirgageBubble : MonoBehaviour {
 

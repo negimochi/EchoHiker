@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒqƒbƒg‚Éƒp[ƒeƒBƒNƒ‹‚ğÁ‚·‚¾‚¯
+/// ãƒ’ãƒƒãƒˆæ™‚ã«ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’æ¶ˆã™ã ã‘
 /// </summary>
 public class TorpedoMoveEffect : MonoBehaviour {
 

@@ -2,12 +2,12 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// “G‚Ì‹ŠE
+/// æ•µã®è¦–ç•Œ
 /// </summary>
 public class EnemyEyeCollider : MonoBehaviour {
 
     [SerializeField]
-    private float insideRadius = 200.0f; // ‚±‚êˆÈã‹ß‚Ã‚¯‚È‚¢‹——£
+    private float insideRadius = 200.0f; // ã“ã‚Œä»¥ä¸Šè¿‘ã¥ã‘ãªã„è·é›¢
 
     private float outsideRadius;
     private GameObject parentObj = null;

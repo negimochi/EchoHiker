@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒXƒe[ƒWI‚í‚è‚ÌØ‚è‘Ö‚í‚è‚Å•\¦‚·‚éƒeƒLƒXƒg
+/// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚ã‚ã‚Šã®åˆ‡ã‚Šæ›¿ã‚ã‚Šã§è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
 /// </summary>
 public class StageEndText : MonoBehaviour {
 
@@ -17,19 +17,19 @@ public class StageEndText : MonoBehaviour {
     {
     }
 
-    // ƒQ[ƒ€ƒNƒŠƒA’Ê’m
+    // ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢é€šçŸ¥
     void OnGameClear()
     {
         guiText.text = gameclearText;
         StartCoroutine("Wait");
     }
-    // ƒQ[ƒ€ƒI[ƒo[’Ê’m
+    // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼é€šçŸ¥
     void OnGameOver()
     {
         guiText.text = gameoverText;
         StartCoroutine("Wait");
     }
-    // ƒXƒe[ƒWƒŠƒZƒbƒg
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ãƒªã‚»ãƒƒãƒˆ
     void OnStageReset()
     {
         guiText.enabled = false;

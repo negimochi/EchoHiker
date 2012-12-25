@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“BƒtƒF[ƒhƒCƒ“EƒAƒEƒgAƒXƒ‰ƒCƒhƒCƒ“EƒAƒEƒg‚Ì4íÀ‘•
+/// ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã€‚ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ»ã‚¢ã‚¦ãƒˆã€ã‚¹ãƒ©ã‚¤ãƒ‰ã‚¤ãƒ³ãƒ»ã‚¢ã‚¦ãƒˆã®4ç¨®å®Ÿè£…
 /// </summary>
 public class IntermissionEffector : MonoBehaviour {
 
@@ -33,7 +33,7 @@ public class IntermissionEffector : MonoBehaviour {
     private float startValue = 0.0f;
     private float endValue = 0.0f;
 
-    // ”CˆÓŠ®—¹’Ê’m—pƒIƒuƒWƒFƒNƒg
+    // ä»»æ„å®Œäº†é€šçŸ¥ç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     GameObject notifyObj = null;
 
 	void Start () 
@@ -96,7 +96,7 @@ public class IntermissionEffector : MonoBehaviour {
             {
                 case Type.SlideOut:
                 case Type.FadeOut:
-                    guiTexture.enabled = false; // ”ñ•\¦‚É‚µ‚½‚Ù‚¤‚ªƒRƒXƒg“I‚É‚æ‚¢H
+                    guiTexture.enabled = false; // éè¡¨ç¤ºã«ã—ãŸã»ã†ãŒã‚³ã‚¹ãƒˆçš„ã«ã‚ˆã„ï¼Ÿ
                     break;
                 default: break;
             }
@@ -112,28 +112,28 @@ public class IntermissionEffector : MonoBehaviour {
 
     void OnSlideIn(GameObject notifyObj_)
     {
-        if (valid) return;  // “®‚¢‚Ä‚¢‚éŠÔ‚Í–³Œø
+        if (valid) return;  // å‹•ã„ã¦ã„ã‚‹é–“ã¯ç„¡åŠ¹
         notifyObj = notifyObj_;
         SetType(Type.SlideIn);
         StartIntermission();
     }
     void OnSlideOut(GameObject notifyObj_)
     {
-        if (valid) return;  // “®‚¢‚Ä‚¢‚éŠÔ‚Í–³Œø
+        if (valid) return;  // å‹•ã„ã¦ã„ã‚‹é–“ã¯ç„¡åŠ¹
         notifyObj = notifyObj_;
         SetType(Type.SlideOut);
         StartIntermission();
     }
     void OnFadeIn(GameObject notifyObj_)
     {
-        if (valid) return;  // “®‚¢‚Ä‚¢‚éŠÔ‚Í–³Œø
+        if (valid) return;  // å‹•ã„ã¦ã„ã‚‹é–“ã¯ç„¡åŠ¹
         notifyObj = notifyObj_;
         SetType(Type.FadeIn);
         StartIntermission();
     }
     void OnFadeOut(GameObject notifyObj_)
     {
-        if (valid) return;  // “®‚¢‚Ä‚¢‚éŠÔ‚Í–³Œø
+        if (valid) return;  // å‹•ã„ã¦ã„ã‚‹é–“ã¯ç„¡åŠ¹
         notifyObj = notifyObj_;
         SetType(Type.FadeOut);
         StartIntermission();
@@ -141,7 +141,7 @@ public class IntermissionEffector : MonoBehaviour {
 
     void SetDefault()
     {
-        // ƒfƒtƒHƒ‹ƒg
+        // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
         guiTexture.pixelInset = new Rect(0, -(float)fadeAreaPixel, width, height);
         guiTexture.color = new Color(mainColor.r, mainColor.g, mainColor.b, mainColor.a);
         guiTexture.enabled = true;
@@ -149,7 +149,7 @@ public class IntermissionEffector : MonoBehaviour {
 
     void SetType(Type type_)
     {
-        SetDefault();   // ˆê“xƒfƒtƒHƒ‹ƒg‚É–ß‚·
+        SetDefault();   // ä¸€åº¦ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
         type = type_;
         switch (type)
         {

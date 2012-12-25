@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// ƒXƒe[ƒW‚Ìn‚Ü‚è‚Å•\¦‚·‚éƒeƒLƒXƒg
+/// ã‚¹ãƒ†ãƒ¼ã‚¸ã®å§‹ã¾ã‚Šã§è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
 /// </summary>
 public class StageStartText : MonoBehaviour {
 
@@ -31,7 +31,7 @@ public class StageStartText : MonoBehaviour {
 
     void OnAwakeStage(int index)
     {
-        // ƒQ[ƒ€ƒXƒ^[ƒg‘O‚É•¶š‚ğ€”õ‚µ‚Ä‚¨‚­
+        // ã‚²ãƒ¼ãƒ ã‚¹ã‚¿ãƒ¼ãƒˆå‰ã«æ–‡å­—ã‚’æº–å‚™ã—ã¦ãŠã
         if (index >= startText.Length) return;
         guiText.text = startText[index];
         guiText.enabled = true;
@@ -47,13 +47,13 @@ public class StageStartText : MonoBehaviour {
         StartCoroutine("Delay");
     }
 
-    // ”O‚Ì‚½‚ß”ñ•\¦
+    // å¿µã®ãŸã‚éè¡¨ç¤º
     void OnGameClear()
     {
         StopAllCoroutines();
         OnEndTextFade();
     }
-    // ”O‚Ì‚½‚ß”ñ•\¦
+    // å¿µã®ãŸã‚éè¡¨ç¤º
     void OnGameOver()
     {
         StopAllCoroutines();
